@@ -1,11 +1,20 @@
 package de.fachhochschule.dortmund.bedrin;
 
+import de.fachhochschule.dortmund.bedrin.problems.Problem1;
+import de.fachhochschule.dortmund.bedrin.problems.Problem2;
+import de.fachhochschule.dortmund.bedrin.problems.Problem3;
+import de.fachhochschule.dortmund.bedrin.problems.Problem4;
+import de.fachhochschule.dortmund.bedrin.problems.interfaces.IProblem;
+
 public class Homeworks {
+	
 	public static void main(String[] args) {
-		Problem1 firstExercise = new Problem1();
-		Problem2 secondExercise = new Problem2();
-		Problem3 thirdExercise = new Problem3();
-		Problem4 fourthExercise = new Problem4();
-		System.out.println("Instances are created. Let\'s proceed.");
+		IProblem firstExercise = new Problem1();
+		IProblem secondExercise = new Problem2();
+		IProblem thirdExercise = new Problem3();
+		IProblem fourthExercise = new Problem4();
+
+		firstExercise.demonstrateSolution();
+		secondExercise.demonstrateSolution();
 	}
 }
