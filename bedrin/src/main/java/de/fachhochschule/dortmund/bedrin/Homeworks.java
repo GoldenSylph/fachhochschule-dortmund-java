@@ -16,5 +16,7 @@ public class Homeworks {
 
 		firstExercise.demonstrateSolution();
 		secondExercise.demonstrateSolution();
+		thirdExercise.demonstrateSolution();
+		fourthExercise.demonstrateSolution();
 	}
 }
