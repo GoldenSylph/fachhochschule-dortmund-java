@@ -1,5 +1,6 @@
 package de.fachhochschule.dortmund.bedrin.problems.utils;
 
+/// A class for representing a Sphere (planet or star).
 public class Sphere {
 	protected String name;
 	protected USLength diameter;

@@ -5,8 +5,9 @@
 1) Clone the repo.
 2) Make a folder with your name or any name you'd like to utilize within the root directory.
 3) Place there your Eclipse project.
-4) Explain in the section called **How to test my solution?** how one could execute and check the solution you wrote.
-5) Profit =)
+4) Make a folder for your screencast in the `screencasts` folder, make the name so it would be recognizable that this is your work.
+5) Explain in the section called **How to test my solution?** how one could execute and check the solution you wrote.
+6) Profit =)
 
 ## How to test my solution?
 

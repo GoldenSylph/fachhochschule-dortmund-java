@@ -1,5 +1,6 @@
 package de.fachhochschule.dortmund.bedrin.problems.utils;
 
+/// A class for representing the US length measure.
 public class USLength {
 	public static final double MILES_MULTIPLIER = 1609.344;
 	public static final double FEET_MULTIPLIER = 0.3048;
