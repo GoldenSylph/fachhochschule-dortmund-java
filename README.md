@@ -16,3 +16,13 @@
 1) Clone the repo.
 2) Open a folder inside the root that called `bedrin` in Eclipse IDE.
 3) Run the `de.fachhochschule.dortmund.bedrin.Homeworks` class.
+
+### Saeid Rafiei
+1) Clone the repo
+2) Import rafiei in Eclipse
+3) Run these classes from src/problemset/:
+	Problem1.java
+	Problem2.java
+	Problem3.java
+	Problem4.java
+4) Outputs are saved in outputs/ folder
