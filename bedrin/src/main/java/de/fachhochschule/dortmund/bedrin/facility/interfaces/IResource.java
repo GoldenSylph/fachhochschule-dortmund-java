@@ -1,6 +1,6 @@
 package de.fachhochschule.dortmund.bedrin.facility.interfaces;
 
 public interface IResource<I, O> {
-	public I getData();
-	public void setData(O newData);
+	public O getData();
+	public void setData(I newData);
 }

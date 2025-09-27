@@ -10,8 +10,8 @@ import de.fachhochschule.dortmund.bedrin.facility.interfaces.IResource;
 public abstract class IOperation {
 	private String id;
 	private String description;
-	private Time nominalTime;
 	
+	protected Time nominalTime;
 	protected List<IResource<InputStream, OutputStream>> resources;
 	
 	public IOperation(String newId, String newDescription) {
@@ -19,11 +19,11 @@ public abstract class IOperation {
 		this.description = newDescription;
 	}
 	
-	public void setData(int index, OutputStream data) {
+	public void setData(int index, InputStream data) {
 		((IResource<InputStream, OutputStream>) resources.get(index)).setData(data);
 	}
 	
-	public InputStream getData(int index) {
+	public OutputStream getData(int index) {
 		return ((IResource<InputStream, OutputStream>) resources.get(index)).getData();
 	}
 

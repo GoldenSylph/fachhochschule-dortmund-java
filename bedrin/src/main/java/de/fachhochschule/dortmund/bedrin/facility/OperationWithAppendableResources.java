@@ -12,7 +12,7 @@ public class OperationWithAppendableResources extends IOperation {
 		super(newId, newDescription);
 	}
 	
-	public void appendNewResourceAndSetData(IResource<InputStream, OutputStream> newResource, OutputStream newData) {
+	public void appendNewResourceAndSetData(IResource<InputStream, OutputStream> newResource, InputStream newData) {
 		this.resources.add(newResource);
 		this.resources.get(this.resources.size() - 1).setData(newData);
 	}

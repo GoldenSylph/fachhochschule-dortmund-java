@@ -13,20 +13,22 @@ public class AGV implements IResource<InputStream, OutputStream> {
 	private Time lastCharged;
 	private float maxSpeedPerMinute;
 	private float actSpeedPerMinute;
+	private OutputStream outputBuffer;
 	
 	private final double[] position = new double[2];
-	
+
 	public AGV(String newId) {
 		this.id = newId;
 	}
-	
+
 	@Override
-	public InputStream getData() {
-		return null;
+	public OutputStream getData() {
+		return outputBuffer;
 	}
 
 	@Override
-	public void setData(OutputStream newData) {
+	public void setData(InputStream newData) {
+		// just want to make a simple stack machine
 		
 	}
 
