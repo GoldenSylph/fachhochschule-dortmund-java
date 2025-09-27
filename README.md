@@ -20,7 +20,7 @@
   1) Clone the repo.
   2) Open a folder inside the root that called `bedrin` in Eclipse IDE.
   3) Run the `de.fachhochschule.dortmund.bedrin.AssignmentOne` class.
-* Assignment 1 - package with the sources `de.fachhochschule.dortmund.bedrin.facility`
+* Assignment 2 - package with the sources `de.fachhochschule.dortmund.bedrin.facility`
   1) Clone the repo.
   2) Open a folder inside the root that called `bedrin` in Eclipse IDE.
   3) Run the `de.fachhochschule.dortmund.bedrin.AssignmentTwo` class.
