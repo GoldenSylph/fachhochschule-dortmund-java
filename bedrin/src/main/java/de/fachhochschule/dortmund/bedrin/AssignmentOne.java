@@ -6,7 +6,7 @@ import de.fachhochschule.dortmund.bedrin.problems.Problem3;
 import de.fachhochschule.dortmund.bedrin.problems.Problem4;
 import de.fachhochschule.dortmund.bedrin.problems.interfaces.IProblem;
 
-public class Homeworks {
+public class AssignmentOne {
 	
 	public static void main(String[] args) {
 		IProblem firstExercise = new Problem1();
