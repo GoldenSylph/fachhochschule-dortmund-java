@@ -3,6 +3,7 @@ package de.fachhochschule.dortmund.bedrin.facility.abs;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.fachhochschule.dortmund.bedrin.facility.interfaces.IResource;
@@ -17,6 +18,7 @@ public abstract class IOperation {
 	public IOperation(String newId, String newDescription) {
 		this.id = newId;
 		this.description = newDescription;
+		this.resources = new ArrayList<IResource<InputStream, OutputStream>>();
 	}
 	
 	public void setData(int index, InputStream data) {
