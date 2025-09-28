@@ -133,6 +133,20 @@ public class AssignmentTwo {
 		String agv1Id = Integer.valueOf(requestInfoProgramOutputBuffer.get(0)).toString();
 		double agv1BatteryLoad = requestInfoProgramOutputBuffer.slice(1, 8).asDoubleBuffer().get();
 		System.out.println("AGV (ID: " + agv1Id + "): battery load - " + agv1BatteryLoad + "%");
+		
+		ip1.processResources(0, 1).setData(new ByteArrayInputStream(requestInfoProgramInput.array()));
+		
+		byte[] requestInfoProgramRawOutput2 = ((ByteArrayOutputStream) ip1.processResources(0, 1).getData())
+				.toByteArray();
+		ByteBuffer requestInfoProgramOutputBuffer2 = ByteBuffer.allocate(requestInfoProgramRawOutput2.length);
+		requestInfoProgramOutputBuffer2.put(requestInfoProgramRawOutput2);
+		requestInfoProgramOutputBuffer2 = requestInfoProgramOutputBuffer2.flip();
+
+		String agv2Id = Integer.valueOf(requestInfoProgramOutputBuffer2.get(0)).toString();
+		double agv2BatteryLoad = requestInfoProgramOutputBuffer2.slice(1, 8).asDoubleBuffer().get();
+		System.out.println("AGV (ID: " + agv2Id + "): battery load - " + agv2BatteryLoad + "%");
+		
+		// Every other field could be obtained through a similar matter. With it's own requesting byte code program.
 	}
 
 }
