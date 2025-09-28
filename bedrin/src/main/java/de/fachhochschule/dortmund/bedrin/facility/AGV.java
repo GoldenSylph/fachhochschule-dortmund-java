@@ -223,7 +223,7 @@ public class AGV implements IResource<InputStream, OutputStream> {
 			}
 		} while (memory.size() > 0);
 		
-		// just so you're wondering, it's not an AI) I could record a live-coding video if I must of course)
+		// just so you're wondering, it's still not an AI) I could record a live-coding video if I must of course)
 	}
 	
 	private static byte[] popNBytesFromMemory(Deque<Integer> memory, int bytesCount) {
