@@ -12,6 +12,10 @@ public class OperationWithAppendableResources extends IOperation {
 		super(newId, newDescription);
 	}
 	
+	public IResource<InputStream, OutputStream> getResource(int index) {
+		return resources.get(index);
+	}
+	
 	public void appendNewResourceAndSetData(IResource<InputStream, OutputStream> newResource, InputStream newData) {
 		this.resources.add(newResource);
 		this.resources.get(this.resources.size() - 1).setData(newData);

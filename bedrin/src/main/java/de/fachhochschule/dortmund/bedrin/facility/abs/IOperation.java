@@ -18,6 +18,7 @@ public abstract class IOperation {
 	public IOperation(String newId, String newDescription) {
 		this.id = newId;
 		this.description = newDescription;
+		this.nominalTime = new Time(new java.util.Date().getTime());
 		this.resources = new ArrayList<IResource<InputStream, OutputStream>>();
 	}
 	

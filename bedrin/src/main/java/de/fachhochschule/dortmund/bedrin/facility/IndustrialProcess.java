@@ -17,12 +17,12 @@ public class IndustrialProcess {
 		this.operations = newOperations;
 	}
 	
-	public double processDuration(int index) {
-		return 0.0;
+	public double processDuration(int operationIndex) {
+		return (new java.util.Date().getTime()) - this.operations.get(operationIndex).getNominalTime().getTime();
 	}
 	
-	public IResource<InputStream, OutputStream>[] processResources(int index) {
-		return null;
+	public IResource<InputStream, OutputStream> processResources(int operationIndex, int resourceIndex) {
+		return ((OperationWithAppendableResources) this.operations.get(operationIndex)).getResource(resourceIndex);
 	}
 
 	protected String getId() {
