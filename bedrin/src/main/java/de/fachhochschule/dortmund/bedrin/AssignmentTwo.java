@@ -32,12 +32,12 @@ public class AssignmentTwo {
 		agv4.executeProgram(AGVPrograms.getInitializeProgram4(false));
 		
 		TransportOperation op1 = new TransportOperation("op1", "First operation");
-		op1.addHardwareResource(agv1);
-		op1.addHardwareResource(agv2);
+		op1.addResource(agv1);
+		op1.addResource(agv2);
 
 		TransportOperation op2 = new TransportOperation("op2", "Second operation");
-		op2.addHardwareResource(agv3);
-		op2.addHardwareResource(agv4);
+		op2.addResource(agv3);
+		op2.addResource(agv4);
 
 		// let's do some groupings
 		IndustrialProcess ip1 = new IndustrialProcess("ip1", Arrays.asList(op1, op2));

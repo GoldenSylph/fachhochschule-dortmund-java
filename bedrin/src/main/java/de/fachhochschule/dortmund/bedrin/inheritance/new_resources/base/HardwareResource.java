@@ -1,7 +1,5 @@
 package de.fachhochschule.dortmund.bedrin.inheritance.new_resources.base;
 
-import de.fachhochschule.dortmund.bedrin.inheritance.Resource;
-
 public abstract class HardwareResource extends NonHumanResource {
 
 	private String hardwareType;
@@ -14,10 +12,4 @@ public abstract class HardwareResource extends NonHumanResource {
 	public String getHardwareType() {
 		return hardwareType;
 	}
-
-	@Override
-	public <T extends Resource> Resource interchange(T intoWhat) {
-		throw new UnsupportedOperationException("Cannot interchange hardware yet.");
-	}
-
 }

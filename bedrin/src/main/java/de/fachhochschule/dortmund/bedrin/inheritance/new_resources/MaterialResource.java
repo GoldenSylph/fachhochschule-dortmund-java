@@ -17,11 +17,6 @@ public class MaterialResource extends NonHumanResource {
 	}
 
 	@Override
-	public <T extends Resource> Resource interchange(T intoWhat) {
-		throw new UnsupportedOperationException("Cannot interchange materials yet.");
-	}
-
-	@Override
 	public Resource call() throws Exception {
 		throw new UnsupportedOperationException("Not implemented yet.");
 	}

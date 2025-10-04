@@ -1,29 +1,32 @@
 package de.fachhochschule.dortmund.bedrin.inheritance.new_resources;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import de.fachhochschule.dortmund.bedrin.facility.interfaces.ICPU;
 import de.fachhochschule.dortmund.bedrin.inheritance.Resource;
 import de.fachhochschule.dortmund.bedrin.inheritance.new_resources.base.NonHumanResource;
 
 public class SoftwareResource extends NonHumanResource {
 
-	private String licenseKey;
+	private ICPU<InputStream, OutputStream> hardwareResource;
+	private ByteArrayInputStream program;
 
-	public SoftwareResource(String licenseKey) {
+	public SoftwareResource(ICPU<InputStream, OutputStream> hardwareResource, ByteArrayInputStream program) {
 		super(1d, false);
-		this.licenseKey = licenseKey;
-	}
-
-	public String getLicenseKey() {
-		return licenseKey;
+		this.hardwareResource = hardwareResource;
+		this.program = program;
 	}
 
 	@Override
-	public <T extends Resource> Resource interchange(T intoWhat) {
-		throw new UnsupportedOperationException("A software license cannot be interchanged.");
+	public Resource call() {
+		this.hardwareResource.cacheProgram(this.program);
+		return this;
 	}
-
-	@Override
-	public Resource call() throws Exception {
-		throw new UnsupportedOperationException("Not implemented yet.");
+	
+	public ICPU<InputStream, OutputStream> getHardwareResource() {
+		return hardwareResource;
 	}
 
 }

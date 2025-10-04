@@ -50,6 +50,7 @@ public class AGV extends HardwareResource implements ICPU<InputStream, OutputStr
 			try {
 				this.outputBuffer.flush();
 				this.outputBuffer.close();
+				((ByteArrayOutputStream) this.outputBuffer).reset();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
