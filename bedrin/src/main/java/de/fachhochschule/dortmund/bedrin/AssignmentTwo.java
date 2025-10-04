@@ -35,7 +35,7 @@ public class AssignmentTwo {
 		op1.addHardwareResource(agv1);
 		op1.addHardwareResource(agv2);
 
-		TransportOperation op2 = new TransportOperation("op1", "First operation");
+		TransportOperation op2 = new TransportOperation("op2", "Second operation");
 		op2.addHardwareResource(agv3);
 		op2.addHardwareResource(agv4);
 
