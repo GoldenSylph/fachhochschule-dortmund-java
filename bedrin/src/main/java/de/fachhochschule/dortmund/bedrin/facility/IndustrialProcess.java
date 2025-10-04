@@ -1,31 +1,26 @@
 package de.fachhochschule.dortmund.bedrin.facility;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
-import de.fachhochschule.dortmund.bedrin.facility.abs.IOperation;
-import de.fachhochschule.dortmund.bedrin.facility.interfaces.IResource;
+import de.fachhochschule.dortmund.bedrin.inheritance.new_operations.TransportOperation;
 
-public class IndustrialProcess {
+// The de.fachhochschule.dortmund.bedrin.inheritance.Process is from the third Assignment.
+public class IndustrialProcess extends de.fachhochschule.dortmund.bedrin.inheritance.Process {
 	private String id;
-	
-	protected List<IOperation> operations;
 
-	public IndustrialProcess(String newId, List<IOperation> newOperations) {
+	protected List<TransportOperation> operations;
+
+	public IndustrialProcess(String newId, List<TransportOperation> newOperations) {
 		this.id = newId;
 		this.operations = newOperations;
 	}
-	
-	public double processDuration(int operationIndex) {
-		return (new java.util.Date().getTime()) - this.operations.get(operationIndex).getNominalTime().getTime();
-	}
-	
-	public IResource<InputStream, OutputStream> processResources(int operationIndex, int resourceIndex) {
-		return ((OperationWithAppendableResources) this.operations.get(operationIndex)).getResource(resourceIndex);
+
+	public String getId() {
+		return id;
 	}
 
-	protected String getId() {
-		return id;
+	@Override
+	public List<TransportOperation> getOperations() {
+		return operations;
 	}
 }

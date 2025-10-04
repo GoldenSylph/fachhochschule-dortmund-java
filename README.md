@@ -24,6 +24,11 @@
   1) Clone the repo.
   2) Open a folder inside the root that called `bedrin` in Eclipse IDE.
   3) Run the `de.fachhochschule.dortmund.bedrin.AssignmentTwo` class.
+* Assignment 3 - package with the sources `de.fachhochschule.dortmund.bedrin.inheritance`
+  1) Clone the repo.
+  2) Open a folder inside the root that called `bedrin` in Eclipse IDE.
+  3) Run the `de.fachhochschule.dortmund.bedrin.AssignmentThree` class.
+  4) The UML diagram can be found at the root under the name `bedrin_uml.png`.
 
 ### Saeid Rafiei
 1) Clone the repo
