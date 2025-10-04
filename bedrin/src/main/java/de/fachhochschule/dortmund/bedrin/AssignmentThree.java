@@ -55,7 +55,7 @@ public class AssignmentThree {
 					double agvBatteryLoad = requestInfoProgramOutputBuffer.slice(1, 8).asDoubleBuffer().get();
 					System.out.println("Resource (ID: " + agvId + "): battery load - " + agvBatteryLoad + "% has been waited for and processed.");
 				} else {
-					System.out.println("Resource processing failed or returned null.");
+					System.err.println("Resource processing failed or returned null.");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
