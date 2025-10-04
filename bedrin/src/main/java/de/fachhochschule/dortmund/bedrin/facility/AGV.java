@@ -73,6 +73,7 @@ public class AGV extends HardwareResource implements ICPU<InputStream, OutputStr
 	 * 0x01 - get resource ID
 	 * 0x97 - start printing output buffer
 	 * 0x98 - stop printing output buffer
+	 * 
 	 * --- Getters byte codes (even ones)
 	 * 0x02 - get battery load, no args
 	 * 0x04 - get battery consumption per minute, no args
