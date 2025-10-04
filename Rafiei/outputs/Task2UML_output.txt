@@ -1,0 +1,17 @@
+Process: P1
+Total Duration: 500
+AGV count: 2
+AGVs (full data):
+  AGV[ID=AGV1, Battery=80.0, Cons=5.0, ChargeTime=120, Pos=Station A, MaxSpeed=10.0, ActSpeed=8.5]
+  AGV[ID=AGV2, Battery=90.0, Cons=4.0, ChargeTime=100, Pos=Station B, MaxSpeed=12.0, ActSpeed=9.0]
+Total Energy Consumption : 38.333333333333336
+
+Process: P2
+Total Duration: 400
+AGV count: 3
+AGVs (full data):
+  AGV[ID=AGV1, Battery=80.0, Cons=5.0, ChargeTime=120, Pos=Station A, MaxSpeed=10.0, ActSpeed=8.5]
+  AGV[ID=AGV3, Battery=70.0, Cons=6.0, ChargeTime=90, Pos=Station C, MaxSpeed=11.0, ActSpeed=7.5]
+  AGV[ID=AGV2, Battery=90.0, Cons=4.0, ChargeTime=100, Pos=Station B, MaxSpeed=12.0, ActSpeed=9.0]
+Total Energy Consumption : 55.833333333333336
+

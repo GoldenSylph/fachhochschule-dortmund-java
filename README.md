@@ -34,8 +34,15 @@
 1) Clone the repo
 2) Import rafiei in Eclipse
 3) Run these classes from src/problemset/:
-	Problem1.java
-	Problem2.java
-	Problem3.java
-	Problem4.java
+
+**For Task1:**
+    `Problem1.java`
+    `Problem2.java`
+    `Problem3.java`
+    `Problem4.java`
+    
+**For Task1:**
+    `Task2UML.java`
+	
+	
 4) Outputs are saved in outputs/ folder
