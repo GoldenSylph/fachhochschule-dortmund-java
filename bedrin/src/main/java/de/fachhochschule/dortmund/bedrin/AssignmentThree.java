@@ -1,13 +1,18 @@
 package de.fachhochschule.dortmund.bedrin;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.Future;
 
 import de.fachhochschule.dortmund.bedrin.facility.AGV;
 import de.fachhochschule.dortmund.bedrin.facility.IndustrialProcess;
 import de.fachhochschule.dortmund.bedrin.facility.interfaces.ICPU;
 import de.fachhochschule.dortmund.bedrin.facility.utils.AGVPrograms;
+import de.fachhochschule.dortmund.bedrin.inheritance.Resource;
 import de.fachhochschule.dortmund.bedrin.inheritance.new_operations.TransportOperation;
 import de.fachhochschule.dortmund.bedrin.inheritance.new_resources.base.HardwareResource;
 
@@ -32,6 +37,29 @@ public class AssignmentThree {
 		op2.addHardwareResource((HardwareResource) agv4);
 		
 		IndustrialProcess process = new IndustrialProcess("proc1", Arrays.asList(op1, op2));
-		process.processResources();
+		List<Future<Resource>> futures = process.processResources();
+		for (Future<Resource> future : futures) {
+			try {
+				Resource resource = future.get();
+				if (resource != null) {
+					@SuppressWarnings("unchecked")
+					ICPU<InputStream, OutputStream> cpu = (ICPU<InputStream, OutputStream>) resource;
+					cpu.executeProgram(AGVPrograms.getRequestIdAndBatteryLoadProgram());
+					byte[] requestInfoProgramRawOutput = ((ByteArrayOutputStream) cpu.getOutput())
+							.toByteArray();
+					ByteBuffer requestInfoProgramOutputBuffer = ByteBuffer.allocate(requestInfoProgramRawOutput.length);
+					requestInfoProgramOutputBuffer.put(requestInfoProgramRawOutput);
+					requestInfoProgramOutputBuffer = requestInfoProgramOutputBuffer.flip();
+
+					String agvId = Integer.valueOf(requestInfoProgramOutputBuffer.get(0)).toString();
+					double agvBatteryLoad = requestInfoProgramOutputBuffer.slice(1, 8).asDoubleBuffer().get();
+					System.out.println("Resource (ID: " + agvId + "): battery load - " + agvBatteryLoad + "% has been waited for and processed.");
+				} else {
+					System.out.println("Resource processing failed or returned null.");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
