@@ -1,0 +1,6 @@
+The radius of a circle with area 100.0 square feet is
+ 5 feet 8 inches 
+
+The volume of the Earth is 2.2984729611703882E11 cubic miles,
+the volume of the Sun is 3.388807851993121E17 cubic miles,
+and the ratio of the volume of the Sun to the volume of the Earth is 1474373.5990122468.
