@@ -1,4 +1,4 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin;
+package de.fachhochschule.dortmund.bads.hm1.bedrin.resources;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

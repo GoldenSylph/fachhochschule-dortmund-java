@@ -1,8 +1,10 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin;
+package de.fachhochschule.dortmund.bads.hm1.bedrin.operations;
 
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Resource;
 
 public abstract class Operation {
 	protected Time creationTime;

@@ -1,4 +1,4 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin;
+package de.fachhochschule.dortmund.bads.hm1.bedrin.processes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
+import de.fachhochschule.dortmund.bads.hm1.bedrin.operations.Operation;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Resource;
 
 public abstract class Process {
 	public static final int TIMEOUT_SHUTDOWN = 5000; // milliseconds
