@@ -33,7 +33,6 @@ public class AGV extends Resource implements ICPU<InputStream, OutputStream> {
 	private final int[] position = new int[2];
 
 	public AGV(String newId) {
-		super(1d, "Automated Guided Vehicle");
 		this.id = newId;
 		this.outputBuffer = new ByteArrayOutputStream();
 	}
@@ -315,8 +314,6 @@ public class AGV extends Resource implements ICPU<InputStream, OutputStream> {
 					throw new RuntimeException("Syntax Eror: unknown byte code " + byteCode);
 			}
 		} while (memory.size() > 0);
-		
-		// just so you're wondering, it's still not an AI) I could record a live-coding video if I must of course)
 	}
 	
 	private static byte[] popNBytesFromMemory(Deque<Integer> memory, int bytesCount) {
@@ -364,5 +361,10 @@ public class AGV extends Resource implements ICPU<InputStream, OutputStream> {
 
 	protected int[] getPosition() {
 		return position;
+	}
+
+	@Override
+	public double getQuantity() {
+		return 1.0;
 	}
 }

@@ -4,29 +4,31 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import de.fachhochschule.dortmund.bedrin.facility.interfaces.ICPU;
-import de.fachhochschule.dortmund.bedrin.inheritance.Resource;
-import de.fachhochschule.dortmund.bedrin.inheritance.new_resources.base.NonHumanResource;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.interfaces.ICPU;
 
-public class SoftwareResource extends NonHumanResource {
+public class SoftwareResource extends Resource {
 
-	private ICPU<InputStream, OutputStream> hardwareResource;
+	private ICPU<InputStream, OutputStream> compatibleCPU;
 	private ByteArrayInputStream program;
 
 	public SoftwareResource(ICPU<InputStream, OutputStream> hardwareResource, ByteArrayInputStream program) {
-		super(1d, false);
-		this.hardwareResource = hardwareResource;
+		this.compatibleCPU = hardwareResource;
 		this.program = program;
 	}
 
 	@Override
 	public Resource call() {
-		this.hardwareResource.cacheProgram(this.program);
+		this.compatibleCPU.cacheProgram(this.program);
 		return this;
 	}
 	
-	public ICPU<InputStream, OutputStream> getHardwareResource() {
-		return hardwareResource;
+	public ICPU<InputStream, OutputStream> getCompatibleCPU() {
+		return compatibleCPU;
+	}
+
+	@Override
+	public double getQuantity() {
+		return 1.0;
 	}
 
 }
