@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="https://logging.apache.org/xml/ns"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Appenders>
+		<Console name="CONSOLE">
+			<PatternLayout pattern="%d [%t]%5p %c - %m%n"/>
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="de.fachhochschule.dortmund.bads.hm1" level="INFO"/>
+		<Root level="WARN">
+			<AppenderRef ref="CONSOLE" />
+		</Root>
+	</Loggers>
+</Configuration>

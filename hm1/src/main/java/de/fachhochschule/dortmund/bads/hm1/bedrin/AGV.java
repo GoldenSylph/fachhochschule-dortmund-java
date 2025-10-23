@@ -1,4 +1,4 @@
-package de.fachhochschule.dortmund.bedrin.facility;
+package de.fachhochschule.dortmund.bads.hm1.bedrin;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,11 +10,9 @@ import java.sql.Time;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import de.fachhochschule.dortmund.bedrin.facility.interfaces.ICPU;
-import de.fachhochschule.dortmund.bedrin.inheritance.Resource;
-import de.fachhochschule.dortmund.bedrin.inheritance.new_resources.base.HardwareResource;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.interfaces.ICPU;
 
-public class AGV extends HardwareResource implements ICPU<InputStream, OutputStream> {
+public class AGV extends Resource implements ICPU<InputStream, OutputStream> {
 	public static final RuntimeException SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED = new RuntimeException("Syntax Error: always start program with 0x00 byte code");
 	public static final RuntimeException SYNTAX_EXCEPTION_PROGRAM_ALREADY_RUNNING = new RuntimeException("Syntax Error: program already running, cannot start it again");
 	public static final RuntimeException SYNTAX_EXCEPTION_ALREADY_PRINTING_OUTPUT_BUFFER = new RuntimeException("Syntax Error: already printing output buffer, cannot start it again");
