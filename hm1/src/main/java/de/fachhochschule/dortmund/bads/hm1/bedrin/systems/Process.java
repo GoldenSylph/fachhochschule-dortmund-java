@@ -1,4 +1,4 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin.processes;
+package de.fachhochschule.dortmund.bads.hm1.bedrin.systems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,34 +7,37 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import de.fachhochschule.dortmund.bads.hm1.bedrin.operations.Operation;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Resource;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic.ClockingSimulation;
 
-public abstract class Process {
+public class Process {
 	public static final int TIMEOUT_SHUTDOWN = 5000; // milliseconds
 	
-	public abstract List<? extends Operation> getOperations();
-
+	protected List<Operation> operations;
+	
+	public Process() {
+		this.operations = new ArrayList<>();
+	}
+	
 	public double processDuration() {
 		// assuming that the duration of the process is equals to the age of the oldest operation
-		final long currentTime = new java.util.Date().getTime();
-		final long oldestOperationTime = getOperations().stream()
-				.map(e -> e.getCreationTime().getTime())
-				.min(Double::compare)
+		final int currentTime = ((ClockingSimulation) Systems.CLOCKING.getLogic()).getCurrentTime();
+		final int oldestOperationTime = this.operations.stream()
+				.map(e -> e.getCreationTime())
+				.min(Integer::compare)
 				.orElse(currentTime);
-		return (currentTime - oldestOperationTime) / 1000.0;
+		return currentTime - oldestOperationTime;
 	}
 	
 	public List<Future<Resource>> processResources() {
 		// load programs into operations resources concurrently
 		// start all of the agents (resources) concurrently in ExecutorService
 		// oversee the the end of the thread pool
-		List<? extends Operation> operations = getOperations();
-		int threadsCount = operations.stream().map(Operation::getResourcesCount).reduce(Integer::sum).orElseThrow();
+		int threadsCount = this.operations.stream().map(Operation::getResourcesCount).reduce(Integer::sum).orElseThrow();
 		ExecutorService executor = Executors.newFixedThreadPool(threadsCount);
 		List<Future<Resource>> futures = null;
 		try {
-			futures = executor.invokeAll(operations.stream().map(e -> {
+			futures = executor.invokeAll(this.operations.stream().map(e -> {
 				List<Resource> res = new ArrayList<>();
 				for (int i = 0; i < e.getResourcesCount(); i++) {
 					res.add(e.getResource(i));
@@ -54,5 +57,17 @@ public abstract class Process {
 			}
 		}
 		return futures;
+	}
+	
+	public void addOperation(Operation operation) {
+		this.operations.add(operation);
+	}
+	
+	public int getOperationsCount() {
+		return this.operations.size();
+	}
+	
+	public Operation getOperation(int index) {
+		return this.operations.get(index);
 	}
 }

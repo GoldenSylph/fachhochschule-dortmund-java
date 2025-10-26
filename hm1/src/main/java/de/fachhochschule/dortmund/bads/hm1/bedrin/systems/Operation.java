@@ -1,21 +1,21 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin.operations;
+package de.fachhochschule.dortmund.bads.hm1.bedrin.systems;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Resource;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic.ClockingSimulation;
 
-public abstract class Operation {
-	protected Time creationTime;
+public class Operation {
+	protected int creationTime;
 	protected List<Resource> resources;
 
 	public Operation() {
-		this.creationTime = new Time(new java.util.Date().getTime());
+		this.creationTime = ((ClockingSimulation) Systems.CLOCKING.getLogic()).getCurrentTime();
 		this.resources = new ArrayList<>();
 	}
 
-	public Time getCreationTime() {
+	public int getCreationTime() {
 		return creationTime;
 	}
 
@@ -25,5 +25,9 @@ public abstract class Operation {
 	
 	public int getResourcesCount() {
 		return this.resources.size();
+	}
+	
+	public void addResource(Resource resource) {
+		this.resources.add(resource);
 	}
 }

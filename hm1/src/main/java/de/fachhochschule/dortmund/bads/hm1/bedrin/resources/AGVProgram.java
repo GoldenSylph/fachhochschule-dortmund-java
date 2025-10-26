@@ -6,12 +6,12 @@ import java.io.OutputStream;
 
 import de.fachhochschule.dortmund.bads.hm1.bedrin.interfaces.ICPU;
 
-public class SoftwareResource extends Resource {
+public class AGVProgram extends Resource {
 
 	private ICPU<InputStream, OutputStream> compatibleCPU;
 	private ByteArrayInputStream program;
 
-	public SoftwareResource(ICPU<InputStream, OutputStream> hardwareResource, ByteArrayInputStream program) {
+	public AGVProgram(ICPU<InputStream, OutputStream> hardwareResource, ByteArrayInputStream program) {
 		this.compatibleCPU = hardwareResource;
 		this.program = program;
 	}

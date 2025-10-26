@@ -1,12 +1,12 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin;
+package de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ClockingSimulationSystem extends Thread {
-	private static final Logger LOGGER = LogManager.getLogger(ClockingSimulationSystem.class.getName());
+public class ClockingSimulation extends Thread {
+	private static final Logger LOGGER = LogManager.getLogger(ClockingSimulation.class.getName());
 	
 	private volatile boolean running = true;
 	private AtomicInteger currentTime = new AtomicInteger(0);
