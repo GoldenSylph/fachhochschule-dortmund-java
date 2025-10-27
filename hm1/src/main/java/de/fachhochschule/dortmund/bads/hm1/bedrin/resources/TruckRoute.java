@@ -4,7 +4,7 @@ import java.util.List;
 
 import de.fachhochschule.dortmund.bads.hm1.bedrin.Area.Point;
 
-public class RestaurantRoute extends Resource {
+public class TruckRoute extends Resource {
 	private Truck truck;
 	private List<Point> route;
 	private boolean isCompleted;

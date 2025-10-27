@@ -5,7 +5,7 @@ import de.fachhochschule.dortmund.bads.hm1.bedrin.Area.Point;
 public class Truck extends Resource {
 	private Point currentLocation;
 	private int ticksPerPointInRoute;
-	private RestaurantRoute currentRoute;
+	private TruckRoute currentRoute;
 	
 	@Override
 	public Resource call() throws Exception {
