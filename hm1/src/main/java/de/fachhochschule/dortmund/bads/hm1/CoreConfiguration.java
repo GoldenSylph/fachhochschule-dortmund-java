@@ -5,12 +5,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.fachhochschule.dortmund.bads.hm1.bedrin.ChargingStation;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.Storage;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.StorageCell;
-import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Beverage;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.BeveragesBox;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Resource;
-import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Restaurant;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Truck;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.Operation;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.Process;
@@ -28,10 +26,10 @@ public enum CoreConfiguration implements IConfiguration {
 	private boolean isAutowired;
 	
 	@Override
-	public void autowire() {
+	public IConfiguration autowire() {
 		if (isAutowired) {
 			LOGGER.warn("CoreConfiguration is already autowired!");
-			return;
+			return this;
 		}
 		SystemBuilder.INSTANCE
 			.system(Systems.CLOCKING).logic(new ClockingSimulation()).buildAndStart()
@@ -40,6 +38,11 @@ public enum CoreConfiguration implements IConfiguration {
 			.system(Systems.OBSERVATION).logic(new Observation()).buildAndStart();
 		isAutowired = true;
 		LOGGER.info("CoreConfiguration autowired successfully.");
+		return this;
+	}
+	
+	public boolean getAutowiredStatus() {
+		return isAutowired;
 	}
 
 	public Operation newOperation(List<Resource> resources) {
@@ -50,15 +53,15 @@ public enum CoreConfiguration implements IConfiguration {
 		return op;
 	}
 	
-	public Process newProcess() {
-		return null;
+	public Process newProcess(List<Operation> operations) {
+		Process proc = new Process();
+		for (Operation op : operations) {
+			proc.addOperation(op);
+		}
+		return proc;
 	}
 
-	public StorageCell newStorageCell() {
-		return null;
-	}
-
-	public ChargingStation newChargingStation() {
+	public StorageCell newStorageCell(Storage storage) {
 		return null;
 	}
 
@@ -70,11 +73,7 @@ public enum CoreConfiguration implements IConfiguration {
 		return null;
 	}
 	
-	public Beverage newBeverage() {
-		return null;
-	}
-	
-	public Restaurant newRestaurant() {
+	public BeveragesBox newBeverage() {
 		return null;
 	}
 }

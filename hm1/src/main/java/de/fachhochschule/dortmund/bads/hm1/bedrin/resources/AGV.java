@@ -5,366 +5,317 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.sql.Time;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import de.fachhochschule.dortmund.bads.hm1.bedrin.Area.Point;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.interfaces.ICPU;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic.Tickable;
 
-public class AGV extends Resource implements ICPU<InputStream, OutputStream> {
-	public static final RuntimeException SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED = new RuntimeException("Syntax Error: always start program with 0x00 byte code");
-	public static final RuntimeException SYNTAX_EXCEPTION_PROGRAM_ALREADY_RUNNING = new RuntimeException("Syntax Error: program already running, cannot start it again");
-	public static final RuntimeException SYNTAX_EXCEPTION_ALREADY_PRINTING_OUTPUT_BUFFER = new RuntimeException("Syntax Error: already printing output buffer, cannot start it again");
-	public static final RuntimeException SYNTAX_EXCEPTION_NOT_PRINTING_OUTPUT_BUFFER = new RuntimeException("Syntax Error: not printing output buffer, cannot stop it");
-	
-	private String id;
-	private double batteryLoad;
-	private double batteryConsumptionPerMinute;
-	private Time lastCharged;
-	private float maxSpeedPerMinute;
-	private float actSpeedPerMinute;
-	
-	private boolean printingOutputBuffer;
-	private boolean programRunning;
-	private OutputStream outputBuffer;
-	private InputStream cachedProgram;
-	
-	private final int[] position = new int[2];
+public class AGV extends Resource implements ICPU<InputStream, OutputStream>, Tickable {
+    private static final Logger LOGGER = LogManager.getLogger();
+    
+    public static final RuntimeException SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED = new RuntimeException(
+            "Syntax Error: always start program with 0x00 byte code");
 
-	public AGV(String newId) {
-		this.id = newId;
-		this.outputBuffer = new ByteArrayOutputStream();
-	}
+    private double batteryLoad, batteryConsumptionPerTick;
+    private final int[] position = new int[2];
 
-	@Override
-	public OutputStream getOutput() {
-		ByteArrayOutputStream distinctOutput = new ByteArrayOutputStream();
-		try {
-			distinctOutput.write(((ByteArrayOutputStream) this.outputBuffer).toByteArray());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				this.outputBuffer.flush();
-				this.outputBuffer.close();
-				((ByteArrayOutputStream) this.outputBuffer).reset();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return distinctOutput;
-	}
+    // constant costs (in ticks) for take/release, configured via constructor
+    private final int takeCostTicks;
+    private final int releaseCostTicks;
 
-	/*
-	 * Just a simple Stack Machine:
-	 * 
-	 * --- Memory markup:
-	 * double - 8 bytes
-	 * float - 4 bytes
-	 * String (ID) - 1 byte (0 - 255)
-	 * Time - 8 bytes (UNIX timestamp)
-	 * int[2] (position) - 4 bytes * 2 axis
-	 * 
-	 * --- Special byte codes
-	 * 0x00 - Start program or skip tick
-	 * 0xFF - End program
-	 * 0x01 - get resource ID
-	 * 0x97 - start printing output buffer
-	 * 0x98 - stop printing output buffer
-	 * 
-	 * --- Getters byte codes (even ones)
-	 * 0x02 - get battery load, no args
-	 * 0x04 - get battery consumption per minute, no args
-	 * 0x06 - get time last charged, no args
-	 * 0x08 - get max speed per minute, no args
-	 * 0x10 - get act speed per minute, no args
-	 * 0x12 - get position pair, no args
-	 * 
-	 * --- Setters byte codes (odd ones)
-	 * 0x03 - set battery load, arguments: 8 bytes
-	 * 0x05 - set battery consumption per minute, arguments: 8 bytes
-	 * 0x07 - set time last charged, arguments: 8 bytes
-	 * 0x09 - set max speed per minute, arguments: 4 bytes
-	 * 0x11 - set act speed per minute, arguments: 4 bytes
-	 * 0x13 - set position pair, arguments: 4 + 4 bytes
-	 * 
-	 */
-	
-	@Override
-	public void executeProgram(InputStream newData) {
-		// just wanted to make a simple stack machine
-		Deque<Integer> memory = new ArrayDeque<>();
+    private boolean programRunning;
+    private OutputStream outputBuffer;
+    private InputStream cachedProgram;
 
-		// initialize memory of the stack machine
-		try (newData) {
-			int nextByte = newData.read();
-			while (nextByte != -1) {
-				memory.addLast(nextByte);
-				nextByte = newData.read();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		// the main cycle of the Stack Machine
-		main:
-		do {
-			int byteCode = memory.pollFirst();
-			switch (byteCode) {
-				case 0x00:
-					if (this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_ALREADY_RUNNING;
-					}
-					this.programRunning = true;
-					continue main;
-				case 0xFF:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					this.programRunning = false;
-					break main;
-				case 0x01:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					try {
-						this.outputBuffer.write(Byte.parseByte(id));
-					} catch (NumberFormatException | IOException e) {
-						e.printStackTrace();
-					}
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): ID requested, sent " + id);
-					break;
-				case 0x97:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					if (this.printingOutputBuffer) {
-						throw SYNTAX_EXCEPTION_ALREADY_PRINTING_OUTPUT_BUFFER;
-					}
-					this.printingOutputBuffer = true;
-					System.out.println("AGV (ID: " + id + "): started printing output buffer");
-					continue main;
-				case 0x98:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					if (!this.printingOutputBuffer) {
-						throw SYNTAX_EXCEPTION_NOT_PRINTING_OUTPUT_BUFFER;
-					}
-					this.printingOutputBuffer = false;
-					System.out.println("AGV (ID: " + id + "): stopped printing output buffer");
-					continue main;
-				case 0x02:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					try {
-						ByteBuffer bufferedViewBatteryLoad = ByteBuffer.allocate(Double.BYTES);
-						bufferedViewBatteryLoad.putDouble(getBatteryLoad());
-						this.outputBuffer.write(bufferedViewBatteryLoad.array());
-					} catch (NumberFormatException | IOException e) {
-						e.printStackTrace();
-					}
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): battery load requested, sent " + getBatteryLoad() + "%");
-					break;
-				case 0x04:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					try {
-						ByteBuffer bufferedViewBatteryConsumptionPerMinute = ByteBuffer.allocate(Double.BYTES);
-						bufferedViewBatteryConsumptionPerMinute.putDouble(getBatteryConsumptionPerMinute());
-						this.outputBuffer.write(bufferedViewBatteryConsumptionPerMinute.array());
-					} catch (NumberFormatException | IOException e) {
-						e.printStackTrace();
-					}
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): battery consumption per minute requested, sent " + getBatteryConsumptionPerMinute() + "%");
-					break;
-				case 0x06:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					try {
-						ByteBuffer bufferedViewLastTimeCharged = ByteBuffer.allocate(Long.BYTES);
-						bufferedViewLastTimeCharged.putLong(getLastCharged().getTime());
-						this.outputBuffer.write(bufferedViewLastTimeCharged.array());
-					} catch (NumberFormatException | IOException e) {
-						e.printStackTrace();
-					}
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): time last charged requested, sent " + getLastCharged());
-					break;
-				case 0x08:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					try {
-						ByteBuffer bufferedViewMaxSpeedPerMinute = ByteBuffer.allocate(Double.BYTES);
-						bufferedViewMaxSpeedPerMinute.putDouble(getMaxSpeedPerMinute());
-						this.outputBuffer.write(bufferedViewMaxSpeedPerMinute.array());
-					} catch (NumberFormatException | IOException e) {
-						e.printStackTrace();
-					}
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): max speed per minute requested, sent " + getMaxSpeedPerMinute() + " m/min");
-					break;
-				case 0x10:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					try {
-						ByteBuffer bufferedViewActSpeedPerMinute = ByteBuffer.allocate(Double.BYTES);
-						bufferedViewActSpeedPerMinute.putDouble(getActSpeedPerMinute());
-						this.outputBuffer.write(bufferedViewActSpeedPerMinute.array());
-					} catch (NumberFormatException | IOException e) {
-						e.printStackTrace();
-					}
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): actual speed per minute requested, sent " + getActSpeedPerMinute() + " m/min");
-					break;
-				case 0x12:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					try {
-						ByteBuffer bufferedViewPosition = ByteBuffer.allocate(2);
-						bufferedViewPosition.asIntBuffer().put(getPosition());
-						this.outputBuffer.write(bufferedViewPosition.array());
-					} catch (NumberFormatException | IOException e) {
-						e.printStackTrace();
-					}
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): position requested, sent [" + getPosition()[0] + ", " + getPosition()[1] + "]");
-					break;
-				case 0x03:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					byte[] newBatteryLoadValue = popNBytesFromMemory(memory, Double.BYTES);
-					ByteBuffer bufferedViewNewBatteryLoadValue = ByteBuffer.allocate(Double.BYTES);
-					this.batteryLoad = bufferedViewNewBatteryLoadValue
-							.put(newBatteryLoadValue)
-							.flip()
-							.asDoubleBuffer()
-							.get();
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): battery load set to " + this.batteryLoad + "%");
-					break;
-				case 0x05:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					byte[] newBatteryConsumptionPerMinute = popNBytesFromMemory(memory, Double.BYTES);
-					ByteBuffer bufferedViewNewBatteryConsumptionPerMinute = ByteBuffer.allocate(Double.BYTES);
-					this.batteryConsumptionPerMinute = bufferedViewNewBatteryConsumptionPerMinute
-							.put(newBatteryConsumptionPerMinute)
-							.flip()
-							.asDoubleBuffer()
-							.get();
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): battery consumption per minute set to " + this.batteryConsumptionPerMinute + "%");
-					break;
-				case 0x07:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					byte[] newTimeLastCharged = popNBytesFromMemory(memory, Long.BYTES);
-					ByteBuffer bufferedViewNewTimeLastCharged = ByteBuffer.allocate(Long.BYTES);
-					this.lastCharged = new Time(bufferedViewNewTimeLastCharged
-							.put(newTimeLastCharged)
-							.flip()
-							.asLongBuffer()
-							.get()
-						);
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): time last charged set to " + this.lastCharged);
-					break;
-				case 0x09:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					byte[] newMaxSpeedPerMinute = popNBytesFromMemory(memory, Float.BYTES);
-					ByteBuffer bufferedViewNewMaxSpeedPerMinute = ByteBuffer.allocate(Float.BYTES);
-					this.maxSpeedPerMinute = bufferedViewNewMaxSpeedPerMinute
-							.put(newMaxSpeedPerMinute)
-							.flip()
-							.asFloatBuffer()
-							.get();
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): max speed per minute set to " + this.maxSpeedPerMinute + " m/min");
-					break;
-				case 0x11:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					byte[] newActSpeedPerMinute = popNBytesFromMemory(memory, Float.BYTES);
-					ByteBuffer bufferedViewNewActSpeedPerMinute = ByteBuffer.allocate(Float.BYTES);
-					this.actSpeedPerMinute = bufferedViewNewActSpeedPerMinute
-							.put(newActSpeedPerMinute)
-							.flip()
-							.asFloatBuffer()
-							.get();
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): actual speed per minute set to " + this.actSpeedPerMinute + " m/min");
-					break;
-				case 0x13:
-					if (!this.programRunning) {
-						throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-					}
-					byte[] newPosition = popNBytesFromMemory(memory, Integer.BYTES * 2);
-					ByteBuffer bufferedViewNewPosition = ByteBuffer.allocate(Integer.BYTES * 2);
-					IntBuffer intBufferedViewNewPosition = bufferedViewNewPosition.put(newPosition).flip().asIntBuffer();
-					this.position[0] = intBufferedViewNewPosition.get();
-					this.position[1] = intBufferedViewNewPosition.get();
-					if (this.printingOutputBuffer) System.out.println("AGV (ID: " + id + "): position set to [" + this.position[0] + ", " + this.position[1] + "]");
-					break;
-				default:
-					throw new RuntimeException("Syntax Eror: unknown byte code " + byteCode);
-			}
-		} while (memory.size() > 0);
-	}
-	
-	private static byte[] popNBytesFromMemory(Deque<Integer> memory, int bytesCount) {
-		byte[] result = new byte[bytesCount];
-		for (int i = 0; i < bytesCount; i++) {
-			result[i] = memory.pollFirst().byteValue();
-		}
-		return result;
-	}
+    // movement/operation state
+    private final Deque<Point> waypointQueue = new ArrayDeque<>();
+    private int movementPerTick = 1; // how many waypoints to advance per tick
 
-	@Override
-	public Resource call() {
-		executeProgram(this.cachedProgram);
-		return this;
-	}
+    // pending operations that complete after N ticks. key format: "take:<id>" |
+    // "release:<id>"
+    private final Map<String, Integer> pendingOperations = new HashMap<>();
+    private final Set<String> heldResources = new HashSet<>();
 
-	@Override
-	public void cacheProgram(InputStream program) {
-		this.cachedProgram = program;		
-	}
-	
-	protected String getId() {
-		return id;
-	}
+    public AGV() {
+        this(3, 3);
+    }
 
-	protected double getBatteryLoad() {
-		return batteryLoad;
-	}
+    public AGV(int takeCostTicks, int releaseCostTicks) {
+        this.takeCostTicks = Math.max(0, takeCostTicks);
+        this.releaseCostTicks = Math.max(0, releaseCostTicks);
+        this.outputBuffer = new ByteArrayOutputStream();
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("AGV created with takeCostTicks={} and releaseCostTicks={}", this.takeCostTicks, this.releaseCostTicks);
+        }
+    }
 
-	protected double getBatteryConsumptionPerMinute() {
-		return batteryConsumptionPerMinute;
-	}
+    // optional external configuration
+    public void setMovementPerTick(int movementPerTick) {
+        int old = this.movementPerTick;
+        this.movementPerTick = Math.max(1, movementPerTick);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("movementPerTick updated from {} to {}", old, this.movementPerTick);
+        }
+    }
 
-	protected Time getLastCharged() {
-		return lastCharged;
-	}
+    public void setBatteryConsumptionPerTick(double value) {
+        double old = this.batteryConsumptionPerTick;
+        this.batteryConsumptionPerTick = Math.max(0.0, value);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("batteryConsumptionPerTick updated from {} to {}", old, this.batteryConsumptionPerTick);
+        }
+    }
 
-	protected float getMaxSpeedPerMinute() {
-		return maxSpeedPerMinute;
-	}
+    // helper APIs to avoid crafting bytecode
+    public void enqueueWaypoint(int x, int y) {
+        this.waypointQueue.addLast(new Point(x, y));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Waypoint enqueued: ({}, {}), queue size now {}", x, y, this.waypointQueue.size());
+        }
+    }
 
-	protected float getActSpeedPerMinute() {
-		return actSpeedPerMinute;
-	}
+    public void scheduleTake(int resourceId) {
+        this.pendingOperations.put("take:" + resourceId, Integer.valueOf(this.takeCostTicks));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Scheduled take for resource {} with cost {} ticks", resourceId, this.takeCostTicks);
+        }
+    }
 
-	protected int[] getPosition() {
-		return position;
-	}
+    public void scheduleRelease(int resourceId) {
+        this.pendingOperations.put("release:" + resourceId, Integer.valueOf(this.releaseCostTicks));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Scheduled release for resource {} with cost {} ticks", resourceId, this.releaseCostTicks);
+        }
+    }
 
-	@Override
-	public double getQuantity() {
-		return 1.0;
-	}
+    @Override
+    public OutputStream getOutput() {
+        ByteArrayOutputStream snapshot = new ByteArrayOutputStream();
+        try {
+            snapshot.write(((ByteArrayOutputStream) this.outputBuffer).toByteArray());
+            int size = snapshot.size();
+            ((ByteArrayOutputStream) this.outputBuffer).reset();
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Output buffer drained: {} bytes returned", size);
+            }
+        } catch (IOException ioException) {
+            LOGGER.error("Failed to read AGV output buffer", ioException);
+            throw new RuntimeException(ioException);
+        }
+        return snapshot;
+    }
+
+    // compact reader over program bytes
+    private static final class ProgramReader {
+        private final byte[] data;
+        private int positionPointer;
+
+        ProgramReader(byte[] inputData) {
+            this.data = inputData;
+            this.positionPointer = 0;
+        }
+
+        boolean hasNext() {
+            return this.positionPointer < this.data.length;
+        }
+
+        int readUnsignedByte() {
+            return this.data[this.positionPointer++] & 0xFF;
+        }
+
+        byte[] readBytes(int length) {
+            byte[] result = Arrays.copyOfRange(this.data, this.positionPointer, this.positionPointer + length);
+            this.positionPointer += length;
+            return result;
+        }
+
+        int readInt() {
+            return ByteBuffer.wrap(readBytes(Integer.BYTES)).getInt();
+        }
+    }
+
+    @Override
+    public void executeProgram(InputStream programStream) {
+        byte[] programBytes;
+        try (programStream) {
+            ByteArrayOutputStream outputCollector = new ByteArrayOutputStream();
+            byte[] temporaryBuffer = new byte[1024];
+            int bytesReadCount;
+            while ((bytesReadCount = programStream.read(temporaryBuffer)) != -1) {
+                outputCollector.write(temporaryBuffer, 0, bytesReadCount);
+            }
+            programBytes = outputCollector.toByteArray();
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Executing program stream ({} bytes)", programBytes.length);
+            }
+        } catch (IOException ioException) {
+            LOGGER.error("Failed to read program stream", ioException);
+            throw new RuntimeException(ioException);
+        }
+
+        ProgramReader reader = new ProgramReader(programBytes);
+
+        // Opcodes supported:
+        // 0x00 - start program (no tick advancement)
+        // 0xFF - end program
+        // 0x14 - enqueue waypoint: args int x (4 bytes), int y (4 bytes)
+        // 0x20 - take resource: args 1 byte resource id (ticks are constant)
+        // 0x21 - release resource: args 1 byte resource id (ticks are constant)
+
+        do {
+            if (!reader.hasNext())
+                break;
+            int opcode = reader.readUnsignedByte();
+            switch (opcode) {
+            case 0x00:
+                if (!this.programRunning) {
+                    this.programRunning = true;
+                    if (LOGGER.isInfoEnabled()) {
+                        LOGGER.info("Program started");
+                    }
+                } else if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Program start opcode received while already running");
+                }
+                break;
+            case 0xFF:
+                if (!this.programRunning)
+                    throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
+                this.programRunning = false;
+                if (LOGGER.isInfoEnabled()) {
+                    LOGGER.info("Program ended");
+                }
+                break;
+            case 0x14:
+                ensureRunning();
+                int waypointX = reader.readInt();
+                int waypointY = reader.readInt();
+                this.waypointQueue.addLast(new Point(waypointX, waypointY));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Opcode 0x14: waypoint enqueued ({}, {})", waypointX, waypointY);
+                }
+                break;
+            case 0x20:
+                ensureRunning();
+                int resourceIdByteTake = reader.readUnsignedByte();
+                this.pendingOperations.put("take:" + resourceIdByteTake, Integer.valueOf(this.takeCostTicks));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Opcode 0x20: scheduled take for resource {} ({} ticks)", resourceIdByteTake, this.takeCostTicks);
+                }
+                break;
+            case 0x21:
+                ensureRunning();
+                int resourceIdByteRelease = reader.readUnsignedByte();
+                this.pendingOperations.put("release:" + resourceIdByteRelease, Integer.valueOf(this.releaseCostTicks));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Opcode 0x21: scheduled release for resource {} ({} ticks)", resourceIdByteRelease, this.releaseCostTicks);
+                }
+                break;
+            default:
+                LOGGER.error("Syntax Error: unknown byte code {}", opcode);
+                throw new RuntimeException("Syntax Error: unknown byte code " + opcode);
+            }
+        } while (reader.hasNext());
+    }
+
+    // perform a single tick: drain battery, advance waypoints, progress operations
+    private void performTick() {
+        double before = this.batteryLoad;
+        this.batteryLoad = Math.max(0.0, this.batteryLoad - this.batteryConsumptionPerTick);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Tick: battery {} -> {} (consumptionPerTick={})", before, this.batteryLoad, this.batteryConsumptionPerTick);
+        }
+        int moved = 0;
+        int fromX = this.position[0];
+        int fromY = this.position[1];
+        for (int step = 0; step < this.movementPerTick && !this.waypointQueue.isEmpty(); step++) {
+            Point next = this.waypointQueue.pollFirst();
+            this.position[0] = next.x();
+            this.position[1] = next.y();
+            moved++;
+        }
+        if (moved > 0 && LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Tick: moved {} step(s) from ({}, {}) to ({}, {}), remaining waypoints {}", moved, fromX, fromY, this.position[0], this.position[1], this.waypointQueue.size());
+        }
+        List<String> completedKeys = new LinkedList<>();
+        for (Map.Entry<String, Integer> entry : this.pendingOperations.entrySet()) {
+            int remaining = entry.getValue().intValue() - 1;
+            if (remaining <= 0) {
+                completedKeys.add(entry.getKey());
+            } else {
+                entry.setValue(Integer.valueOf(remaining));
+            }
+        }
+        for (String key : completedKeys) {
+            this.pendingOperations.remove(key);
+            if (key.startsWith("take:")) {
+                String resourceId = key.substring(5);
+                this.heldResources.add(resourceId);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Tick: take completed for resource {}", resourceId);
+                }
+            } else if (key.startsWith("release:")) {
+                String resourceId = key.substring(8);
+                this.heldResources.remove(resourceId);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Tick: release completed for resource {}", resourceId);
+                }
+            }
+        }
+        if (!completedKeys.isEmpty() && LOGGER.isTraceEnabled()) {
+            LOGGER.trace("Tick: operations completed {}", completedKeys);
+        }
+    }
+
+    private void ensureRunning() {
+        if (!this.programRunning) {
+            LOGGER.error("Program opcode encountered before start (0x00)");
+            throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
+        }
+    }
+
+    @Override
+    public Resource call() {
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info("AGV call(): executing cached program");
+        }
+        executeProgram(this.cachedProgram);
+        return this;
+    }
+
+    @Override
+    public void cacheProgram(InputStream program) {
+        this.cachedProgram = program;
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Program cached: {}", program != null ? "non-null" : "null");
+        }
+    }
+
+    @Override
+    public void onTick() {
+        if (this.programRunning) {
+            if (LOGGER.isTraceEnabled()) {
+                LOGGER.trace("onTick(): programRunning=true");
+            }
+            performTick();
+        } else if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace("onTick(): programRunning=false, nothing to do");
+        }
+    }
+
+    @Override
+    public double getQuantity() {
+        return 1.0;
+    }
 }

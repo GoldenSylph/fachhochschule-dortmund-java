@@ -4,7 +4,7 @@ public enum GUIConfiguration implements IConfiguration {
 	INSTANCE;
 	
 	@Override
-	public void autowire() {
-		
+	public IConfiguration autowire() {
+		return this;
 	}
 }

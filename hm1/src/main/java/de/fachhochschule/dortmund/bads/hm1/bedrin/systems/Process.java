@@ -29,8 +29,7 @@ public class Process {
 		return currentTime - oldestOperationTime;
 	}
 	
-	public List<Future<Resource>> processResources() {
-		// load programs into operations resources concurrently
+	public List<Future<Resource>> processOperations() {
 		// start all of the agents (resources) concurrently in ExecutorService
 		// oversee the the end of the thread pool
 		int threadsCount = this.operations.stream().map(Operation::getResourcesCount).reduce(Integer::sum).orElseThrow();

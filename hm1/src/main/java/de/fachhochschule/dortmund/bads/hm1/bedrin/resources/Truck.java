@@ -1,7 +1,12 @@
 package de.fachhochschule.dortmund.bads.hm1.bedrin.resources;
 
-public class Truck extends Resource {
+import de.fachhochschule.dortmund.bads.hm1.bedrin.Area.Point;
 
+public class Truck extends Resource {
+	private Point currentLocation;
+	private int ticksPerPointInRoute;
+	private RestaurantRoute currentRoute;
+	
 	@Override
 	public Resource call() throws Exception {
 		return this;

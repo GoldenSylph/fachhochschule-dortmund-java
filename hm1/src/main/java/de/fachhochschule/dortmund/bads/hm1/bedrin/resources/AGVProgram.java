@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.interfaces.ICPU;
 
 public class AGVProgram extends Resource {
-
 	private ICPU<InputStream, OutputStream> compatibleCPU;
 	private ByteArrayInputStream program;
 

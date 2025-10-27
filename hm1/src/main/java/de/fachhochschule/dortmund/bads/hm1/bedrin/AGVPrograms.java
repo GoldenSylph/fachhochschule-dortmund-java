@@ -6,203 +6,83 @@ import java.nio.ByteBuffer;
 public final class AGVPrograms {
 	public static final int START_AND_STOP_BYTECODES_SIZE = 2;
 
-	public static ByteArrayInputStream getInitializeProgram1(boolean debugMode) {
-		final int AGV_PROGRAM_SIZE_BYTES = START_AND_STOP_BYTECODES_SIZE + 8 + 2 * Double.BYTES + Long.BYTES
-				+ 2 * Float.BYTES + 2 * Integer.BYTES;
-		final ByteBuffer bufferedInputForAgv = ByteBuffer.allocate(AGV_PROGRAM_SIZE_BYTES);
-
-		// start of the program for AGV
-		bufferedInputForAgv.put((byte) 0x00);
-
-		if (debugMode) {
-			// starting printing output buffer on the fly
-			bufferedInputForAgv.put((byte) 0x97);
-		}
-
-		// firstly - battery load initialization
-		bufferedInputForAgv.put((byte) 0x03);
-		bufferedInputForAgv.putDouble(100d);
-
-		// secondly - battery consumption initialization
-		bufferedInputForAgv.put((byte) 0x05);
-		bufferedInputForAgv.putDouble(5d);
-
-		// thirdly - charging time initialization
-		bufferedInputForAgv.put((byte) 0x07);
-		bufferedInputForAgv.putLong(new java.util.Date().getTime());
-
-		// fourthly - max speed initialization
-		bufferedInputForAgv.put((byte) 0x09);
-		bufferedInputForAgv.putFloat(10f);
-
-		// fifthly - act speed initialization
-		bufferedInputForAgv.put((byte) 0x11);
-		bufferedInputForAgv.putFloat(1f);
-
-		// sixthly - position initialization
-		bufferedInputForAgv.put((byte) 0x13);
-		bufferedInputForAgv.putInt(8);
-		bufferedInputForAgv.putInt(255);
-
-		if (debugMode) {
-			// stopping printing output buffer on the fly
-			bufferedInputForAgv.put((byte) 0x98);
-		}
-
-		// end of the program for AGV
-		bufferedInputForAgv.put((byte) 0xFF);
-		return new ByteArrayInputStream(bufferedInputForAgv.array());
+	/**
+	 * Start, enqueue 3 waypoints (0,0)->(1,0)->(1,1), take id=1, release id=1, end.
+	 */
+	public static ByteArrayInputStream startMove3Take1Release1() {
+		int waypoints = 3;
+		int size = START_AND_STOP_BYTECODES_SIZE + waypoints * (1 + 2 * Integer.BYTES) + 2 /* take */ + 2 /* release */;
+		ByteBuffer buf = ByteBuffer.allocate(size);
+		buf.put((byte) 0x00); // start
+		// waypoints: (0,0)->(1,0)->(1,1)
+		buf.put((byte) 0x14).putInt(0).putInt(0);
+		buf.put((byte) 0x14).putInt(1).putInt(0);
+		buf.put((byte) 0x14).putInt(1).putInt(1);
+		// take id=1, release id=1
+		buf.put((byte) 0x20).put((byte) 0x01);
+		buf.put((byte) 0x21).put((byte) 0x01);
+		buf.put((byte) 0xFF); // end
+		return new ByteArrayInputStream(buf.array());
 	}
 
-	public static ByteArrayInputStream getInitializeProgram2(boolean debugMode) {
-		final int AGV_PROGRAM_SIZE_BYTES = START_AND_STOP_BYTECODES_SIZE + 8 + 2 * Double.BYTES + Long.BYTES
-				+ 2 * Float.BYTES + 2 * Integer.BYTES;
-		final ByteBuffer bufferedInputForAgv = ByteBuffer.allocate(AGV_PROGRAM_SIZE_BYTES);
-
-		// start of the program for AGV
-		bufferedInputForAgv.put((byte) 0x00);
-
-		if (debugMode) {
-			// starting printing output buffer on the fly
-			bufferedInputForAgv.put((byte) 0x97);
-		}
-		// firstly - battery load initialization
-		bufferedInputForAgv.put((byte) 0x03);
-		bufferedInputForAgv.putDouble(70d);
-
-		// secondly - battery consumption initialization
-		bufferedInputForAgv.put((byte) 0x05);
-		bufferedInputForAgv.putDouble(10d);
-
-		// thirdly - charging time initialization
-		bufferedInputForAgv.put((byte) 0x07);
-		bufferedInputForAgv.putLong(new java.util.Date().getTime());
-
-		// fourthly - max speed initialization
-		bufferedInputForAgv.put((byte) 0x09);
-		bufferedInputForAgv.putFloat(20f);
-
-		// fifthly - act speed initialization
-		bufferedInputForAgv.put((byte) 0x11);
-		bufferedInputForAgv.putFloat(10f);
-
-		// sixthly - position initialization
-		bufferedInputForAgv.put((byte) 0x13);
-		bufferedInputForAgv.putInt(230);
-		bufferedInputForAgv.putInt(3);
-
-		if (debugMode) {
-			// stopping printing output buffer on the fly
-			bufferedInputForAgv.put((byte) 0x98);
-		}
-
-		// end of the program for AGV
-		bufferedInputForAgv.put((byte) 0xFF);
-		return new ByteArrayInputStream(bufferedInputForAgv.array());
+	/**
+	 * Start, enqueue 2 waypoints (10,5)->(12,7), take id=2, end.
+	 */
+	public static ByteArrayInputStream startMove2Take2() {
+		int waypoints = 2;
+		int size = START_AND_STOP_BYTECODES_SIZE + waypoints * (1 + 2 * Integer.BYTES) + 2 /* take */;
+		ByteBuffer buf = ByteBuffer.allocate(size);
+		buf.put((byte) 0x00);
+		// waypoints: (10,5)->(12,7)
+		buf.put((byte) 0x14).putInt(10).putInt(5);
+		buf.put((byte) 0x14).putInt(12).putInt(7);
+		buf.put((byte) 0x20).put((byte) 0x02); // take id=2
+		buf.put((byte) 0xFF);
+		return new ByteArrayInputStream(buf.array());
 	}
 
-	public static ByteArrayInputStream getInitializeProgram3(boolean debugMode) {
-		final int AGV_PROGRAM_SIZE_BYTES = START_AND_STOP_BYTECODES_SIZE + 8 + 2 * Double.BYTES + Long.BYTES
-				+ 2 * Float.BYTES + 2 * Integer.BYTES;
-		final ByteBuffer bufferedInputForAgv = ByteBuffer.allocate(AGV_PROGRAM_SIZE_BYTES);
-
-		// start of the program for AGV
-		bufferedInputForAgv.put((byte) 0x00);
-
-		if (debugMode) {
-			// starting printing output buffer on the fly
-			bufferedInputForAgv.put((byte) 0x97);
-		}
-
-		// firstly - battery load initialization
-		bufferedInputForAgv.put((byte) 0x03);
-		bufferedInputForAgv.putDouble(10d);
-
-		// secondly - battery consumption initialization
-		bufferedInputForAgv.put((byte) 0x05);
-		bufferedInputForAgv.putDouble(1.2d);
-
-		// thirdly - charging time initialization
-		bufferedInputForAgv.put((byte) 0x07);
-		bufferedInputForAgv.putLong(new java.util.Date().getTime());
-
-		// fourthly - max speed initialization
-		bufferedInputForAgv.put((byte) 0x09);
-		bufferedInputForAgv.putFloat(60f);
-
-		// fifthly - act speed initialization
-		bufferedInputForAgv.put((byte) 0x11);
-		bufferedInputForAgv.putFloat(2f);
-
-		// sixthly - position initialization
-		bufferedInputForAgv.put((byte) 0x13);
-		bufferedInputForAgv.putInt(1);
-		bufferedInputForAgv.putInt(1);
-
-		if (debugMode) {
-			// stopping printing output buffer on the fly
-			bufferedInputForAgv.put((byte) 0x98);
-		}
-
-		// end of the program for AGV
-		bufferedInputForAgv.put((byte) 0xFF);
-		return new ByteArrayInputStream(bufferedInputForAgv.array());
+	/**
+	 * Start, enqueue 4 waypoints (1,1)->(2,1)->(2,2)->(3,2), release id=3, end.
+	 */
+	public static ByteArrayInputStream startMove4Release3() {
+		int waypoints = 4;
+		int size = START_AND_STOP_BYTECODES_SIZE + waypoints * (1 + 2 * Integer.BYTES) + 2 /* release */;
+		ByteBuffer buf = ByteBuffer.allocate(size);
+		buf.put((byte) 0x00);
+		// waypoints: (1,1)->(2,1)->(2,2)->(3,2)
+		buf.put((byte) 0x14).putInt(1).putInt(1);
+		buf.put((byte) 0x14).putInt(2).putInt(1);
+		buf.put((byte) 0x14).putInt(2).putInt(2);
+		buf.put((byte) 0x14).putInt(3).putInt(2);
+		buf.put((byte) 0x21).put((byte) 0x03); // release id=3
+		buf.put((byte) 0xFF);
+		return new ByteArrayInputStream(buf.array());
 	}
 
-	public static ByteArrayInputStream getInitializeProgram4(boolean debugMode) {
-		final int AGV_PROGRAM_SIZE_BYTES = START_AND_STOP_BYTECODES_SIZE + 8 + 2 * Double.BYTES + Long.BYTES
-				+ 2 * Float.BYTES + 2 * Integer.BYTES;
-		final ByteBuffer bufferedInputForAgv = ByteBuffer.allocate(AGV_PROGRAM_SIZE_BYTES);
-
-		// start of the program for AGV
-		bufferedInputForAgv.put((byte) 0x00);
-
-		if (debugMode) {
-			// starting printing output buffer on the fly
-			bufferedInputForAgv.put((byte) 0x97);
-		}
-
-		// firstly - battery load initialization
-		bufferedInputForAgv.put((byte) 0x03);
-		bufferedInputForAgv.putDouble(99d);
-
-		// secondly - battery consumption initialization
-		bufferedInputForAgv.put((byte) 0x05);
-		bufferedInputForAgv.putDouble(33d);
-
-		// thirdly - charging time initialization
-		bufferedInputForAgv.put((byte) 0x07);
-		bufferedInputForAgv.putLong(new java.util.Date().getTime());
-
-		// fourthly - max speed initialization
-		bufferedInputForAgv.put((byte) 0x09);
-		bufferedInputForAgv.putFloat(40f);
-
-		// fifthly - act speed initialization
-		bufferedInputForAgv.put((byte) 0x11);
-		bufferedInputForAgv.putFloat(3f);
-
-		// sixthly - position initialization
-		bufferedInputForAgv.put((byte) 0x13);
-		bufferedInputForAgv.putInt(-100);
-		bufferedInputForAgv.putInt(100);
-
-		if (debugMode) {
-			// stopping printing output buffer on the fly
-			bufferedInputForAgv.put((byte) 0x98);
-		}
-		// end of the program for AGV
-		bufferedInputForAgv.put((byte) 0xFF);
-		return new ByteArrayInputStream(bufferedInputForAgv.array());
+	/**
+	 * Start, enqueue 2 waypoints (-5,100)->(0,0), take id=4, release id=4, end.
+	 */
+	public static ByteArrayInputStream startMove2EdgeTake4Release4() {
+		int waypoints = 2;
+		int size = START_AND_STOP_BYTECODES_SIZE + waypoints * (1 + 2 * Integer.BYTES) + 2 /* take */ + 2 /* release */;
+		ByteBuffer buf = ByteBuffer.allocate(size);
+		buf.put((byte) 0x00);
+		// waypoints: (-5,100)->(0,0)
+		buf.put((byte) 0x14).putInt(-5).putInt(100);
+		buf.put((byte) 0x14).putInt(0).putInt(0);
+		buf.put((byte) 0x20).put((byte) 0x04); // take id=4
+		buf.put((byte) 0x21).put((byte) 0x04); // release id=4
+		buf.put((byte) 0xFF);
+		return new ByteArrayInputStream(buf.array());
 	}
 
-	public static ByteArrayInputStream getRequestIdAndBatteryLoadProgram() {
-		final int REQUEST_ID_AND_BATTERY_LOAD_PROGRAM_SIZE_BYTES = START_AND_STOP_BYTECODES_SIZE + 2;
-		final ByteBuffer requestInfoProgramInput = ByteBuffer.allocate(REQUEST_ID_AND_BATTERY_LOAD_PROGRAM_SIZE_BYTES);
-		requestInfoProgramInput.put((byte) 0x00); // start program
-		requestInfoProgramInput.put((byte) 0x01); // request id byte code
-		requestInfoProgramInput.put((byte) 0x02); // request battery load byte code
-		requestInfoProgramInput.put((byte) 0xFF); // end program
-		return new ByteArrayInputStream(requestInfoProgramInput.array());
+	/**
+	 * Minimal start and stop.
+	 */
+	public static ByteArrayInputStream startAndStop() {
+		ByteBuffer buf = ByteBuffer.allocate(START_AND_STOP_BYTECODES_SIZE);
+		buf.put((byte) 0x00);
+		buf.put((byte) 0xFF);
+		return new ByteArrayInputStream(buf.array());
 	}
 }
