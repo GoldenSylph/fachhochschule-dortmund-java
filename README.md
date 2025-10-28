@@ -46,3 +46,11 @@
 	
 	
 4) Outputs are saved in outputs/ folder
+
+### Rowena Pagayanan
+
+* Home Assignment 1 - Assigned to log file management and metadata (create, delete and querying)
+* Package with the sources `de.fachhochschule.dortmund.bads.hm1.rowena;`
+  1) Clone the repo.
+  2) Open a folder inside the root that called `hm1` in Eclipse IDE.
+  3) Run the Module2.java inside `de.fachhochschule.dortmund.bads.hm1.rowena`.
