@@ -56,8 +56,8 @@
   3) Run the Module2.java inside `de.fachhochschule.dortmund.bads.hm1.rowena`.
 
 ### Bilyaminu Safiyanu Mohammed
-- Home Assignment 1:  Archivation functionality and Junit tests
-- Package with the sources de.fachhochschule.dortmund.bads.hm1.bilyaminu;
-i) Clone the repo.
-ii) Open a folder inside the root that called hm1 in Eclipse IDE.
-iii) Run the ArchiveManager.java and ArchiveManagerTest.java inside de.fachhochschule.dortmund.bads.hm1.bilyaminu.
+* Home Assignment 1:  Archivation functionality and Junit tests
+* Package with the sources `de.fachhochschule.dortmund.bads.hm1.bilyaminu;`
+1) Clone the repo.
+2) Open a folder inside the root that called `hm1` in Eclipse IDE.
+3) Run the ArchiveManager.java and ArchiveManagerTest.java inside `de.fachhochschule.dortmund.bads.hm1.bilyaminu`.
