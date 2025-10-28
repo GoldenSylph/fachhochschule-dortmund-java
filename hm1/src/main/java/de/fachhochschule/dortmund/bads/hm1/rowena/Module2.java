@@ -22,37 +22,7 @@ public enum Module2 {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private LogFileManager logFileManager;
 	private LogFileQuery logFileQuery;
-	private boolean initialized = false;
-
-	/**
-	 * Initializes the log file management system and integrates with Observation.
-	 * Called by CoreConfiguration during system startup.
-	 */
-	public void initializeLogSystem() {
-		if (initialized) {
-			LOGGER.warn("Log system already initialized");
-			return;
-		}
-
-		LOGGER.info("Initializing Log File Management System...");
-
-		// Create log file manager
-		logFileManager = new LogFileManager();
-		logFileQuery = new LogFileQuery(logFileManager);
-
-		// Integrate with Observation system
-		Observation observation = (Observation) Systems.OBSERVATION.getLogic();
-		if (observation != null) {
-			observation.setLogFileManager(logFileManager);
-			LOGGER.info("Integrated with Observation system");
-		} else {
-			LOGGER.warn("Observation system not available yet");
-		}
-
-		initialized = true;
-		LOGGER.info("Log File Management System initialized successfully");
-	}
-
+	
 	/**
 	 * Demonstrates creating log files for different equipment types.
 	 */
