@@ -50,7 +50,6 @@
 ### Rowena Pagayanan
 
 * Home Assignment 1 - Assigned to log file management and metadata (create, delete and querying)
-* Screencast link: https://1drv.ms/v/c/1744bc1d187f7891/EQXEVZQ9LK5Eucw0K-dmlQIBgONyGbVOflkIOSFHuLsIKw?e=qWoJ8C
 * Package with the sources `de.fachhochschule.dortmund.bads.hm1.rowena;`
   1) Clone the repo.
   2) Open a folder inside the root that called `hm1` in Eclipse IDE.
