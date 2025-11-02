@@ -8,13 +8,10 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.Systems;
-import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic.Observation;
-
 /**
- * Module2 - Log File Management System
- * Demonstrates file I/O operations: create, delete, and query log files.
- * Uses character streams (BufferedWriter/FileWriter) and regular expressions.
+ * Module2 - Log File Management System Demonstrates file I/O operations:
+ * create, delete, and query log files. Uses character streams
+ * (BufferedWriter/FileWriter) and regular expressions.
  */
 public enum Module2 {
 	INSTANCE;
@@ -22,7 +19,7 @@ public enum Module2 {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private LogFileManager logFileManager;
 	private LogFileQuery logFileQuery;
-	
+
 	/**
 	 * Demonstrates creating log files for different equipment types.
 	 */
@@ -102,12 +99,10 @@ public enum Module2 {
 	}
 
 	/**
-	 * Displays all log files and prompts user for interactive deletion.
-	 * Uses Scanner for character stream input.
+	 * Displays all log files and prompts user for interactive deletion. Uses
+	 * Scanner for character stream input.
 	 */
 	public void displayLogsAndPromptDelete() {
-		Scanner scanner = new Scanner(System.in);
-
 		List<LogFileMetadata> allLogs = logFileManager.getAllMetadata();
 
 		if (allLogs.isEmpty()) {
@@ -119,50 +114,48 @@ public enum Module2 {
 		LOGGER.info("\n=== Created Log Files ===");
 		for (int i = 0; i < allLogs.size(); i++) {
 			LogFileMetadata meta = allLogs.get(i);
-			LOGGER.info("[{}] {} (Type: {}, ID: {}, Date: {})",
-				i + 1,
-				meta.getFilePath(),
-				meta.getEquipmentType(),
-				meta.getEquipmentId(),
-				meta.getDate());
+			LOGGER.info("[{}] {} (Type: {}, ID: {}, Date: {})", i + 1, meta.getFilePath(), meta.getEquipmentType(),
+					meta.getEquipmentId(), meta.getDate());
 		}
 
-		// Prompt user
-		System.out.print("\nDelete logs? Enter numbers (e.g., 1,3) or 'n' to skip: ");
-		String input = scanner.nextLine().trim();
+		try (Scanner scanner = new Scanner(System.in)) {
+			// Prompt user
+			System.out.print("\nDelete logs? Enter numbers (e.g., 1,3) or 'n' to skip: ");
+			String input = scanner.nextLine().trim();
 
-		if (input.equalsIgnoreCase("n")) {
-			LOGGER.info("Skipped deletion.");
-			return;
-		}
-
-		// Parse and delete
-		String[] numbers = input.split(",");
-		int deletedCount = 0;
-
-		for (String num : numbers) {
-			try {
-				int index = Integer.parseInt(num.trim()) - 1;
-				if (index >= 0 && index < allLogs.size()) {
-					LogFileMetadata toDelete = allLogs.get(index);
-					String fileName = Paths.get(toDelete.getFilePath()).getFileName().toString();
-					boolean deleted = logFileManager.deleteLogFile(toDelete.getFilePath());
-					if (deleted) {
-						LOGGER.info("✓ Deleted: {}", fileName);
-						deletedCount++;
-					} else {
-						LOGGER.warn("✗ Failed to delete: {}", fileName);
-					}
-				} else {
-					LOGGER.warn("Invalid number: {} (out of range)", num.trim());
-				}
-			} catch (NumberFormatException e) {
-				LOGGER.warn("Invalid input: {}", num.trim());
+			if (input.equalsIgnoreCase("n")) {
+				LOGGER.info("Skipped deletion.");
+				return;
 			}
-		}
 
-		LOGGER.info("\nDeleted {} of {} selected log files.", deletedCount, numbers.length);
-		LOGGER.info("Remaining logs: {}", logFileManager.getAllMetadata().size());
+			// Parse and delete
+			String[] numbers = input.split(",");
+			int deletedCount = 0;
+
+			for (String num : numbers) {
+				try {
+					int index = Integer.parseInt(num.trim()) - 1;
+					if (index >= 0 && index < allLogs.size()) {
+						LogFileMetadata toDelete = allLogs.get(index);
+						String fileName = Paths.get(toDelete.getFilePath()).getFileName().toString();
+						boolean deleted = logFileManager.deleteLogFile(toDelete.getFilePath());
+						if (deleted) {
+							LOGGER.info("✓ Deleted: {}", fileName);
+							deletedCount++;
+						} else {
+							LOGGER.warn("✗ Failed to delete: {}", fileName);
+						}
+					} else {
+						LOGGER.warn("Invalid number: {} (out of range)", num.trim());
+					}
+				} catch (NumberFormatException e) {
+					LOGGER.warn("Invalid input: {}", num.trim());
+				}
+			}
+
+			LOGGER.info("\nDeleted {} of {} selected log files.", deletedCount, numbers.length);
+			LOGGER.info("Remaining logs: {}", logFileManager.getAllMetadata().size());
+		}
 	}
 
 	/**
@@ -195,19 +188,15 @@ public enum Module2 {
 		if (!results.isEmpty() && results.size() <= 3) {
 			// Show details only if 3 or fewer results
 			for (LogFileMetadata metadata : results) {
-				LOGGER.info("  - {} [{}, {}]",
-					metadata.getFilePath(),
-					metadata.getEquipmentType(),
-					metadata.getEquipmentId());
+				LOGGER.info("  - {} [{}, {}]", metadata.getFilePath(), metadata.getEquipmentType(),
+						metadata.getEquipmentId());
 			}
 		} else if (results.size() > 3) {
 			LOGGER.info("  (showing first 3 of {}):", results.size());
 			for (int i = 0; i < 3; i++) {
 				LogFileMetadata metadata = results.get(i);
-				LOGGER.info("  - {} [{}, {}]",
-					metadata.getFilePath(),
-					metadata.getEquipmentType(),
-					metadata.getEquipmentId());
+				LOGGER.info("  - {} [{}, {}]", metadata.getFilePath(), metadata.getEquipmentType(),
+						metadata.getEquipmentId());
 			}
 		}
 	}
@@ -235,7 +224,6 @@ public enum Module2 {
 		// Initialize (without CoreConfiguration)
 		module2.logFileManager = new LogFileManager();
 		module2.logFileQuery = new LogFileQuery(module2.logFileManager);
-		module2.initialized = true;
 
 		try {
 			// Create logs

@@ -3,49 +3,63 @@ package de.fachhochschule.dortmund.bads.hm1.bedrin;
 import java.util.*;
 
 public class Area {
-	// graph stored as adjacency list: node key -> set of neighbour node keys
-	private Map<Long, Set<Long>> graph;
-	// set of nodes that are marked as restaurants (packed keys)
-	private Set<Long> restaurants;
+	// graph stored as adjacency list: node Point -> set of neighbour Points
+	private Map<Point, Set<Point>> graph;
+	// set of nodes that are marked as points of interest
 	private int startX = 0, startY = 0;
 
 	public record Point(int x, int y) {
 	}
 
-	// BFS on the graph: returns shortest path as list of Points from start ->
-	// target
-	public List<Point> findPath(int sx, int sy, int targetX, int targetY) {
+	// Dijkstra on the graph: returns shortest path as list of Points from start -> target
+	// edge weight = Euclidean distance between points
+	public List<Point> findPath(int startXParam, int startYParam, int targetX, int targetY) {
 		if (graph == null)
 			return List.of();
-		long s = key(sx, sy), t = key(targetX, targetY);
-		if (!graph.containsKey(s) || !graph.containsKey(t))
+		Point startPoint = new Point(startXParam, startYParam);
+		Point targetPoint = new Point(targetX, targetY);
+		if (!graph.containsKey(startPoint) || !graph.containsKey(targetPoint))
 			return List.of();
 
-		Deque<Long> q = new ArrayDeque<>();
-		Map<Long, Long> parent = new HashMap<>();
-		q.add(s);
-		parent.put(s, null);
+		// distances and previous node map
+		Map<Point, Double> dist = new HashMap<>();
+		Map<Point, Point> previous = new HashMap<>();
+		for (Point node : graph.keySet()) {
+			dist.put(node, Double.POSITIVE_INFINITY);
+		}
+		dist.put(startPoint, 0.0);
 
-		while (!q.isEmpty()) {
-			Long cur = q.poll();
-			if (cur == null)
+		PriorityQueue<Point> queue = new PriorityQueue<>(Comparator.comparingDouble(dist::get));
+		queue.add(startPoint);
+
+		while (!queue.isEmpty()) {
+			Point current = queue.poll();
+			if (current == null)
 				break;
-			if (cur.longValue() == t)
+			if (current.equals(targetPoint))
 				break;
-			for (Long nb : graph.getOrDefault(cur, Collections.emptySet())) {
-				if (parent.containsKey(nb))
-					continue;
-				parent.put(nb, cur);
-				q.add(nb);
+			double currentDist = dist.getOrDefault(current, Double.POSITIVE_INFINITY);
+			for (Point neighbor : graph.getOrDefault(current, Collections.emptySet())) {
+				double weight = euclideanDistance(current, neighbor);
+				double newDist = currentDist + weight;
+				if (newDist < dist.getOrDefault(neighbor, Double.POSITIVE_INFINITY)) {
+					dist.put(neighbor, newDist);
+					previous.put(neighbor, current);
+					// reinsert neighbor to update its priority
+					queue.remove(neighbor);
+					queue.add(neighbor);
+				}
 			}
 		}
 
-		if (!parent.containsKey(t))
+		if (!previous.containsKey(targetPoint) && !startPoint.equals(targetPoint))
 			return List.of();
 
 		LinkedList<Point> path = new LinkedList<>();
-		for (Long cur = t; cur != null; cur = parent.get(cur)) {
-			path.addFirst(new Point(xFromKey(cur), yFromKey(cur)));
+		for (Point at = targetPoint; at != null; at = previous.get(at)) {
+			path.addFirst(at);
+			if (at.equals(startPoint))
+				break;
 		}
 		return path;
 	}
@@ -53,63 +67,40 @@ public class Area {
 	public List<Point> findPath(int targetX, int targetY) {
 		return findPath(this.startX, this.startY, targetX, targetY);
 	}
-
-	public static long key(int x, int y) {
-		return ((long) x << 32) | (y & 0xffffffffL);
+	
+	public List<Point> findPath(Point targetPoint) {
+		return findPath(this.startX, this.startY, targetPoint.x(), targetPoint.y());
+	}
+	
+	public List<Point> findPath(Point startPoint, Point targetPoint) {
+		return findPath(startPoint.x(), startPoint.y(), targetPoint.x(), targetPoint.y());
 	}
 
-	public static int xFromKey(long k) {
-		return (int) (k >> 32);
+	private static double euclideanDistance(Point a, Point b) {
+		double dx = (double) a.x() - b.x();
+		double dy = (double) a.y() - b.y();
+		return Math.hypot(dx, dy);
 	}
 
-	public static int yFromKey(long k) {
-		return (int) k;
-	}
-
-	public boolean isRestaurant(int x, int y) {
-		return restaurants != null && restaurants.contains(Long.valueOf(key(x, y)));
-	}
-
-	public void addRestaurant(int x, int y) {
-		if (restaurants == null)
-			restaurants = new HashSet<>();
-		restaurants.add(Long.valueOf(key(x, y)));
-	}
-
-	public void removeRestaurant(int x, int y) {
-		if (restaurants != null)
-			restaurants.remove(Long.valueOf(key(x, y)));
-	}
-
-	// replace restaurant set with a defensive copy of the provided packed-key set.
-	public void setRestaurants(Set<Long> restaurantsSet) {
-		this.restaurants = restaurantsSet == null ? null : new HashSet<>(restaurantsSet);
-	}
-
-	public Set<Point> getRestaurants() {
-		if (restaurants == null)
-			return Collections.emptySet();
-		Set<Point> out = new HashSet<>();
-		for (Long k : restaurants)
-			out.add(new Point(xFromKey(k), yFromKey(k)));
-		return out;
-	}
-
-	public void setGraph(Map<Long, Set<Long>> adjacency) {
+	public void setGraph(Map<Point, Set<Point>> adjacency) {
 		if (adjacency == null) {
 			this.graph = null;
 			return;
 		}
-		Map<Long, Set<Long>> copy = new HashMap<>();
-		for (Map.Entry<Long, Set<Long>> e : adjacency.entrySet()) {
-			copy.put(e.getKey(), e.getValue() == null ? Set.of() : new HashSet<>(e.getValue()));
+		Map<Point, Set<Point>> copy = new HashMap<>();
+		for (Map.Entry<Point, Set<Point>> entry : adjacency.entrySet()) {
+			copy.put(entry.getKey(), entry.getValue() == null ? Set.of() : new HashSet<>(entry.getValue()));
 		}
 		this.graph = copy;
 	}
 
-	public void setStart(int x, int y) {
-		this.startX = x;
-		this.startY = y;
+	public Map<Point, Set<Point>> getAdjacencyMap() {
+		return Collections.unmodifiableMap(graph);
+	}
+	
+	public void setStart(int startXCoord, int startYCoord) {
+		this.startX = startXCoord;
+		this.startY = startYCoord;
 	}
 
 	public int getStartX() {

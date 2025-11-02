@@ -1,15 +1,23 @@
-package de.fachhochschule.dortmund.bilyaminu;
+package de.fachhochschule.dortmund.bads.hm1.bilyaminu;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * ArchiveManager - archives log files into a ZIP archive and demonstrates byte/char streams.

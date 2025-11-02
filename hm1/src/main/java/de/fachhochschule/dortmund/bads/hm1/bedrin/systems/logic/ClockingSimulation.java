@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 public class ClockingSimulation extends Thread {
 	private static final Logger LOGGER = LogManager.getLogger(ClockingSimulation.class.getName());
 
-	private final CopyOnWriteArrayList<Tickable> tickables = new CopyOnWriteArrayList<>();
+	private final CopyOnWriteArrayList<ITickable> tickables = new CopyOnWriteArrayList<>();
 	private volatile boolean running = true;
 	private AtomicInteger currentTime = new AtomicInteger(0);
 	private AtomicInteger delay = new AtomicInteger(1000);
@@ -20,9 +20,9 @@ public class ClockingSimulation extends Thread {
 			try {
 				currentTime.incrementAndGet();
 				LOGGER.info("Current Time: " + currentTime.get());
-				for (Tickable t : tickables) {
+				for (ITickable t : tickables) {
 					try {
-						t.onTick();
+						t.onTick(this.currentTime.get());
 					} catch (RuntimeException ex) {
 						LOGGER.warn("Tickable threw: ", ex);
 					}
@@ -51,12 +51,12 @@ public class ClockingSimulation extends Thread {
 		return this.running;
 	}
 
-	public void registerTickable(Tickable tickable) {
+	public void registerTickable(ITickable tickable) {
 		if (tickable != null)
 			this.tickables.addIfAbsent(tickable);
 	}
 
-	public void unregisterTickable(Tickable tickable) {
+	public void unregisterTickable(ITickable tickable) {
 		if (tickable != null)
 			this.tickables.remove(tickable);
 	}

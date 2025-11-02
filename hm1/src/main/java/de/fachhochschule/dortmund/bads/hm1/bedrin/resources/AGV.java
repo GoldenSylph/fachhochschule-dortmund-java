@@ -1,321 +1,278 @@
 package de.fachhochschule.dortmund.bads.hm1.bedrin.resources;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Queue;
+import java.util.Stack;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.fachhochschule.dortmund.bads.hm1.bedrin.Area.Point;
-import de.fachhochschule.dortmund.bads.hm1.bedrin.interfaces.ICPU;
-import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic.Tickable;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.Storage;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.StorageCell;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.StorageCell.Type;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic.ITickable;
 
-public class AGV extends Resource implements ICPU<InputStream, OutputStream>, Tickable {
-    private static final Logger LOGGER = LogManager.getLogger();
-    
-    public static final RuntimeException SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED = new RuntimeException(
-            "Syntax Error: always start program with 0x00 byte code");
+public class AGV extends Resource implements ITickable {
+	private static final Logger LOGGER = LogManager.getLogger();
 
-    private double batteryLoad, batteryConsumptionPerTick;
-    private final int[] position = new int[2];
+	public enum Operand {
+		PUSH, STOP, MOVE, TAKE, RELEASE, SETUP, CHARGE
+	}
 
-    // constant costs (in ticks) for take/release, configured via constructor
-    private final int takeCostTicks;
-    private final int releaseCostTicks;
+	public static class Statement<T> {
+		public final Operand operand;
+		public final T[] args;
 
-    private boolean programRunning;
-    private OutputStream outputBuffer;
-    private InputStream cachedProgram;
+		@SuppressWarnings("unchecked")
+		public Statement(Operand operand, T... args) {
+			this.operand = operand;
+			this.args = args;
+		}
+	}
 
-    // movement/operation state
-    private final Deque<Point> waypointQueue = new ArrayDeque<>();
-    private int movementPerTick = 1; // how many waypoints to advance per tick
+	private abstract class BeveragesBoxOperation {
+		protected String cellLabel;
+		protected BeveragesBox box;
+		protected StorageCell inventoryCell = AGV.this.inventoryCell;
+		protected Point currentPosition = AGV.this.currentPosition;
+		protected Storage storage = AGV.this.storage;
 
-    // pending operations that complete after N ticks. key format: "take:<id>" |
-    // "release:<id>"
-    private final Map<String, Integer> pendingOperations = new HashMap<>();
-    private final Set<String> heldResources = new HashSet<>();
+		public BeveragesBoxOperation(String cellLabel, BeveragesBox box) {
+			this.cellLabel = cellLabel;
+			this.box = box;
+		}
 
-    public AGV() {
-        this(3, 3);
-    }
+		public abstract void execute();
+	}
 
-    public AGV(int takeCostTicks, int releaseCostTicks) {
-        this.takeCostTicks = Math.max(0, takeCostTicks);
-        this.releaseCostTicks = Math.max(0, releaseCostTicks);
-        this.outputBuffer = new ByteArrayOutputStream();
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("AGV created with takeCostTicks={} and releaseCostTicks={}", this.takeCostTicks, this.releaseCostTicks);
-        }
-    }
+	private StorageCell inventoryCell = new StorageCell(Type.ANY, Integer.MAX_VALUE, Integer.MAX_VALUE,
+			Integer.MAX_VALUE);
 
-    // optional external configuration
-    public void setMovementPerTick(int movementPerTick) {
-        int old = this.movementPerTick;
-        this.movementPerTick = Math.max(1, movementPerTick);
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("movementPerTick updated from {} to {}", old, this.movementPerTick);
-        }
-    }
+	private int batteryLevel = 100;
+	private int chargePerTick = 50;
+	private int loseChargePerActionPerTick = 10;
+	private boolean charging;
 
-    public void setBatteryConsumptionPerTick(double value) {
-        double old = this.batteryConsumptionPerTick;
-        this.batteryConsumptionPerTick = Math.max(0.0, value);
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("batteryConsumptionPerTick updated from {} to {}", old, this.batteryConsumptionPerTick);
-        }
-    }
+	private int ticksPerMovement = 1; // Number of ticks required for each movement
+	private int movementTickCounter = 0; // Counter to track ticks for movement timing
 
-    // helper APIs to avoid crafting bytecode
-    public void enqueueWaypoint(int x, int y) {
-        this.waypointQueue.addLast(new Point(x, y));
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Waypoint enqueued: ({}, {}), queue size now {}", x, y, this.waypointQueue.size());
-        }
-    }
+	private Queue<Point> endPoints = new ArrayDeque<>();
+	private Queue<BeveragesBoxOperation> operationsForEndPoints = new ArrayDeque<>();
+	private Stack<Object> memory = new Stack<>();
 
-    public void scheduleTake(int resourceId) {
-        this.pendingOperations.put("take:" + resourceId, Integer.valueOf(this.takeCostTicks));
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Scheduled take for resource {} with cost {} ticks", resourceId, this.takeCostTicks);
-        }
-    }
+	private List<Point> optimalPath;
+	private Point currentPosition;
+	private Storage storage;
 
-    public void scheduleRelease(int resourceId) {
-        this.pendingOperations.put("release:" + resourceId, Integer.valueOf(this.releaseCostTicks));
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Scheduled release for resource {} with cost {} ticks", resourceId, this.releaseCostTicks);
-        }
-    }
+	private Statement<?>[] cachedProgram;
 
-    @Override
-    public OutputStream getOutput() {
-        ByteArrayOutputStream snapshot = new ByteArrayOutputStream();
-        try {
-            snapshot.write(((ByteArrayOutputStream) this.outputBuffer).toByteArray());
-            int size = snapshot.size();
-            ((ByteArrayOutputStream) this.outputBuffer).reset();
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Output buffer drained: {} bytes returned", size);
-            }
-        } catch (IOException ioException) {
-            LOGGER.error("Failed to read AGV output buffer", ioException);
-            throw new RuntimeException(ioException);
-        }
-        return snapshot;
-    }
+	/**
+	 * MOVE point -> label of point TAKE label of point -> resource instance inside
+	 * inventory cell RELEASE label of point -> inventory cell releases resource
+	 * instance
+	 */
 
-    // compact reader over program bytes
-    private static final class ProgramReader {
-        private final byte[] data;
-        private int positionPointer;
+	public void executeProgram(Statement<?>[] program) {
+		for (Statement<?> statement : program) {
+			switch (statement.operand) {
+			case STOP -> {
+				memory.clear();
+				endPoints.clear();
+				operationsForEndPoints.clear();
+				LOGGER.info("AGV stopping execution and clearing memory.");
+				return;
+			}
+			case SETUP -> {
+				storage = (Storage) statement.args[0];
+				currentPosition = (Point) statement.args[1];
+			}
+			case PUSH -> {
+				memory.push(statement.args[0]);
+				LOGGER.info("AGV pushed to memory: " + statement.args[0]);
+			}
+			case MOVE -> {
+				String pointLabel = (String) memory.pop();
+				Point destination = Storage.notationToPoint(pointLabel);
+				LOGGER.info("AGV set to moving to point: " + destination);
+				endPoints.add(destination);
+			}
+			case CHARGE -> {
+				String pointLabel = (String) memory.pop();
+				LOGGER.info("AGV will be charged at: " + pointLabel);
+				if (storage.getCellByNotation(pointLabel).TYPE == Type.CHARGING_STATION) {
+					operationsForEndPoints.add(new BeveragesBoxOperation(pointLabel, null) {
+						@Override
+						public void execute() {
+							LOGGER.info("AGV charging at station: " + this.cellLabel);
+							AGV.this.charging = true;
+						}
+					});
+				}
+			}
+			case RELEASE -> {
+				String cellLabel = (String) memory.pop();
+				BeveragesBox box = (BeveragesBox) memory.pop();
+				LOGGER.info("AGV releasing resource to cell: " + cellLabel);
+				this.operationsForEndPoints.add(new BeveragesBoxOperation(cellLabel, box) {
+					@Override
+					public void execute() {
+						LOGGER.info("AGV taking resource from cell: " + cellLabel);
+						if (cellLabel.equals(Storage.pointToNotation(currentPosition))) {
+							if (!storage.getCellByNotation(cellLabel).add(box)) {
+								throw new IllegalStateException(
+										"Failed to take resource: insufficient space in inventory cell.");
+							} else {
+								this.inventoryCell.remove(box);
+							}
+						} else {
+							throw new IllegalStateException("AGV not at the specified cell to take resource.");
+						}
+					}
+				});
+			}
+			case TAKE -> {
+				String cellLabel = (String) memory.pop();
+				BeveragesBox box = (BeveragesBox) memory.pop();
+				LOGGER.info("AGV taking resource from cell: " + cellLabel);
+				this.operationsForEndPoints.add(new BeveragesBoxOperation(cellLabel, box) {
+					@Override
+					public void execute() {
+						LOGGER.info("AGV taking resource from cell: " + this.cellLabel);
+						if (this.cellLabel.equals(Storage.pointToNotation(this.currentPosition))) {
+							if (!this.storage.getCellByNotation(this.cellLabel).remove(this.box)) {
+								throw new IllegalStateException(
+										"Failed to take resource: resource not found in storage cell.");
+							} else {
+								this.inventoryCell.add(this.box);
+							}
+						} else {
+							throw new IllegalStateException("AGV not at the specified cell to take resource.");
+						}
+					}
+				});
+			}
+			}
+		}
+	}
 
-        ProgramReader(byte[] inputData) {
-            this.data = inputData;
-            this.positionPointer = 0;
-        }
+	public void cacheProgram(Statement<?>[] program) {
+		this.cachedProgram = program;
+	}
 
-        boolean hasNext() {
-            return this.positionPointer < this.data.length;
-        }
+	/**
+	 * Sets the number of ticks required for each movement. Higher values make the
+	 * AGV move slower.
+	 * 
+	 * @param ticksPerMovement the number of ticks per movement (must be positive)
+	 */
+	public void setTicksPerMovement(int ticksPerMovement) {
+		if (ticksPerMovement <= 0) {
+			throw new IllegalArgumentException("Ticks per movement must be positive");
+		}
+		this.ticksPerMovement = ticksPerMovement;
+		LOGGER.info("AGV movement speed changed: {} ticks per movement", ticksPerMovement);
+	}
 
-        int readUnsignedByte() {
-            return this.data[this.positionPointer++] & 0xFF;
-        }
+	/**
+	 * Gets the current number of ticks required for each movement.
+	 * 
+	 * @return the number of ticks per movement
+	 */
+	public int getTicksPerMovement() {
+		return ticksPerMovement;
+	}
 
-        byte[] readBytes(int length) {
-            byte[] result = Arrays.copyOfRange(this.data, this.positionPointer, this.positionPointer + length);
-            this.positionPointer += length;
-            return result;
-        }
+	@Override
+	public Resource call() {
+		if (this.cachedProgram != null) {
+			executeProgram(this.cachedProgram);
+		}
+		return this;
+	}
 
-        int readInt() {
-            return ByteBuffer.wrap(readBytes(Integer.BYTES)).getInt();
-        }
-    }
+	@Override
+	public double getQuantity() {
+		return 1.0;
+	}
 
-    @Override
-    public void executeProgram(InputStream programStream) {
-        byte[] programBytes;
-        try (programStream) {
-            ByteArrayOutputStream outputCollector = new ByteArrayOutputStream();
-            byte[] temporaryBuffer = new byte[1024];
-            int bytesReadCount;
-            while ((bytesReadCount = programStream.read(temporaryBuffer)) != -1) {
-                outputCollector.write(temporaryBuffer, 0, bytesReadCount);
-            }
-            programBytes = outputCollector.toByteArray();
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("Executing program stream ({} bytes)", programBytes.length);
-            }
-        } catch (IOException ioException) {
-            LOGGER.error("Failed to read program stream", ioException);
-            throw new RuntimeException(ioException);
-        }
+	@Override
+	public void onTick(int currentTick) {
+		// Handle battery management
+		if (charging) {
+			batteryLevel = Math.min(100, batteryLevel + chargePerTick);
+			LOGGER.info("AGV charging: battery level now " + batteryLevel + "%");
 
-        ProgramReader reader = new ProgramReader(programBytes);
+			// Stop charging when fully charged
+			if (batteryLevel >= 100) {
+				charging = false;
+				LOGGER.info("AGV fully charged, stopping charge");
+			}
+			return; // Don't do anything else while charging
+		}
 
-        // Opcodes supported:
-        // 0x00 - start program (no tick advancement)
-        // 0xFF - end program
-        // 0x14 - enqueue waypoint: args int x (4 bytes), int y (4 bytes)
-        // 0x20 - take resource: args 1 byte resource id (ticks are constant)
-        // 0x21 - release resource: args 1 byte resource id (ticks are constant)
+		// Check if we have enough battery to continue
+		if (batteryLevel <= 0) {
+			LOGGER.warn("AGV battery depleted, cannot perform actions");
+			return;
+		}
 
-        do {
-            if (!reader.hasNext())
-                break;
-            int opcode = reader.readUnsignedByte();
-            switch (opcode) {
-            case 0x00:
-                if (!this.programRunning) {
-                    this.programRunning = true;
-                    if (LOGGER.isInfoEnabled()) {
-                        LOGGER.info("Program started");
-                    }
-                } else if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Program start opcode received while already running");
-                }
-                break;
-            case 0xFF:
-                if (!this.programRunning)
-                    throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-                this.programRunning = false;
-                if (LOGGER.isInfoEnabled()) {
-                    LOGGER.info("Program ended");
-                }
-                break;
-            case 0x14:
-                ensureRunning();
-                int waypointX = reader.readInt();
-                int waypointY = reader.readInt();
-                this.waypointQueue.addLast(new Point(waypointX, waypointY));
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Opcode 0x14: waypoint enqueued ({}, {})", waypointX, waypointY);
-                }
-                break;
-            case 0x20:
-                ensureRunning();
-                int resourceIdByteTake = reader.readUnsignedByte();
-                this.pendingOperations.put("take:" + resourceIdByteTake, Integer.valueOf(this.takeCostTicks));
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Opcode 0x20: scheduled take for resource {} ({} ticks)", resourceIdByteTake, this.takeCostTicks);
-                }
-                break;
-            case 0x21:
-                ensureRunning();
-                int resourceIdByteRelease = reader.readUnsignedByte();
-                this.pendingOperations.put("release:" + resourceIdByteRelease, Integer.valueOf(this.releaseCostTicks));
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Opcode 0x21: scheduled release for resource {} ({} ticks)", resourceIdByteRelease, this.releaseCostTicks);
-                }
-                break;
-            default:
-                LOGGER.error("Syntax Error: unknown byte code {}", opcode);
-                throw new RuntimeException("Syntax Error: unknown byte code " + opcode);
-            }
-        } while (reader.hasNext());
-    }
+		// If we have a path to follow, move along it
+		if (optimalPath != null && !optimalPath.isEmpty()) {
+			// Increment movement tick counter
+			movementTickCounter++;
 
-    // perform a single tick: drain battery, advance waypoints, progress operations
-    private void performTick() {
-        double before = this.batteryLoad;
-        this.batteryLoad = Math.max(0.0, this.batteryLoad - this.batteryConsumptionPerTick);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Tick: battery {} -> {} (consumptionPerTick={})", before, this.batteryLoad, this.batteryConsumptionPerTick);
-        }
-        int moved = 0;
-        int fromX = this.position[0];
-        int fromY = this.position[1];
-        for (int step = 0; step < this.movementPerTick && !this.waypointQueue.isEmpty(); step++) {
-            Point next = this.waypointQueue.pollFirst();
-            this.position[0] = next.x();
-            this.position[1] = next.y();
-            moved++;
-        }
-        if (moved > 0 && LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Tick: moved {} step(s) from ({}, {}) to ({}, {}), remaining waypoints {}", moved, fromX, fromY, this.position[0], this.position[1], this.waypointQueue.size());
-        }
-        List<String> completedKeys = new LinkedList<>();
-        for (Map.Entry<String, Integer> entry : this.pendingOperations.entrySet()) {
-            int remaining = entry.getValue().intValue() - 1;
-            if (remaining <= 0) {
-                completedKeys.add(entry.getKey());
-            } else {
-                entry.setValue(Integer.valueOf(remaining));
-            }
-        }
-        for (String key : completedKeys) {
-            this.pendingOperations.remove(key);
-            if (key.startsWith("take:")) {
-                String resourceId = key.substring(5);
-                this.heldResources.add(resourceId);
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Tick: take completed for resource {}", resourceId);
-                }
-            } else if (key.startsWith("release:")) {
-                String resourceId = key.substring(8);
-                this.heldResources.remove(resourceId);
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Tick: release completed for resource {}", resourceId);
-                }
-            }
-        }
-        if (!completedKeys.isEmpty() && LOGGER.isTraceEnabled()) {
-            LOGGER.trace("Tick: operations completed {}", completedKeys);
-        }
-    }
+			// Only move when we've reached the required number of ticks
+			if (movementTickCounter >= ticksPerMovement) {
+				// Reset counter and move to next point in path
+				movementTickCounter = 0;
+				currentPosition = optimalPath.remove(0);
+				batteryLevel = Math.max(0, batteryLevel - loseChargePerActionPerTick);
+				LOGGER.info("AGV moved to position: " + currentPosition + ", battery: " + batteryLevel + "%");
 
-    private void ensureRunning() {
-        if (!this.programRunning) {
-            LOGGER.error("Program opcode encountered before start (0x00)");
-            throw SYNTAX_EXCEPTION_PROGRAM_HAS_NOT_BEEN_STARTED;
-        }
-    }
+				// If we've reached the end of the current path
+				if (optimalPath.isEmpty()) {
+					optimalPath = null;
 
-    @Override
-    public Resource call() {
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("AGV call(): executing cached program");
-        }
-        executeProgram(this.cachedProgram);
-        return this;
-    }
+					// Execute any pending operation at this destination
+					if (!operationsForEndPoints.isEmpty()) {
+						BeveragesBoxOperation operation = operationsForEndPoints.poll();
+						try {
+							operation.execute();
+							batteryLevel = Math.max(0, batteryLevel - loseChargePerActionPerTick);
+							LOGGER.info("AGV executed operation at position: " + currentPosition + ", battery: "
+									+ batteryLevel + "%");
+						} catch (Exception e) {
+							LOGGER.error("Failed to execute operation: " + e.getMessage(), e);
+						}
+					}
+				}
+			}
+		} else if (!endPoints.isEmpty() && storage != null) {
+			// If we don't have a current path but have destinations to visit
+			
+			Point destination = endPoints.poll();
 
-    @Override
-    public void cacheProgram(InputStream program) {
-        this.cachedProgram = program;
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Program cached: {}", program != null ? "non-null" : "null");
-        }
-    }
+			// Calculate optimal path to destination
+			optimalPath = storage.AREA.findPath(currentPosition, destination);
 
-    @Override
-    public void onTick() {
-        if (this.programRunning) {
-            if (LOGGER.isTraceEnabled()) {
-                LOGGER.trace("onTick(): programRunning=true");
-            }
-            performTick();
-        } else if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace("onTick(): programRunning=false, nothing to do");
-        }
-    }
-
-    @Override
-    public double getQuantity() {
-        return 1.0;
-    }
+			if (optimalPath != null && !optimalPath.isEmpty()) {
+				// Remove the first point if it's our current position
+				if (!optimalPath.isEmpty() && optimalPath.get(0).equals(currentPosition)) {
+					optimalPath.remove(0);
+				}
+				// Reset movement counter when starting a new path
+				movementTickCounter = 0;
+				LOGGER.info("AGV calculated path to destination: " + destination + ", path length: "
+						+ (optimalPath != null ? optimalPath.size() : 0));
+			} else {
+				LOGGER.warn("No path found to destination: " + destination);
+				// Remove the corresponding operation since we can't reach the destination
+				if (!operationsForEndPoints.isEmpty()) {
+					operationsForEndPoints.poll();
+				}
+			}
+		}
+	}
 }
