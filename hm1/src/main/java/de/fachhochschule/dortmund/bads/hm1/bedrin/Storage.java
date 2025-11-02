@@ -20,17 +20,30 @@ public class Storage {
 		this.CELLS = new HashMap<>();
 		Set<Point> places = this.AREA.getAdjacencyMap().keySet();
 		if (places.size() != cells.length) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Mismatch between storage cells ({}) and area places ({})", cells.length, places.size());
+			}
 			throw new IllegalArgumentException("Mismatch between storage cells and area places.");
 		}
 		int i = 0;
 		for (Point place : places) {
 			this.CELLS.put(place, cells[i++]);
 		}
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Storage initialized with {} cells", this.CELLS.size());
+		}
 	}
 
 	public StorageCell getCellByNotation(String notation) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Getting cell by notation: {}", notation);
+		}
 		Point point = notationToPoint(notation);
-		return CELLS.get(point);
+		StorageCell cell = CELLS.get(point);
+		if (cell == null && LOGGER.isWarnEnabled()) {
+			LOGGER.warn("No cell found for notation: {} (point: {})", notation, point);
+		}
+		return cell;
 	}
 
 	/**
@@ -43,14 +56,20 @@ public class Storage {
 	 * @throws IllegalArgumentException if point is null or coordinates are negative
 	 */
 	public static String pointToNotation(Point point) {
-		LOGGER.debug("Converting point to notation: {}", point);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Converting point to notation: {}", point);
+		}
 		
 		if (point == null) {
-			LOGGER.error("Point cannot be null");
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Point cannot be null");
+			}
 			throw new IllegalArgumentException("Point cannot be null");
 		}
 		if (point.x() < 0 || point.y() < 0) {
-			LOGGER.error("Coordinates must be non-negative: x={}, y={}", point.x(), point.y());
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Coordinates must be non-negative: x={}, y={}", point.x(), point.y());
+			}
 			throw new IllegalArgumentException("Coordinates must be non-negative");
 		}
 		
@@ -58,7 +77,9 @@ public class Storage {
 		String letters = convertToLetters(point.y());
 		String notation = number + letters;
 		
-		LOGGER.debug("Point {} converted to notation: {}", point, notation);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Point {} converted to notation: {}", point, notation);
+		}
 		return notation;
 	}
 
@@ -72,10 +93,14 @@ public class Storage {
 	 * @throws IllegalArgumentException if notation is null, empty, or invalid format
 	 */
 	public static Point notationToPoint(String notation) {
-		LOGGER.debug("Converting notation to point: {}", notation);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Converting notation to point: {}", notation);
+		}
 		
 		if (notation == null || notation.isEmpty()) {
-			LOGGER.error("Notation cannot be null or empty");
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Notation cannot be null or empty");
+			}
 			throw new IllegalArgumentException("Notation cannot be null or empty");
 		}
 		
@@ -86,19 +111,25 @@ public class Storage {
 		}
 		
 		if (letterStart == 0 || letterStart == notation.length()) {
-			LOGGER.error("Invalid notation format: must contain both numbers and letters: {}", notation);
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Invalid notation format: must contain both numbers and letters: {}", notation);
+			}
 			throw new IllegalArgumentException("Invalid notation format: must contain both numbers and letters");
 		}
 		
 		String numberPart = notation.substring(0, letterStart);
 		String letterPart = notation.substring(letterStart);
 		
-		LOGGER.debug("Parsed notation '{}' into number part '{}' and letter part '{}'", notation, numberPart, letterPart);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Parsed notation '{}' into number part '{}' and letter part '{}'", notation, numberPart, letterPart);
+		}
 		
 		try {
 			int number = Integer.parseInt(numberPart);
 			if (number <= 0) {
-				LOGGER.error("Number part must be positive: {}", number);
+				if (LOGGER.isErrorEnabled()) {
+					LOGGER.error("Number part must be positive: {}", number);
+				}
 				throw new IllegalArgumentException("Number part must be positive");
 			}
 			
@@ -106,19 +137,27 @@ public class Storage {
 			int y = convertFromLetters(letterPart);
 			Point point = new Point(x, y);
 			
-			LOGGER.debug("Notation '{}' converted to point: {}", notation, point);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Notation '{}' converted to point: {}", notation, point);
+			}
 			return point;
 		} catch (NumberFormatException e) {
-			LOGGER.error("Invalid number format in notation '{}': {}", notation, e.getMessage());
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Invalid number format in notation '{}': {}", notation, e.getMessage());
+			}
 			throw new IllegalArgumentException("Invalid number format in notation", e);
 		}
 	}
 
 	private static String convertToLetters(int number) {
-		LOGGER.trace("Converting number to letters: {}", number);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Converting number to letters: {}", number);
+		}
 		
 		if (number < 0) {
-			LOGGER.error("Number must be non-negative: {}", number);
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Number must be non-negative: {}", number);
+			}
 			throw new IllegalArgumentException("Number must be non-negative");
 		}
 		
@@ -130,28 +169,38 @@ public class Storage {
 		} while (number > 0);
 		
 		String letters = result.toString();
-		LOGGER.trace("Number {} converted to letters: {}", originalNumber, letters);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Number {} converted to letters: {}", originalNumber, letters);
+		}
 		return letters;
 	}
 
 	private static int convertFromLetters(String letters) {
-		LOGGER.trace("Converting letters to number: {}", letters);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Converting letters to number: {}", letters);
+		}
 		
 		if (letters == null || letters.isEmpty()) {
-			LOGGER.error("Letters cannot be null or empty");
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Letters cannot be null or empty");
+			}
 			throw new IllegalArgumentException("Letters cannot be null or empty");
 		}
 		
 		int result = 0;
 		for (char c : letters.toCharArray()) {
 			if (c < 'A' || c > 'Z') {
-				LOGGER.error("Invalid character in letter part: {}", c);
+				if (LOGGER.isErrorEnabled()) {
+					LOGGER.error("Invalid character in letter part: {}", c);
+				}
 				throw new IllegalArgumentException("Invalid character in letter part: " + c);
 			}
 			result = result * 26 + (c - 'A');
 		}
 		
-		LOGGER.trace("Letters '{}' converted to number: {}", letters, result);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Letters '{}' converted to number: {}", letters, result);
+		}
 		return result;
 	}
 }

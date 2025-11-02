@@ -55,7 +55,7 @@ public class AGV extends Resource implements ITickable {
 	private int loseChargePerActionPerTick = 10;
 	private boolean charging;
 
-	private int ticksPerMovement = 1; // Number of ticks required for each movement
+	private int ticksPerMovement = 2; // Number of ticks required for each movement
 	private int movementTickCounter = 0; // Counter to track ticks for movement timing
 
 	private Queue<Point> endPoints = new ArrayDeque<>();
@@ -69,8 +69,10 @@ public class AGV extends Resource implements ITickable {
 	private Statement<?>[] cachedProgram;
 
 	/**
-	 * MOVE point -> label of point TAKE label of point -> resource instance inside
-	 * inventory cell RELEASE label of point -> inventory cell releases resource
+	 * MOVE point -> label of point 
+	 * TAKE label of point -> resource instance inside
+	 * inventory cell 
+	 * RELEASE label of point -> inventory cell releases resource
 	 * instance
 	 */
 
@@ -81,7 +83,9 @@ public class AGV extends Resource implements ITickable {
 				memory.clear();
 				endPoints.clear();
 				operationsForEndPoints.clear();
-				LOGGER.info("AGV stopping execution and clearing memory.");
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV stopping execution and clearing memory.");
+				}
 				return;
 			}
 			case SETUP -> {
@@ -90,22 +94,30 @@ public class AGV extends Resource implements ITickable {
 			}
 			case PUSH -> {
 				memory.push(statement.args[0]);
-				LOGGER.info("AGV pushed to memory: " + statement.args[0]);
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV pushed to memory: " + statement.args[0]);
+				}
 			}
 			case MOVE -> {
 				String pointLabel = (String) memory.pop();
 				Point destination = Storage.notationToPoint(pointLabel);
-				LOGGER.info("AGV set to moving to point: " + destination);
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV set to moving to point: " + destination);
+				}
 				endPoints.add(destination);
 			}
 			case CHARGE -> {
 				String pointLabel = (String) memory.pop();
-				LOGGER.info("AGV will be charged at: " + pointLabel);
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV will be charged at: " + pointLabel);
+				}
 				if (storage.getCellByNotation(pointLabel).TYPE == Type.CHARGING_STATION) {
 					operationsForEndPoints.add(new BeveragesBoxOperation(pointLabel, null) {
 						@Override
 						public void execute() {
-							LOGGER.info("AGV charging at station: " + this.cellLabel);
+							if (LOGGER.isInfoEnabled()) {
+								LOGGER.info("AGV charging at station: " + this.cellLabel);
+							}
 							AGV.this.charging = true;
 						}
 					});
@@ -114,11 +126,15 @@ public class AGV extends Resource implements ITickable {
 			case RELEASE -> {
 				String cellLabel = (String) memory.pop();
 				BeveragesBox box = (BeveragesBox) memory.pop();
-				LOGGER.info("AGV releasing resource to cell: " + cellLabel);
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV releasing resource to cell: " + cellLabel);
+				}
 				this.operationsForEndPoints.add(new BeveragesBoxOperation(cellLabel, box) {
 					@Override
 					public void execute() {
-						LOGGER.info("AGV taking resource from cell: " + cellLabel);
+						if (LOGGER.isInfoEnabled()) {
+							LOGGER.info("AGV taking resource from cell: " + cellLabel);
+						}
 						if (cellLabel.equals(Storage.pointToNotation(currentPosition))) {
 							if (!storage.getCellByNotation(cellLabel).add(box)) {
 								throw new IllegalStateException(
@@ -135,11 +151,15 @@ public class AGV extends Resource implements ITickable {
 			case TAKE -> {
 				String cellLabel = (String) memory.pop();
 				BeveragesBox box = (BeveragesBox) memory.pop();
-				LOGGER.info("AGV taking resource from cell: " + cellLabel);
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV taking resource from cell: " + cellLabel);
+				}
 				this.operationsForEndPoints.add(new BeveragesBoxOperation(cellLabel, box) {
 					@Override
 					public void execute() {
-						LOGGER.info("AGV taking resource from cell: " + this.cellLabel);
+						if (LOGGER.isInfoEnabled()) {
+							LOGGER.info("AGV taking resource from cell: " + this.cellLabel);
+						}
 						if (this.cellLabel.equals(Storage.pointToNotation(this.currentPosition))) {
 							if (!this.storage.getCellByNotation(this.cellLabel).remove(this.box)) {
 								throw new IllegalStateException(
@@ -172,7 +192,9 @@ public class AGV extends Resource implements ITickable {
 			throw new IllegalArgumentException("Ticks per movement must be positive");
 		}
 		this.ticksPerMovement = ticksPerMovement;
-		LOGGER.info("AGV movement speed changed: {} ticks per movement", ticksPerMovement);
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("AGV movement speed changed: {} ticks per movement", ticksPerMovement);
+		}
 	}
 
 	/**
@@ -202,19 +224,25 @@ public class AGV extends Resource implements ITickable {
 		// Handle battery management
 		if (charging) {
 			batteryLevel = Math.min(100, batteryLevel + chargePerTick);
-			LOGGER.info("AGV charging: battery level now " + batteryLevel + "%");
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("AGV charging: battery level now " + batteryLevel + "%");
+			}
 
 			// Stop charging when fully charged
 			if (batteryLevel >= 100) {
 				charging = false;
-				LOGGER.info("AGV fully charged, stopping charge");
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV fully charged, stopping charge");
+				}
 			}
 			return; // Don't do anything else while charging
 		}
 
 		// Check if we have enough battery to continue
 		if (batteryLevel <= 0) {
-			LOGGER.warn("AGV battery depleted, cannot perform actions");
+			if (LOGGER.isWarnEnabled()) {
+				LOGGER.warn("AGV battery depleted, cannot perform actions");
+			}
 			return;
 		}
 
@@ -229,7 +257,9 @@ public class AGV extends Resource implements ITickable {
 				movementTickCounter = 0;
 				currentPosition = optimalPath.remove(0);
 				batteryLevel = Math.max(0, batteryLevel - loseChargePerActionPerTick);
-				LOGGER.info("AGV moved to position: " + currentPosition + ", battery: " + batteryLevel + "%");
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV moved to position: " + currentPosition + ", battery: " + batteryLevel + "%");
+				}
 
 				// If we've reached the end of the current path
 				if (optimalPath.isEmpty()) {
@@ -241,8 +271,10 @@ public class AGV extends Resource implements ITickable {
 						try {
 							operation.execute();
 							batteryLevel = Math.max(0, batteryLevel - loseChargePerActionPerTick);
-							LOGGER.info("AGV executed operation at position: " + currentPosition + ", battery: "
-									+ batteryLevel + "%");
+							if (LOGGER.isInfoEnabled()) {
+								LOGGER.info("AGV executed operation at position: " + currentPosition + ", battery: "
+										+ batteryLevel + "%");
+							}
 						} catch (Exception e) {
 							LOGGER.error("Failed to execute operation: " + e.getMessage(), e);
 						}
@@ -264,10 +296,14 @@ public class AGV extends Resource implements ITickable {
 				}
 				// Reset movement counter when starting a new path
 				movementTickCounter = 0;
-				LOGGER.info("AGV calculated path to destination: " + destination + ", path length: "
-						+ (optimalPath != null ? optimalPath.size() : 0));
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("AGV calculated path to destination: " + destination + ", path length: "
+							+ (optimalPath != null ? optimalPath.size() : 0));
+				}
 			} else {
-				LOGGER.warn("No path found to destination: " + destination);
+				if (LOGGER.isWarnEnabled()) {
+					LOGGER.warn("No path found to destination: " + destination);
+				}
 				// Remove the corresponding operation since we can't reach the destination
 				if (!operationsForEndPoints.isEmpty()) {
 					operationsForEndPoints.poll();

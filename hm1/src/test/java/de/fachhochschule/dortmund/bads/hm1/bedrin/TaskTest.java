@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.Process;
 
-public class TaskCrudTest {
+public class TaskTest {
 
     @Test
     public void createProcesses_addAndGet() {

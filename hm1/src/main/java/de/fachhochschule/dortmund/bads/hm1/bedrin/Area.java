@@ -1,8 +1,21 @@
 package de.fachhochschule.dortmund.bads.hm1.bedrin;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Area {
+	private static final Logger LOGGER = LogManager.getLogger();
+	
 	// graph stored as adjacency list: node Point -> set of neighbour Points
 	private Map<Point, Set<Point>> graph;
 	// set of nodes that are marked as points of interest
@@ -14,12 +27,30 @@ public class Area {
 	// Dijkstra on the graph: returns shortest path as list of Points from start -> target
 	// edge weight = Euclidean distance between points
 	public List<Point> findPath(int startXParam, int startYParam, int targetX, int targetY) {
-		if (graph == null)
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Finding path from ({}, {}) to ({}, {})", startXParam, startYParam, targetX, targetY);
+		}
+		
+		if (graph == null) {
+			if (LOGGER.isWarnEnabled()) {
+				LOGGER.warn("Graph is null, cannot find path");
+			}
 			return List.of();
+		}
+		
 		Point startPoint = new Point(startXParam, startYParam);
 		Point targetPoint = new Point(targetX, targetY);
-		if (!graph.containsKey(startPoint) || !graph.containsKey(targetPoint))
+		
+		if (!graph.containsKey(startPoint) || !graph.containsKey(targetPoint)) {
+			if (LOGGER.isWarnEnabled()) {
+				LOGGER.warn("Start point {} or target point {} not found in graph", startPoint, targetPoint);
+			}
 			return List.of();
+		}
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Starting Dijkstra algorithm with {} nodes in graph", graph.size());
+		}
 
 		// distances and previous node map
 		Map<Point, Double> dist = new HashMap<>();
@@ -32,12 +63,20 @@ public class Area {
 		PriorityQueue<Point> queue = new PriorityQueue<>(Comparator.comparingDouble(dist::get));
 		queue.add(startPoint);
 
+		int visitedNodes = 0;
 		while (!queue.isEmpty()) {
 			Point current = queue.poll();
 			if (current == null)
 				break;
-			if (current.equals(targetPoint))
+			
+			visitedNodes++;
+			if (current.equals(targetPoint)) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Target reached after visiting {} nodes", visitedNodes);
+				}
 				break;
+			}
+			
 			double currentDist = dist.getOrDefault(current, Double.POSITIVE_INFINITY);
 			for (Point neighbor : graph.getOrDefault(current, Collections.emptySet())) {
 				double weight = euclideanDistance(current, neighbor);
@@ -52,8 +91,12 @@ public class Area {
 			}
 		}
 
-		if (!previous.containsKey(targetPoint) && !startPoint.equals(targetPoint))
+		if (!previous.containsKey(targetPoint) && !startPoint.equals(targetPoint)) {
+			if (LOGGER.isWarnEnabled()) {
+				LOGGER.warn("No path found from {} to {}", startPoint, targetPoint);
+			}
 			return List.of();
+		}
 
 		LinkedList<Point> path = new LinkedList<>();
 		for (Point at = targetPoint; at != null; at = previous.get(at)) {
@@ -61,6 +104,16 @@ public class Area {
 			if (at.equals(startPoint))
 				break;
 		}
+		
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Path found from {} to {} with {} steps, total distance: {:.2f}", 
+				startPoint, targetPoint, path.size(), dist.get(targetPoint));
+		}
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Path: {}", path);
+		}
+		
 		return path;
 	}
 
@@ -85,6 +138,9 @@ public class Area {
 	public void setGraph(Map<Point, Set<Point>> adjacency) {
 		if (adjacency == null) {
 			this.graph = null;
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Graph set to null");
+			}
 			return;
 		}
 		Map<Point, Set<Point>> copy = new HashMap<>();
@@ -92,15 +148,31 @@ public class Area {
 			copy.put(entry.getKey(), entry.getValue() == null ? Set.of() : new HashSet<>(entry.getValue()));
 		}
 		this.graph = copy;
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Graph initialized with {} nodes", this.graph.size());
+		}
+		if (LOGGER.isDebugEnabled()) {
+			int totalEdges = this.graph.values().stream().mapToInt(Set::size).sum();
+			LOGGER.debug("Graph contains {} total edges", totalEdges);
+		}
 	}
 
 	public Map<Point, Set<Point>> getAdjacencyMap() {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Adjacency map requested, graph has {} nodes", 
+				graph != null ? graph.size() : 0);
+		}
 		return Collections.unmodifiableMap(graph);
 	}
 	
 	public void setStart(int startXCoord, int startYCoord) {
+		Point oldStart = new Point(this.startX, this.startY);
 		this.startX = startXCoord;
 		this.startY = startYCoord;
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Start position changed from {} to ({}, {})", 
+				oldStart, startXCoord, startYCoord);
+		}
 	}
 
 	public int getStartX() {

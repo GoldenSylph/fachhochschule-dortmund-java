@@ -34,39 +34,53 @@ public class StorageCell {
 		this.MAX_LENGTH = maxLength;
 		this.MAX_WIDTH = maxWidth;
 		this.MAX_HEIGHT = maxHeight;
-		LOGGER.info("Created StorageCell - Type: {}, Max dimensions: {}x{}x{}, Max volume: {}", 
-				   type, maxLength, maxWidth, maxHeight, maxLength * maxWidth * maxHeight);
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Created StorageCell - Type: {}, Max dimensions: {}x{}x{}, Max volume: {}", 
+					   type, maxLength, maxWidth, maxHeight, maxLength * maxWidth * maxHeight);
+		}
 	}
 
 	public boolean add(BeveragesBox box) {
-		LOGGER.debug("Attempting to add box: {} ({}x{}x{}) to {} storage cell", 
-					box.getBeverageName(), box.getLength(), box.getWidth(), box.getHeight(), this.TYPE);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Attempting to add box: {} ({}x{}x{}) to {} storage cell", 
+						box.getBeverageName(), box.getLength(), box.getWidth(), box.getHeight(), this.TYPE);
+		}
 		
 		if (!isNewBoxCouldBeAdded(box)) {
-			LOGGER.warn("Cannot add box {} to storage cell - validation failed", box.getBeverageName());
+			if (LOGGER.isWarnEnabled()) {
+				LOGGER.warn("Cannot add box {} to storage cell - validation failed", box.getBeverageName());
+			}
 			return false;
 		}
 		
 		this.storedBoxes.add(box);
 		updateDimensionsAfterAdd(box);
 		
-		LOGGER.info("Successfully added box {} - Current dimensions: {}x{}x{}, Space efficiency: {:.1f}%, Boxes: {}", 
-				   box.getBeverageName(), currentLength, currentWidth, currentHeight, 
-				   getSpaceEfficiency(), storedBoxes.size());
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Successfully added box {} - Current dimensions: {}x{}x{}, Space efficiency: {:.1f}%, Boxes: {}", 
+					   box.getBeverageName(), currentLength, currentWidth, currentHeight, 
+					   getSpaceEfficiency(), storedBoxes.size());
+		}
 		
 		return true;
 	}
 	
 	public boolean remove(BeveragesBox box) {
-		LOGGER.debug("Attempting to remove box: {} from storage cell", box.getBeverageName());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Attempting to remove box: {} from storage cell", box.getBeverageName());
+		}
 		
 		boolean removed = this.storedBoxes.remove(box);
 		if (removed) {
 			recalculateDimensions();
-			LOGGER.info("Successfully removed box {} - Current dimensions: {}x{}x{}, Remaining boxes: {}", 
-					   box.getBeverageName(), currentLength, currentWidth, currentHeight, storedBoxes.size());
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("Successfully removed box {} - Current dimensions: {}x{}x{}, Remaining boxes: {}", 
+						   box.getBeverageName(), currentLength, currentWidth, currentHeight, storedBoxes.size());
+			}
 		} else {
-			LOGGER.warn("Failed to remove box {} - box not found in storage cell", box.getBeverageName());
+			if (LOGGER.isWarnEnabled()) {
+				LOGGER.warn("Failed to remove box {} - box not found in storage cell", box.getBeverageName());
+			}
 		}
 		return removed;
 	}
@@ -76,20 +90,24 @@ public class StorageCell {
 			return true;
 		} 
 		if (this.TYPE == Type.CHARGING_STATION) {
-			LOGGER.debug("Cannot add box to CHARGING_STATION type storage cell");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Cannot add box to CHARGING_STATION type storage cell");
+			}
 			return false; // Cannot store boxes in a charging station
 		}
 		
 		if (!((this.TYPE == Type.AMBIENT && box.getType() == BeveragesBox.Type.AMBIENT)
 				|| (this.TYPE == Type.BULK && box.getType() == BeveragesBox.Type.BULK)
 				|| (this.TYPE == Type.REFRIGERATED && box.getType() == BeveragesBox.Type.REFRIGERATED))) {
-			LOGGER.debug("Box type {} incompatible with storage cell type {}", box.getType(), this.TYPE);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Box type {} incompatible with storage cell type {}", box.getType(), this.TYPE);
+			}
 			return false;
 		}
 
 		// Check if the box fits in the remaining 3D space
 		boolean fits = fitsIn3DSpace(box);
-		if (!fits) {
+		if (!fits && LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Box {} ({}x{}x{}) does not fit in remaining 3D space - Current: {}x{}x{}, Max: {}x{}x{}", 
 						box.getBeverageName(), box.getLength(), box.getWidth(), box.getHeight(),
 						currentLength, currentWidth, currentHeight, MAX_LENGTH, MAX_WIDTH, MAX_HEIGHT);
@@ -102,29 +120,39 @@ public class StorageCell {
 	 * Uses a more sophisticated approach considering actual volume constraints.
 	 */
 	private boolean fitsIn3DSpace(BeveragesBox box) {
-		LOGGER.trace("Evaluating 3D space fit for box {} ({}x{}x{}) in cell with current dimensions {}x{}x{}", 
-					box.getBeverageName(), box.getLength(), box.getWidth(), box.getHeight(),
-					currentLength, currentWidth, currentHeight);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Evaluating 3D space fit for box {} ({}x{}x{}) in cell with current dimensions {}x{}x{}", 
+						box.getBeverageName(), box.getLength(), box.getWidth(), box.getHeight(),
+						currentLength, currentWidth, currentHeight);
+		}
 		
 		// Strategy 1: Check if stacking vertically still fits
 		if (canStackVertically(box)) {
-			LOGGER.trace("Box {} can be placed using vertical stacking strategy", box.getBeverageName());
+			if (LOGGER.isTraceEnabled()) {
+				LOGGER.trace("Box {} can be placed using vertical stacking strategy", box.getBeverageName());
+			}
 			return true;
 		}
 		
 		// Strategy 2: Check if we can fit side by side (if current height allows)
 		if (canFitSideBySide(box)) {
-			LOGGER.trace("Box {} can be placed using side-by-side strategy", box.getBeverageName());
+			if (LOGGER.isTraceEnabled()) {
+				LOGGER.trace("Box {} can be placed using side-by-side strategy", box.getBeverageName());
+			}
 			return true;
 		}
 		
 		// Strategy 3: Check if the box can fit in a new layer
 		if (canFitInNewLayer(box)) {
-			LOGGER.trace("Box {} can be placed using new layer strategy", box.getBeverageName());
+			if (LOGGER.isTraceEnabled()) {
+				LOGGER.trace("Box {} can be placed using new layer strategy", box.getBeverageName());
+			}
 			return true;
 		}
 		
-		LOGGER.trace("Box {} cannot fit using any placement strategy", box.getBeverageName());
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Box {} cannot fit using any placement strategy", box.getBeverageName());
+		}
 		return false;
 	}
 	
@@ -140,8 +168,10 @@ public class StorageCell {
 		boolean heightFits = (currentHeight + box.getHeight()) <= MAX_HEIGHT;
 		
 		boolean canStack = fitsInCurrentFootprint && heightFits;
-		LOGGER.trace("Vertical stacking check for {}: footprint fits={}, height fits={}, result={}", 
-					box.getBeverageName(), fitsInCurrentFootprint, heightFits, canStack);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Vertical stacking check for {}: footprint fits={}, height fits={}, result={}", 
+						box.getBeverageName(), fitsInCurrentFootprint, heightFits, canStack);
+		}
 		
 		return canStack;
 	}
@@ -159,9 +189,11 @@ public class StorageCell {
 						 potentialWidth <= MAX_WIDTH && 
 						 box.getHeight() <= currentHeight;
 		
-		LOGGER.trace("Side-by-side check for {}: potential dimensions {}x{}x{}, within limits={}, result={}", 
-					box.getBeverageName(), potentialLength, potentialWidth, box.getHeight(), 
-					(potentialLength <= MAX_LENGTH && potentialWidth <= MAX_WIDTH), canFit);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Side-by-side check for {}: potential dimensions {}x{}x{}, within limits={}, result={}", 
+						box.getBeverageName(), potentialLength, potentialWidth, box.getHeight(), 
+						(potentialLength <= MAX_LENGTH && potentialWidth <= MAX_WIDTH), canFit);
+		}
 		
 		return canFit;
 	}
@@ -176,7 +208,9 @@ public class StorageCell {
 			boolean fits = box.getLength() <= MAX_LENGTH && 
 						   box.getWidth() <= MAX_WIDTH && 
 						   box.getHeight() <= MAX_HEIGHT;
-			LOGGER.trace("New layer check for {} in empty storage: dimensions fit={}", box.getBeverageName(), fits);
+			if (LOGGER.isTraceEnabled()) {
+				LOGGER.trace("New layer check for {} in empty storage: dimensions fit={}", box.getBeverageName(), fits);
+			}
 			return fits;
 		}
 		
@@ -186,8 +220,10 @@ public class StorageCell {
 					   box.getWidth() <= MAX_WIDTH && 
 					   newLayerHeight <= MAX_HEIGHT;
 		
-		LOGGER.trace("New layer check for {}: new total height would be {}, within limit={}, result={}", 
-					box.getBeverageName(), newLayerHeight, (newLayerHeight <= MAX_HEIGHT), fits);
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("New layer check for {}: new total height would be {}, within limit={}, result={}", 
+						box.getBeverageName(), newLayerHeight, (newLayerHeight <= MAX_HEIGHT), fits);
+		}
 		
 		return fits;
 	}
@@ -205,8 +241,10 @@ public class StorageCell {
 			currentLength = box.getLength();
 			currentWidth = box.getWidth();
 			currentHeight = box.getHeight();
-			LOGGER.debug("First box {} set initial dimensions to {}x{}x{}", 
-						box.getBeverageName(), currentLength, currentWidth, currentHeight);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("First box {} set initial dimensions to {}x{}x{}", 
+							box.getBeverageName(), currentLength, currentWidth, currentHeight);
+			}
 		} else {
 			// Determine placement strategy based on pre-addition state
 			
@@ -218,9 +256,11 @@ public class StorageCell {
 			if (canStack) {
 				// Stack vertically - just add height
 				currentHeight += box.getHeight();
-				LOGGER.debug("Box {} placed using vertical stacking - dimensions: {}x{}x{} -> {}x{}x{}", 
-							box.getBeverageName(), oldLength, oldWidth, oldHeight, 
-							currentLength, currentWidth, currentHeight);
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Box {} placed using vertical stacking - dimensions: {}x{}x{} -> {}x{}x{}", 
+								box.getBeverageName(), oldLength, oldWidth, oldHeight, 
+								currentLength, currentWidth, currentHeight);
+				}
 			} else {
 				// Expand footprint
 				currentLength = Math.max(oldLength, box.getLength());
@@ -234,15 +274,19 @@ public class StorageCell {
 				if (sideBySide) {
 					// Side-by-side placement
 					currentHeight = Math.max(oldHeight, box.getHeight());
-					LOGGER.debug("Box {} placed side-by-side - dimensions: {}x{}x{} -> {}x{}x{}", 
-								box.getBeverageName(), oldLength, oldWidth, oldHeight, 
-								currentLength, currentWidth, currentHeight);
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Box {} placed side-by-side - dimensions: {}x{}x{} -> {}x{}x{}", 
+									box.getBeverageName(), oldLength, oldWidth, oldHeight, 
+									currentLength, currentWidth, currentHeight);
+					}
 				} else {
 					// New layer
 					currentHeight = oldHeight + box.getHeight();
-					LOGGER.debug("Box {} placed in new layer - dimensions: {}x{}x{} -> {}x{}x{}", 
-								box.getBeverageName(), oldLength, oldWidth, oldHeight, 
-								currentLength, currentWidth, currentHeight);
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Box {} placed in new layer - dimensions: {}x{}x{} -> {}x{}x{}", 
+									box.getBeverageName(), oldLength, oldWidth, oldHeight, 
+									currentLength, currentWidth, currentHeight);
+					}
 				}
 			}
 		}
@@ -260,7 +304,9 @@ public class StorageCell {
 			currentLength = 0;
 			currentWidth = 0;
 			currentHeight = 0;
-			LOGGER.debug("Storage cell emptied - dimensions reset to 0x0x0");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Storage cell emptied - dimensions reset to 0x0x0");
+			}
 			return;
 		}
 		
@@ -275,8 +321,10 @@ public class StorageCell {
 			currentHeight += box.getHeight();
 		}
 		
-		LOGGER.debug("Dimensions recalculated after removal: {}x{}x{} -> {}x{}x{}, {} boxes remaining", 
-					oldLength, oldWidth, oldHeight, currentLength, currentWidth, currentHeight, storedBoxes.size());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Dimensions recalculated after removal: {}x{}x{} -> {}x{}x{}, {} boxes remaining", 
+						oldLength, oldWidth, oldHeight, currentLength, currentWidth, currentHeight, storedBoxes.size());
+		}
 	}
 	
 	/**
