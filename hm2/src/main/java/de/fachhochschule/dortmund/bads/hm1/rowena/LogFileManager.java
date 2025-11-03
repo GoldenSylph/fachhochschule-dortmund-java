@@ -17,8 +17,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Core log file management system.
- * Handles file creation, deletion, and metadata tracking.
+ * Core log file management system. Handles file creation, deletion, and
+ * metadata tracking.
  */
 public class LogFileManager {
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -28,6 +28,23 @@ public class LogFileManager {
 	private final Map<String, LogFileMetadata> metadataCache;
 	private final Map<String, LogWriter> activeWriters;
 	private final Path logDirectory;
+
+	public record LogFileMetadata(String filePath, String equipmentType, String equipmentId, LocalDate date,
+			long createdAt, long fileSize) {
+		public LogFileMetadata(String filePath, String equipmentType, String equipmentId, LocalDate date,
+				long createdAt, long fileSize) {
+			this.filePath = filePath;
+			this.equipmentType = equipmentType;
+			this.equipmentId = equipmentId;
+			this.date = date;
+			this.createdAt = createdAt;
+			this.fileSize = fileSize;
+		}
+
+		public LogFileMetadata(String filePath, String equipmentType, String equipmentId, LocalDate date) {
+			this(filePath, equipmentType, equipmentId, date, System.currentTimeMillis(), 0L);
+		}
+	}
 
 	public LogFileManager() {
 		this.metadataCache = new HashMap<>();
@@ -52,8 +69,8 @@ public class LogFileManager {
 	}
 
 	/**
-	 * Creates a log file for specific equipment.
-	 * Uses java.nio.file.Files for file creation.
+	 * Creates a log file for specific equipment. Uses java.nio.file.Files for file
+	 * creation.
 	 */
 	public synchronized String createLogFile(String equipmentType, String equipmentId) {
 		LocalDate today = LocalDate.now();
@@ -68,12 +85,7 @@ public class LogFileManager {
 			}
 
 			// Create metadata
-			LogFileMetadata metadata = new LogFileMetadata(
-				filePath.toString(),
-				equipmentType,
-				equipmentId,
-				today
-			);
+			LogFileMetadata metadata = new LogFileMetadata(filePath.toString(), equipmentType, equipmentId, today);
 			metadataCache.put(filePath.toString(), metadata);
 			saveMetadata();
 
@@ -85,8 +97,8 @@ public class LogFileManager {
 	}
 
 	/**
-	 * Deletes a log file and its metadata.
-	 * Uses java.nio.file.Files.delete() for file deletion.
+	 * Deletes a log file and its metadata. Uses java.nio.file.Files.delete() for
+	 * file deletion.
 	 */
 	public synchronized boolean deleteLogFile(String filePath) {
 		try {
@@ -116,8 +128,8 @@ public class LogFileManager {
 	}
 
 	/**
-	 * Writes a log entry to the appropriate equipment log file.
-	 * Creates file if it doesn't exist.
+	 * Writes a log entry to the appropriate equipment log file. Creates file if it
+	 * doesn't exist.
 	 */
 	public synchronized void writeLogEntry(String equipmentType, String equipmentId, String message) {
 		// Get or create log file
@@ -148,7 +160,13 @@ public class LogFileManager {
 			String filePath = writer.getFilePath();
 			LogFileMetadata metadata = metadataCache.get(filePath);
 			if (metadata != null) {
-				metadata.setFileSize(Files.size(Paths.get(filePath)));
+				metadata = new LogFileMetadata(
+						metadata.filePath(), 
+						metadata.equipmentType(), 
+						metadata.equipmentId(),
+						metadata.date(), 
+						metadata.createdAt(), 
+						Files.size(Paths.get(filePath)));
 			}
 		} catch (IOException e) {
 			LOGGER.error("Failed to write log entry", e);
@@ -178,11 +196,9 @@ public class LogFileManager {
 			for (String key : props.stringPropertyNames()) {
 				String[] parts = props.getProperty(key).split("\\|");
 				if (parts.length == 3) {
-					LogFileMetadata metadata = new LogFileMetadata(
-						key,
-						parts[0], // equipmentType
-						parts[1], // equipmentId
-						LocalDate.parse(parts[2]) // date
+					LogFileMetadata metadata = new LogFileMetadata(key, parts[0], // equipmentType
+							parts[1], // equipmentId
+							LocalDate.parse(parts[2]) // date
 					);
 					metadataCache.put(key, metadata);
 				}
@@ -199,10 +215,8 @@ public class LogFileManager {
 	private void saveMetadata() {
 		Properties props = new Properties();
 		for (LogFileMetadata metadata : metadataCache.values()) {
-			String value = metadata.getEquipmentType() + "|" +
-			               metadata.getEquipmentId() + "|" +
-			               metadata.getDate();
-			props.setProperty(metadata.getFilePath(), value);
+			String value = metadata.equipmentType() + "|" + metadata.equipmentId() + "|" + metadata.date();
+			props.setProperty(metadata.filePath(), value);
 		}
 
 		try (FileOutputStream fos = new FileOutputStream(METADATA_FILE)) {

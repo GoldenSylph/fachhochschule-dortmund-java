@@ -7,10 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import de.fachhochschule.dortmund.bads.hm1.bedrin.Storage;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.StorageCell;
+import de.fachhochschule.dortmund.bads.hm1.bedrin.Task;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.BeveragesBox;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Resource;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Truck;
-import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.TruckRoute;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.Operation;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.Process;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.Systems;
@@ -78,7 +78,7 @@ public enum CoreConfiguration implements IConfiguration {
 		return null;
 	}
 	
-	public TruckRoute newTruckRoute() {
+	public Task newTask() {
 		return null;
 	}
 }

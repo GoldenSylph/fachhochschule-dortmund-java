@@ -5,11 +5,16 @@
 		<Console name="CONSOLE">
 			<PatternLayout pattern="%d [%t]%5p %c - %m%n"/>
 		</Console>
+		<!-- File appender to also write logs to a file under ./logs -->
+		<File name="FILE" fileName="${sys:log.path:-logs}/hm1.log" append="true">
+			<PatternLayout pattern="%d [%t]%5p %c - %m%n"/>
+		</File>
 	</Appenders>
 	<Loggers>
 		<Logger name="de.fachhochschule.dortmund.bads.hm1" level="INFO"/>
 		<Root level="WARN">
 			<AppenderRef ref="CONSOLE" />
+			<AppenderRef ref="FILE" />
 		</Root>
 	</Loggers>
 </Configuration>

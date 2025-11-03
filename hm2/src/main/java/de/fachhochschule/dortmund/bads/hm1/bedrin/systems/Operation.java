@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Resource;
 import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic.ClockingSimulation;
+import de.fachhochschule.dortmund.bads.hm2.exceptions.ResourceException;
 
 public class Operation {
 	protected int creationTime;
@@ -20,6 +21,10 @@ public class Operation {
 	}
 
 	public Resource getResource(int index) {
+		if (index < 0 || index >= this.resources.size()) {
+			throw new ResourceException(String.format("Resource index %d is out of bounds. Available resources: %d", 
+				index, this.resources.size()));
+		}
 		return this.resources.get(index);
 	}
 	
@@ -28,6 +33,9 @@ public class Operation {
 	}
 	
 	public void addResource(Resource resource) {
+		if (resource == null) {
+			throw new ResourceException("Cannot add null resource to operation");
+		}
 		this.resources.add(resource);
 	}
 }
