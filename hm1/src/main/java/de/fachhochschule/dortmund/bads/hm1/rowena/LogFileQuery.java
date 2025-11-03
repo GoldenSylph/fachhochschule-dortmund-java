@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.fachhochschule.dortmund.bads.hm1.rowena.LogFileManager.LogFileMetadata;
+
 /**
  * Query utility for searching log files using regular expressions.
  * Demonstrates Pattern and Matcher usage from java.util.regex.
@@ -37,7 +39,7 @@ public class LogFileQuery {
 
 			// Search through all metadata
 			for (LogFileMetadata metadata : logFileManager.getAllMetadata()) {
-				String fullName = metadata.getEquipmentType() + "-" + metadata.getEquipmentId();
+				String fullName = metadata.equipmentType() + "-" + metadata.equipmentId();
 
 				// Use Matcher to test if the name matches the pattern
 				Matcher matcher = pattern.matcher(fullName);
@@ -69,7 +71,7 @@ public class LogFileQuery {
 			Pattern pattern = Pattern.compile(datePattern);
 
 			for (LogFileMetadata metadata : logFileManager.getAllMetadata()) {
-				String dateStr = metadata.getDate().toString();
+				String dateStr = metadata.date().toString();
 
 				// Use Matcher to test date string
 				Matcher matcher = pattern.matcher(dateStr);
@@ -97,7 +99,7 @@ public class LogFileQuery {
 		List<LogFileMetadata> results = new ArrayList<>();
 
 		for (LogFileMetadata metadata : logFileManager.getAllMetadata()) {
-			if (metadata.getDate().equals(date)) {
+			if (metadata.date().equals(date)) {
 				results.add(metadata);
 			}
 		}
@@ -132,7 +134,7 @@ public class LogFileQuery {
 		List<LogFileMetadata> results = new ArrayList<>();
 
 		for (LogFileMetadata metadata : logFileManager.getAllMetadata()) {
-			if (metadata.getEquipmentType().equalsIgnoreCase(equipmentType)) {
+			if (metadata.equipmentType().equalsIgnoreCase(equipmentType)) {
 				results.add(metadata);
 			}
 		}
@@ -159,9 +161,9 @@ public class LogFileQuery {
 			Pattern datePat = Pattern.compile(datePattern);
 
 			for (LogFileMetadata metadata : logFileManager.getAllMetadata()) {
-				Matcher typeMatcher = typePat.matcher(metadata.getEquipmentType());
-				Matcher idMatcher = idPat.matcher(metadata.getEquipmentId());
-				Matcher dateMatcher = datePat.matcher(metadata.getDate().toString());
+				Matcher typeMatcher = typePat.matcher(metadata.equipmentType());
+				Matcher idMatcher = idPat.matcher(metadata.equipmentId());
+				Matcher dateMatcher = datePat.matcher(metadata.date().toString());
 
 				// All patterns must match
 				if ((typeMatcher.matches() || typeMatcher.find()) &&

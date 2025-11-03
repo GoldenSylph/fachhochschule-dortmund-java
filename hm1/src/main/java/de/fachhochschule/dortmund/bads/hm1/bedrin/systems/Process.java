@@ -50,7 +50,15 @@ public class Process {
 		
 		// start all of the agents (resources) concurrently in ExecutorService
 		// oversee the the end of the thread pool
-		int threadsCount = this.operations.stream().map(Operation::getResourcesCount).reduce(Integer::sum).orElseThrow();
+		int threadsCount = this.operations.stream().map(Operation::getResourcesCount).reduce(Integer::sum).orElse(0);
+		
+		// If no operations or no resources, return empty list
+		if (threadsCount == 0) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("No resources to process, returning empty futures list");
+			}
+			return new ArrayList<>();
+		}
 		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Creating thread pool with {} threads for process operations", threadsCount);
