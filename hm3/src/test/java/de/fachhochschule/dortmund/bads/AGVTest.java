@@ -1,4 +1,4 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin.resources;
+package de.fachhochschule.dortmund.bads;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;

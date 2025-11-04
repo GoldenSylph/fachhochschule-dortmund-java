@@ -1,4 +1,4 @@
-package de.fachhochschule.dortmund.bads.hm1.rowena;
+package de.fachhochschule.dortmund.bads;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

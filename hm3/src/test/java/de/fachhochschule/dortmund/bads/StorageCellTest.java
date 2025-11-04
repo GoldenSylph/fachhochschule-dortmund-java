@@ -1,4 +1,4 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin;
+package de.fachhochschule.dortmund.bads;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

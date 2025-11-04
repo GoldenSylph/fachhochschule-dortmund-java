@@ -21,10 +21,6 @@ public class Operation {
 	}
 
 	public Resource getResource(int index) {
-		if (index < 0 || index >= this.resources.size()) {
-			throw new ResourceException(String.format("Resource index %d is out of bounds. Available resources: %d", 
-				index, this.resources.size()));
-		}
 		return this.resources.get(index);
 	}
 	

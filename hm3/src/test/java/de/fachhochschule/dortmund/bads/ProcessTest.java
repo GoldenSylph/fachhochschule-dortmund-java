@@ -1,4 +1,4 @@
-package de.fachhochschule.dortmund.bads.hm1.bedrin.systems;
+package de.fachhochschule.dortmund.bads;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 import de.fachhochschule.dortmund.bads.exceptions.ProcessExecutionException;
 import de.fachhochschule.dortmund.bads.resources.Resource;
 import de.fachhochschule.dortmund.bads.systems.Operation;
-import de.fachhochschule.dortmund.bads.systems.Systems;
 import de.fachhochschule.dortmund.bads.systems.Process;
+import de.fachhochschule.dortmund.bads.systems.Systems;
 import de.fachhochschule.dortmund.bads.systems.logic.ClockingSimulation;
 
 class ProcessTest {
