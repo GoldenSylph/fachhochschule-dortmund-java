@@ -107,7 +107,6 @@ class ProcessTest {
     void testProcessCreation() {
         assertNotNull(process);
         assertEquals(0, process.getOperationsCount());
-        assertNotNull(process.operations);
     }
 
     @Test

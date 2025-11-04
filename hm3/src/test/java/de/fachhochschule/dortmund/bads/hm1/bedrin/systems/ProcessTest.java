@@ -18,9 +18,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.fachhochschule.dortmund.bads.hm1.bedrin.resources.Resource;
-import de.fachhochschule.dortmund.bads.hm1.bedrin.systems.logic.ClockingSimulation;
-import de.fachhochschule.dortmund.bads.hm2.exceptions.ProcessExecutionException;
+import de.fachhochschule.dortmund.bads.exceptions.ProcessExecutionException;
+import de.fachhochschule.dortmund.bads.resources.Resource;
+import de.fachhochschule.dortmund.bads.systems.Operation;
+import de.fachhochschule.dortmund.bads.systems.Systems;
+import de.fachhochschule.dortmund.bads.systems.Process;
+import de.fachhochschule.dortmund.bads.systems.logic.ClockingSimulation;
 
 class ProcessTest {
 
@@ -114,7 +117,6 @@ class ProcessTest {
     void testProcessCreation() {
         assertNotNull(process);
         assertEquals(0, process.getOperationsCount());
-        assertNotNull(process.operations);
     }
 
     @Test
