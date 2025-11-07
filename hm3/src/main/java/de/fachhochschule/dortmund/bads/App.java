@@ -3,6 +3,7 @@ package de.fachhochschule.dortmund.bads;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+// Make it Runnable just so it could be run in a thread if needed
 public class App implements Runnable {
 	private static final Logger LOGGER = LogManager.getLogger();
 
