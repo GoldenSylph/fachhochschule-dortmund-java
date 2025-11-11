@@ -162,6 +162,9 @@ public class Area {
 			LOGGER.debug("Adjacency map requested, graph has {} nodes", 
 				graph != null ? graph.size() : 0);
 		}
+		if (graph == null) {
+			return Collections.emptyMap();
+		}
 		return Collections.unmodifiableMap(graph);
 	}
 	

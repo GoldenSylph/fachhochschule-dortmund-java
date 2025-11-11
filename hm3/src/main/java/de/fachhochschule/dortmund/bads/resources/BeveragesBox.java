@@ -50,4 +50,14 @@ public class BeveragesBox extends Resource {
 	public int getLength() {
 		return length;
 	}
+	
+	@Override
+	public String toString() {
+		return "BeveragesBox{" +
+			"type=" + type +
+			", beverageName='" + beverageName + '\'' +
+			", dimensions=" + width + "x" + height + "x" + length +
+			", bottles=" + quantityOfBottles +
+			'}';
+	}
 }

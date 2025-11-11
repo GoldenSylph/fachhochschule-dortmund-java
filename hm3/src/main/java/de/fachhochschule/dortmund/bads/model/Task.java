@@ -3,66 +3,66 @@ package de.fachhochschule.dortmund.bads.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.fachhochschule.dortmund.bads.systems.Process;
 
+/**
+ * Task - Represents a unit of work to be executed by an AGV.
+ * Contains multiple processes and can be prioritized.
+ */
 public class Task extends Thread {
 	private static final Logger LOGGER = LogManager.getLogger();
+	private static final AtomicInteger TASK_ID_GENERATOR = new AtomicInteger(0);
 	
-	// A list of processes that make up the task
+	private final int id;
 	private final List<Process> processes;
+	private int priority;
 	
 	public Task() {
+		this.id = TASK_ID_GENERATOR.incrementAndGet();
 		this.processes = new ArrayList<>();
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Task created with empty process list");
-		}
+		this.priority = 0; // Default priority
+		LOGGER.debug("Task {} created", id);
+	}
+	
+	public Task(int priority) {
+		this.id = TASK_ID_GENERATOR.incrementAndGet();
+		this.processes = new ArrayList<>();
+		this.priority = priority;
+		LOGGER.debug("Task {} created with priority {}", id, priority);
 	}
 	
 	@Override
 	public void run() {
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Task started with {} processes to execute", this.processes.size());
-		}
+		LOGGER.info("Task {} started with {} processes", id, processes.size());
 		
 		long startTime = System.currentTimeMillis();
 		int processCount = 0;
 		
 		for (Process process : this.processes) {
 			processCount++;
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Executing process {}/{}: {}", processCount, this.processes.size(), process);
-			}
+			LOGGER.debug("Task {} executing process {}/{}", id, processCount, processes.size());
 			
 			try {
 				process.processOperations();
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Successfully completed process {}/{}", processCount, this.processes.size());
-				}
+				LOGGER.debug("Task {} completed process {}/{}", id, processCount, processes.size());
 			} catch (Exception e) {
-				if (LOGGER.isErrorEnabled()) {
-					LOGGER.error("Error executing process {}/{}: {}", processCount, this.processes.size(), e.getMessage(), e);
-				}
-				// Re-throw the exception to maintain original behavior
+				LOGGER.error("Task {} error in process {}/{}: {}", id, processCount, processes.size(), e.getMessage(), e);
 				throw e;
 			}
 		}
 		
 		long executionTime = System.currentTimeMillis() - startTime;
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Task completed. Executed {} processes in {}ms", processCount, executionTime);
-		}
+		LOGGER.info("Task {} completed. Executed {} processes in {}ms", id, processCount, executionTime);
 	}
 	
-	// CRUD operations for processes within this task
 	public synchronized void addProcess(Process process) {
 		this.processes.add(process);
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Added process: {}. Total processes: {}", process, this.processes.size());
-		}
+		LOGGER.debug("Task {} added process. Total processes: {}", id, processes.size());
 	}
 	
 	public synchronized Process getProcess(int index) {
@@ -75,33 +75,40 @@ public class Task extends Thread {
 	
 	public synchronized Process updateProcess(int index, Process process) {
 		Process previous = this.processes.set(index, process);
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Updated process at index {}: previous={}, current={}", index, previous, process);
-		}
+		LOGGER.debug("Task {} updated process at index {}", id, index);
 		return previous;
 	}
 	
 	public synchronized Process removeProcess(int index) {
 		Process removed = this.processes.remove(index);
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Removed process at index {}: {}. Remaining processes: {}", index, removed, this.processes.size());
-		}
+		LOGGER.debug("Task {} removed process at index {}", id, index);
 		return removed;
 	}
 	
 	public synchronized boolean removeProcess(Process process) {
-		boolean removed = this.processes.remove(process);
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Attempted to remove process {}: success={}. Remaining processes: {}", process, removed, this.processes.size());
-		}
-		return removed;
+		boolean result = this.processes.remove(process);
+		LOGGER.debug("Task {} removed process: {}", id, result ? "success" : "not found");
+		return result;
 	}
 	
-	public synchronized int getProcessesCount() {
-		int count = this.processes.size();
-		if (LOGGER.isTraceEnabled()) {
-			LOGGER.trace("Process count requested: {}", count);
-		}
-		return count;
+	public synchronized int getProcessCount() {
+		return this.processes.size();
+	}
+	
+	public int getTaskId() {
+		return this.id;
+	}
+	
+	public int getTaskPriority() {
+		return this.priority;
+	}
+	
+	public void setTaskPriority(int priority) {
+		this.priority = priority;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Task[id=%d, priority=%d, processes=%d]", id, priority, processes.size());
 	}
 }

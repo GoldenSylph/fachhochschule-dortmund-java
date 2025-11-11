@@ -15,7 +15,8 @@ class AreaTest {
 
 	@Test
     void pathViaPointAdjacency() {
-        Area a = new Area();
+        // Use factory method to create Area
+        Area a = CoreConfiguration.INSTANCE.newArea();
         Map<Area.Point, Set<Area.Point>> adj = new HashMap<>();
 
         Area.Point p00 = new Area.Point(0, 0);

@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import de.fachhochschule.dortmund.bads.model.Area;
 import de.fachhochschule.dortmund.bads.model.StorageCell;
 import de.fachhochschule.dortmund.bads.model.Area.Point;
-import de.fachhochschule.dortmund.bads.systems.logic.ITickable;
+import de.fachhochschule.dortmund.bads.systems.logic.utils.ITickable;
 
 public class Truck extends Resource implements ITickable {
 	private static final Logger LOGGER = LogManager.getLogger();

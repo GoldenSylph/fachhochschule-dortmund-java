@@ -1,8 +1,10 @@
 package de.fachhochschule.dortmund.bads.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,6 +13,7 @@ import de.fachhochschule.dortmund.bads.exceptions.InvalidCoordinatesException;
 import de.fachhochschule.dortmund.bads.exceptions.InvalidNotationException;
 import de.fachhochschule.dortmund.bads.exceptions.StorageCellMismatchException;
 import de.fachhochschule.dortmund.bads.model.Area.Point;
+import de.fachhochschule.dortmund.bads.resources.AGV;
 
 public class Storage {
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -32,9 +35,104 @@ public class Storage {
 		for (Point place : places) {
 			this.CELLS.put(place, cells[i++]);
 		}
+		
+		// Log charging station locations
+		List<Point> chargingStations = getChargingStationLocations();
 		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Storage initialized with {} cells", this.CELLS.size());
+			LOGGER.info("Storage initialized with {} cells, {} charging stations at: {}", 
+					this.CELLS.size(), chargingStations.size(), 
+					chargingStations.stream().map(Storage::pointToNotation).collect(Collectors.joining(", ")));
 		}
+	}
+	
+	/**
+	 * Get all charging station locations in the storage.
+	 */
+	public List<Point> getChargingStationLocations() {
+		return CELLS.entrySet().stream()
+				.filter(entry -> entry.getValue().TYPE == StorageCell.Type.CHARGING_STATION)
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Get all charging stations (cells).
+	 */
+	public List<StorageCell> getChargingStations() {
+		return CELLS.values().stream()
+				.filter(cell -> cell.TYPE == StorageCell.Type.CHARGING_STATION)
+				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Find an available (unoccupied) charging station.
+	 * @return Point location of available charging station, or null if none available
+	 */
+	public Point findAvailableChargingStation() {
+		for (Map.Entry<Point, StorageCell> entry : CELLS.entrySet()) {
+			StorageCell cell = entry.getValue();
+			if (cell.TYPE == StorageCell.Type.CHARGING_STATION && !cell.isOccupiedByAGV()) {
+				Point location = entry.getKey();
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Found available charging station at {}", pointToNotation(location));
+				}
+				return location;
+			}
+		}
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("No available charging stations found");
+		}
+		return null;
+	}
+	
+	/**
+	 * Occupy a charging station with an AGV.
+	 */
+	public boolean occupyChargingStation(Point location, AGV agv) {
+		StorageCell cell = CELLS.get(location);
+		if (cell == null) {
+			LOGGER.warn("No cell found at location {}", pointToNotation(location));
+			return false;
+		}
+		if (cell.TYPE != StorageCell.Type.CHARGING_STATION) {
+			LOGGER.warn("Cell at {} is not a charging station", pointToNotation(location));
+			return false;
+		}
+		return cell.occupyWithAGV(agv);
+	}
+	
+	/**
+	 * Release a charging station from an AGV.
+	 */
+	public boolean releaseChargingStation(Point location) {
+		StorageCell cell = CELLS.get(location);
+		if (cell == null) {
+			LOGGER.warn("No cell found at location {}", pointToNotation(location));
+			return false;
+		}
+		if (cell.TYPE != StorageCell.Type.CHARGING_STATION) {
+			LOGGER.warn("Cell at {} is not a charging station", pointToNotation(location));
+			return false;
+		}
+		return cell.releaseAGV();
+	}
+	
+	/**
+	 * Get the total number of charging stations.
+	 */
+	public int getChargingStationCount() {
+		return (int) CELLS.values().stream()
+				.filter(cell -> cell.TYPE == StorageCell.Type.CHARGING_STATION)
+				.count();
+	}
+	
+	/**
+	 * Get the number of available (unoccupied) charging stations.
+	 */
+	public int getAvailableChargingStationCount() {
+		return (int) CELLS.values().stream()
+				.filter(cell -> cell.TYPE == StorageCell.Type.CHARGING_STATION && !cell.isOccupiedByAGV())
+				.count();
 	}
 
 	public StorageCell getCellByNotation(String notation) {
@@ -47,6 +145,10 @@ public class Storage {
 			LOGGER.warn("No cell found for notation: {} (point: {})", notation, point);
 		}
 		return cell;
+	}
+
+	public StorageCell getCellByPoint(Point point) {
+		return CELLS.get(point);
 	}
 
 	/**

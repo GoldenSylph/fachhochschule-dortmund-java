@@ -31,10 +31,11 @@ class AGVTest {
 
     @BeforeEach
     void setUp() {
-        agv = new AGV();
+        // Use factory method to create AGV
+        agv = CoreConfiguration.INSTANCE.newAGV();
         
-        // Create a simple test area with connected points
-        area = new Area();
+        // Use factory method to create Area
+        area = CoreConfiguration.INSTANCE.newArea();
         Map<Point, Set<Point>> adjacencyMap = new HashMap<>();
         
         Point p00 = new Point(0, 0);
@@ -51,15 +52,16 @@ class AGVTest {
         
         area.setGraph(adjacencyMap);
         
-        // Create storage cells
+        // Use factory methods to create storage cells
         StorageCell[] cells = new StorageCell[5];
-        cells[0] = new StorageCell(Type.ANY, 10, 10, 10); // p00
-        cells[1] = new StorageCell(Type.ANY, 10, 10, 10); // p10
-        cells[2] = new StorageCell(Type.CHARGING_STATION, 1, 1, 1); // p20
-        cells[3] = new StorageCell(Type.ANY, 10, 10, 10); // p01
-        cells[4] = new StorageCell(Type.ANY, 10, 10, 10); // p11
+        cells[0] = CoreConfiguration.INSTANCE.newStorageCell(Type.ANY, 10, 10, 10); // p00
+        cells[1] = CoreConfiguration.INSTANCE.newStorageCell(Type.ANY, 10, 10, 10); // p10
+        cells[2] = CoreConfiguration.INSTANCE.newChargingStation(); // p20
+        cells[3] = CoreConfiguration.INSTANCE.newStorageCell(Type.ANY, 10, 10, 10); // p01
+        cells[4] = CoreConfiguration.INSTANCE.newStorageCell(Type.ANY, 10, 10, 10); // p11
         
-        storage = new Storage(area, cells);
+        // Use factory method to create Storage
+        storage = CoreConfiguration.INSTANCE.newStorage(area, cells);
     }
 
     @Test

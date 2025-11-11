@@ -23,6 +23,7 @@ public class StorageCell {
 
 	private List<BeveragesBox> storedBoxes = new ArrayList<>();
 	private AGV chargingAGV;
+	private volatile boolean isOccupied = false; // For charging stations
 	
 	// Track current occupied dimensions
 	private int currentLength = 0;
@@ -396,11 +397,55 @@ public class StorageCell {
 		return currentHeight;
 	}
 	
-	public AGV getChargingAGV() {
-		return chargingAGV;
+	/**
+	 * Occupy this charging station with an AGV.
+	 * Only works for CHARGING_STATION type cells.
+	 */
+	public synchronized boolean occupyWithAGV(AGV agv) {
+		if (TYPE != Type.CHARGING_STATION) {
+			LOGGER.warn("Cannot occupy non-charging-station cell with AGV");
+			return false;
+		}
+		if (isOccupied || chargingAGV != null) {
+			LOGGER.warn("Charging station already occupied by {}", chargingAGV);
+			return false;
+		}
+		this.chargingAGV = agv;
+		this.isOccupied = true;
+		LOGGER.info("Charging station occupied by {}", agv);
+		return true;
 	}
-
-	public void setChargingAGV(AGV chargingAGV) {
-		this.chargingAGV = chargingAGV;
+	
+	/**
+	 * Release the AGV from this charging station.
+	 */
+	public synchronized boolean releaseAGV() {
+		if (TYPE != Type.CHARGING_STATION) {
+			LOGGER.warn("Cannot release AGV from non-charging-station cell");
+			return false;
+		}
+		if (!isOccupied || chargingAGV == null) {
+			LOGGER.warn("Charging station is not occupied");
+			return false;
+		}
+		AGV releasedAGV = this.chargingAGV;
+		this.chargingAGV = null;
+		this.isOccupied = false;
+		LOGGER.info("Charging station released from {}", releasedAGV);
+		return true;
+	}
+	
+	/**
+	 * Check if this charging station is occupied by an AGV.
+	 */
+	public synchronized boolean isOccupiedByAGV() {
+		return TYPE == Type.CHARGING_STATION && isOccupied && chargingAGV != null;
+	}
+	
+	/**
+	 * Get the AGV currently occupying this charging station.
+	 */
+	public synchronized AGV getChargingAGV() {
+		return chargingAGV;
 	}
 }

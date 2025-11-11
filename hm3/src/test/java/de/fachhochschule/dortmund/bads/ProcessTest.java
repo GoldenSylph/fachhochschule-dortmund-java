@@ -98,7 +98,7 @@ class ProcessTest {
 
     @BeforeEach
     void setUp() {
-        process = new Process();
+        process = CoreConfiguration.INSTANCE.newProcess(java.util.List.of());
         
         // Set up mock clocking simulation
         mockClockingSimulation = new ClockingSimulation();

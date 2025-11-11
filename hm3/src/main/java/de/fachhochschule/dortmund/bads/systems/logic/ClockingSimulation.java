@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.fachhochschule.dortmund.bads.systems.logic.utils.ITickable;
+
 public class ClockingSimulation extends Thread {
 	private static final Logger LOGGER = LogManager.getLogger(ClockingSimulation.class.getName());
 

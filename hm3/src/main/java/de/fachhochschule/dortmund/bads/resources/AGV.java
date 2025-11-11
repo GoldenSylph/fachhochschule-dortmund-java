@@ -4,6 +4,8 @@ import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,10 +14,18 @@ import de.fachhochschule.dortmund.bads.model.Storage;
 import de.fachhochschule.dortmund.bads.model.StorageCell;
 import de.fachhochschule.dortmund.bads.model.Area.Point;
 import de.fachhochschule.dortmund.bads.model.StorageCell.Type;
-import de.fachhochschule.dortmund.bads.systems.logic.ITickable;
+import de.fachhochschule.dortmund.bads.systems.logic.utils.ITickable;
 
 public class AGV extends Resource implements ITickable {
 	private static final Logger LOGGER = LogManager.getLogger();
+	
+	// Shared charging queue across all AGV instances
+	private static final ConcurrentLinkedQueue<AGV> CHARGING_QUEUE = new ConcurrentLinkedQueue<>();
+	private static final AtomicInteger AVAILABLE_CHARGING_STATIONS = new AtomicInteger(0);
+	
+	public enum AGVState {
+		IDLE, BUSY, WAITING_FOR_CHARGE, CHARGING, MOVING_TO_CHARGE
+	}
 
 	public enum Operand {
 		PUSH, STOP, MOVE, TAKE, RELEASE, SETUP, CHARGE
@@ -51,12 +61,18 @@ public class AGV extends Resource implements ITickable {
 			Integer.MAX_VALUE);
 
 	private int batteryLevel = 100;
-	private int chargePerTick = 50;
-	private int loseChargePerActionPerTick = 10;
+	private int chargePerTick = 10;
+	private int loseChargePerActionPerTick = 5;
+	private double batteryLowThreshold = 20.0; // Percentage
 	private boolean charging;
+	private AGVState state = AGVState.IDLE;
+	private Point assignedChargingStation;
+	private boolean needsCharging = false;
+	private String agvId;
+	private static AtomicInteger idCounter = new AtomicInteger(0);
 
-	private int ticksPerMovement = 2; // Number of ticks required for each movement
-	private int movementTickCounter = 0; // Counter to track ticks for movement timing
+	private int ticksPerMovement = 1;
+	private int movementTickCounter = 0;
 
 	private Queue<Point> endPoints = new ArrayDeque<>();
 	private Queue<BeveragesBoxOperation> operationsForEndPoints = new ArrayDeque<>();
@@ -67,6 +83,205 @@ public class AGV extends Resource implements ITickable {
 	private Storage storage;
 
 	private Statement<?>[] cachedProgram;
+	
+	public AGV() {
+		this.agvId = "AGV-" + idCounter.incrementAndGet();
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Created new AGV with ID: {}", agvId);
+		}
+	}
+	
+	/**
+	 * Initialize the charging queue system with the number of available charging stations.
+	 * This should be called once during system initialization.
+	 */
+	public static void initializeChargingSystem(int numberOfChargingStations) {
+		AVAILABLE_CHARGING_STATIONS.set(numberOfChargingStations);
+		CHARGING_QUEUE.clear();
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("AGV Charging System initialized with {} charging stations", numberOfChargingStations);
+		}
+	}
+	
+	/**
+	 * Get the current charging queue size.
+	 */
+	public static int getChargingQueueSize() {
+		return CHARGING_QUEUE.size();
+	}
+	
+	/**
+	 * Get the number of available charging stations.
+	 */
+	public static int getAvailableChargingStations() {
+		return AVAILABLE_CHARGING_STATIONS.get();
+	}
+	
+	/**
+	 * Request charging for this AGV. Adds to queue if no stations available.
+	 */
+	public synchronized void requestCharging() {
+		if (state == AGVState.WAITING_FOR_CHARGE || state == AGVState.CHARGING || state == AGVState.MOVING_TO_CHARGE) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("{} already in charging process (state: {})", agvId, state);
+			}
+			return;
+		}
+		
+		needsCharging = true;
+		state = AGVState.WAITING_FOR_CHARGE;
+		
+		if (!CHARGING_QUEUE.contains(this)) {
+			CHARGING_QUEUE.add(this);
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("{} added to charging queue (position: {}, queue size: {})", 
+					agvId, CHARGING_QUEUE.size(), CHARGING_QUEUE.size());
+			}
+		}
+	}
+	
+	/**
+	 * Process the charging queue - attempt to assign charging stations to waiting AGVs.
+	 */
+	private void processChargingQueue() {
+		if (storage == null) {
+			return;
+		}
+		
+		// Only process if we're at the front of the queue and waiting
+		if (state != AGVState.WAITING_FOR_CHARGE) {
+			return;
+		}
+		
+		AGV firstInQueue = CHARGING_QUEUE.peek();
+		if (firstInQueue != this) {
+			return; // Not our turn yet
+		}
+		
+		// Try to find an available charging station
+		Point chargingStationPoint = storage.findAvailableChargingStation();
+		
+		if (chargingStationPoint != null) {
+			// Occupy the station
+			if (storage.occupyChargingStation(chargingStationPoint, this)) {
+				assignedChargingStation = chargingStationPoint;
+				CHARGING_QUEUE.poll(); // Remove from queue
+				state = AGVState.MOVING_TO_CHARGE;
+				
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("{} assigned charging station at {}, moving to charge", 
+						agvId, Storage.pointToNotation(chargingStationPoint));
+				}
+				
+				// Set up movement to charging station
+				endPoints.clear();
+				operationsForEndPoints.clear();
+				endPoints.add(chargingStationPoint);
+				operationsForEndPoints.add(new BeveragesBoxOperation(
+					Storage.pointToNotation(chargingStationPoint), null) {
+					@Override
+					public void execute() {
+						startCharging();
+					}
+				});
+			}
+		}
+	}
+	
+	/**
+	 * Start the charging process.
+	 */
+	private synchronized void startCharging() {
+		if (state == AGVState.MOVING_TO_CHARGE) {
+			charging = true;
+			state = AGVState.CHARGING;
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("{} started charging at station {}, battery: {}%", 
+					agvId, Storage.pointToNotation(assignedChargingStation), batteryLevel);
+			}
+		}
+	}
+	
+	/**
+	 * Complete charging and release the station.
+	 */
+	private synchronized void completeCharging() {
+		if (assignedChargingStation != null && storage != null) {
+			storage.releaseChargingStation(assignedChargingStation);
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("{} completed charging, released station {}, battery: {}%", 
+					agvId, Storage.pointToNotation(assignedChargingStation), batteryLevel);
+			}
+			assignedChargingStation = null;
+		}
+		
+		charging = false;
+		needsCharging = false;
+		state = AGVState.IDLE;
+	}
+	
+	/**
+	 * Check if battery is low and automatically request charging if needed.
+	 */
+	private void checkBatteryLevel() {
+		if (!needsCharging && batteryLevel <= batteryLowThreshold && state == AGVState.IDLE) {
+			if (LOGGER.isWarnEnabled()) {
+				LOGGER.warn("{} battery low ({}%), requesting charging", agvId, batteryLevel);
+			}
+			requestCharging();
+		}
+	}
+	
+	/**
+	 * Get the current AGV state.
+	 */
+	public AGVState getState() {
+		return state;
+	}
+	
+	/**
+	 * Get the AGV ID.
+	 */
+	public String getAgvId() {
+		return agvId;
+	}
+	
+	/**
+	 * Get the current battery level.
+	 */
+	public int getBatteryLevel() {
+		return batteryLevel;
+	}
+	
+	/**
+	 * Set the battery low threshold percentage.
+	 */
+	public void setBatteryLowThreshold(double threshold) {
+		if (threshold < 0 || threshold > 100) {
+			throw new IllegalArgumentException("Threshold must be between 0 and 100");
+		}
+		this.batteryLowThreshold = threshold;
+	}
+	
+	/**
+	 * Set the charge rate per tick.
+	 */
+	public void setChargePerTick(int chargePerTick) {
+		if (chargePerTick <= 0) {
+			throw new IllegalArgumentException("Charge per tick must be positive");
+		}
+		this.chargePerTick = chargePerTick;
+	}
+	
+	/**
+	 * Set the battery drain per action per tick.
+	 */
+	public void setLoseChargePerActionPerTick(int loseChargePerActionPerTick) {
+		if (loseChargePerActionPerTick < 0) {
+			throw new IllegalArgumentException("Charge loss must be non-negative");
+		}
+		this.loseChargePerActionPerTick = loseChargePerActionPerTick;
+	}
 
 	/**
 	 * MOVE point -> label of point 
@@ -221,19 +436,22 @@ public class AGV extends Resource implements ITickable {
 
 	@Override
 	public void onTick(int currentTick) {
+		// Check battery level and request charging if needed
+		checkBatteryLevel();
+		
+		// Process charging queue
+		processChargingQueue();
+		
 		// Handle battery management
 		if (charging) {
 			batteryLevel = Math.min(100, batteryLevel + chargePerTick);
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("AGV charging: battery level now " + batteryLevel + "%");
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("{} charging: battery level now {}%", agvId, batteryLevel);
 			}
 
 			// Stop charging when fully charged
 			if (batteryLevel >= 100) {
-				charging = false;
-				if (LOGGER.isInfoEnabled()) {
-					LOGGER.info("AGV fully charged, stopping charge");
-				}
+				completeCharging();
 			}
 			return; // Don't do anything else while charging
 		}
@@ -241,7 +459,10 @@ public class AGV extends Resource implements ITickable {
 		// Check if we have enough battery to continue
 		if (batteryLevel <= 0) {
 			if (LOGGER.isWarnEnabled()) {
-				LOGGER.warn("AGV battery depleted, cannot perform actions");
+				LOGGER.warn("{} battery depleted, cannot perform actions", agvId);
+			}
+			if (!needsCharging) {
+				requestCharging();
 			}
 			return;
 		}
@@ -257,8 +478,8 @@ public class AGV extends Resource implements ITickable {
 				movementTickCounter = 0;
 				currentPosition = optimalPath.remove(0);
 				batteryLevel = Math.max(0, batteryLevel - loseChargePerActionPerTick);
-				if (LOGGER.isInfoEnabled()) {
-					LOGGER.info("AGV moved to position: " + currentPosition + ", battery: " + batteryLevel + "%");
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("{} moved to position: {}, battery: {}%", agvId, currentPosition, batteryLevel);
 				}
 
 				// If we've reached the end of the current path
@@ -272,11 +493,11 @@ public class AGV extends Resource implements ITickable {
 							operation.execute();
 							batteryLevel = Math.max(0, batteryLevel - loseChargePerActionPerTick);
 							if (LOGGER.isInfoEnabled()) {
-								LOGGER.info("AGV executed operation at position: " + currentPosition + ", battery: "
-										+ batteryLevel + "%");
+								LOGGER.info("{} executed operation at position: {}, battery: {}%",
+									agvId, currentPosition, batteryLevel);
 							}
 						} catch (Exception e) {
-							LOGGER.error("Failed to execute operation: " + e.getMessage(), e);
+							LOGGER.error("{} failed to execute operation: {}", agvId, e.getMessage(), e);
 						}
 					}
 				}
@@ -297,12 +518,12 @@ public class AGV extends Resource implements ITickable {
 				// Reset movement counter when starting a new path
 				movementTickCounter = 0;
 				if (LOGGER.isInfoEnabled()) {
-					LOGGER.info("AGV calculated path to destination: " + destination + ", path length: "
-							+ (optimalPath != null ? optimalPath.size() : 0));
+					LOGGER.info("{} calculated path to destination: {}, path length: {}",
+						agvId, destination, (optimalPath != null ? optimalPath.size() : 0));
 				}
 			} else {
 				if (LOGGER.isWarnEnabled()) {
-					LOGGER.warn("No path found to destination: " + destination);
+					LOGGER.warn("{} no path found to destination: {}", agvId, destination);
 				}
 				// Remove the corresponding operation since we can't reach the destination
 				if (!operationsForEndPoints.isEmpty()) {
