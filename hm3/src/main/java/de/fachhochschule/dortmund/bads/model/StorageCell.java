@@ -13,7 +13,7 @@ public class StorageCell {
 	private static final Logger LOGGER = LogManager.getLogger();
 	
 	public enum Type {
-		AMBIENT, REFRIGERATED, BULK, CHARGING_STATION, ANY
+		AMBIENT, REFRIGERATED, BULK, CHARGING_STATION, CORRIDOR, ANY
 	}
 
 	public final Type TYPE;
@@ -90,11 +90,11 @@ public class StorageCell {
 		if (this.TYPE == Type.ANY) {
 			return true;
 		} 
-		if (this.TYPE == Type.CHARGING_STATION) {
+		if (this.TYPE == Type.CHARGING_STATION || this.TYPE == Type.CORRIDOR) {
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Cannot add box to CHARGING_STATION type storage cell");
+				LOGGER.debug("Cannot add box to {} type storage cell", this.TYPE);
 			}
-			return false; // Cannot store boxes in a charging station
+			return false; // Cannot store boxes in a charging station or corridor
 		}
 		
 		if (!((this.TYPE == Type.AMBIENT && box.getType() == BeveragesBox.Type.AMBIENT)

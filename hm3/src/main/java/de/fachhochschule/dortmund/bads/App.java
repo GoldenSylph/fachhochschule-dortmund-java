@@ -72,35 +72,40 @@ public class App implements Runnable {
 		return graph;
 	}
 	
-	// Helper: Create warehouse storage with specialized cells
-	private Storage createWarehouseWithSpecializedCells(int width, int height, 
+	// Helper: Create warehouse storage with specialized cells and corridors
+	private Storage createWarehouseWithCorridors(int width, int height, 
 			int ambientCells, int refrigeratedCells, int bulkCells,
-			int chargingStations, int loadingDocks, int cellSize) {
+			int chargingStations, int loadingDocks, int corridors, int corridorLength, int cellSize) {
 		Area area = CoreConfiguration.INSTANCE.newArea();
-		area.setGraph(createGrid(width, height));
+		
+		// Create grid graph (all points are navigable)
+		Map<Point, Set<Point>> graph = createGrid(width, height);
+		area.setGraph(graph);
 		area.setStart(0, 0);
 		
-		int totalCells = ambientCells + refrigeratedCells + bulkCells + chargingStations + loadingDocks;
-		StorageCell[] cells = new StorageCell[totalCells];
+		int totalCells = ambientCells + refrigeratedCells + bulkCells + chargingStations + loadingDocks + corridors;
+		int totalGridPoints = width * height;
 		
+		if (totalCells != totalGridPoints) {
+			LOGGER.warn("Cell count mismatch: total cells={}, grid points={}", totalCells, totalGridPoints);
+		}
+		
+		StorageCell[] cells = new StorageCell[totalGridPoints];
 		int index = 0;
 		
 		// Ambient storage cells (room temperature beverages)
-		// Water, soft drinks, energy drinks, etc.
 		for (int i = 0; i < ambientCells; i++) {
 			cells[index++] = CoreConfiguration.INSTANCE.newStorageCell(
 				StorageCell.Type.AMBIENT, cellSize, cellSize, cellSize + 30);
 		}
 		
 		// Refrigerated storage cells (temperature-controlled)
-		// Milk, juice, yogurt drinks, etc.
 		for (int i = 0; i < refrigeratedCells; i++) {
 			cells[index++] = CoreConfiguration.INSTANCE.newStorageCell(
 				StorageCell.Type.REFRIGERATED, cellSize, cellSize, cellSize + 30);
 		}
 		
 		// Bulk storage cells (large items)
-		// Kegs, large containers, etc.
 		for (int i = 0; i < bulkCells; i++) {
 			cells[index++] = CoreConfiguration.INSTANCE.newStorageCell(
 				StorageCell.Type.BULK, cellSize + 40, cellSize + 40, cellSize + 60);
@@ -117,6 +122,16 @@ public class App implements Runnable {
 				StorageCell.Type.ANY, cellSize + 80, cellSize + 80, cellSize + 80);
 		}
 		
+		// Corridor cells (navigation only, no storage)
+		for (int i = 0; i < corridors; i++) {
+			cells[index++] = CoreConfiguration.INSTANCE.newStorageCell(
+				StorageCell.Type.CORRIDOR, corridorLength, corridorLength, corridorLength);
+		}
+		
+		LOGGER.info("Created warehouse: {}x{} grid with {} storage cells ({} ambient, {} refrigerated, {} bulk), {} charging, {} loading, {} corridors", 
+			width, height, ambientCells + refrigeratedCells + bulkCells, 
+			ambientCells, refrigeratedCells, bulkCells, chargingStations, loadingDocks, corridors);
+		
 		return CoreConfiguration.INSTANCE.newStorage(area, cells);
 	}
 	
@@ -132,74 +147,88 @@ public class App implements Runnable {
 		LOGGER.info("Setting up warehouses...");
 		
 		/*
-		 * WAREHOUSE 1 LAYOUT (5x4 grid = 20 cells):
+		 * WAREHOUSE 1 LAYOUT (7x5 grid = 35 cells):
 		 * 
-		 *     0    1    2    3    4
-		 *   ┌────┬────┬────┬────┬────┐
-		 * 0 │ A  │ A  │ A  │ A  │ A  │  A = Ambient Storage (8 cells)
-		 *   │1A  │2A  │3A  │4A  │5A  │  R = Refrigerated Storage (5 cells)
-		 *   ├────┼────┼────┼────┼────┤  B = Bulk Storage (2 cells)
-		 * 1 │ A  │ A  │ A  │ R  │ R  │  C = Charging Station (3 cells)
-		 *   │1B  │2B  │3B  │4B  │5B  │  L = Loading Dock (2 cells)
-		 *   ├────┼────┼────┼────┼────┤
-		 * 2 │ R  │ R  │ R  │ B  │ B  │  Cell sizes:
-		 *   │1C  │2C  │3C  │4C  │5C  │  - Ambient: 120x120x150
-		 *   ├────┼────┼────┼────┼────┤  - Refrigerated: 120x120x150
-		 * 3 │ C  │ C  │ C  │ L  │ L  │  - Bulk: 160x160x180
-		 *   │1D  │2D  │3D  │4D  │5D  │  - Loading: 200x200x200
-		 *   └────┴────┴────┴────┴────┘
+		 *     0    1    2    3    4    5    6
+		 *   ┌────┬────┬────┬────┬────┬────┬────┐
+		 * 0 │ A  │ A  │ ═  │ R  │ R  │ ═  │ B  │  A = Ambient Storage (6 cells)
+		 *   │1A  │2A  │3A  │4A  │5A  │6A  │7A  │  R = Refrigerated Storage (4 cells)
+		 *   ├────┼────┼────┼────┼────┼────┼────┤  B = Bulk Storage (2 cells)
+		 * 1 │ A  │ A  │ ═  │ R  │ R  │ ═  │ B  │  C = Charging Station (3 cells)
+		 *   │1B  │2B  │3B  │4B  │5B  │6B  │7B  │  L = Loading Dock (2 cells)
+		 *   ├────┼────┼────┼────┼────┼────┼────┤  ═ = Corridor (18 cells)
+		 * 2 │ A  │ A  │ ═  │ ═  │ ═  │ ═  │ ═  │
+		 *   │1C  │2C  │3C  │4C  │5C  │6C  │7C  │  Cell sizes:
+		 *   ├────┼────┼────┼────┼────┼────┼────┤  - Ambient: 120x120x150
+		 * 3 │ C  │ C  │ ═  │ C  │ ═  │ L  │ L  │  - Refrigerated: 120x120x150
+		 *   │1D  │2D  │3D  │4D  │5D  │6D  │7D  │  - Bulk: 160x160x180
+		 *   ├────┼────┼────┼────┼────┼────┼────┤  - Loading: 200x200x200
+		 * 4 │ ═  │ ═  │ ═  │ ═  │ ═  │ ═  │ ═  │  - Corridor: 50x50x50
+		 *   │1E  │2E  │3E  │4E  │5E  │6E  │7E  │
+		 *   └────┴────┴────┴────┴────┴────┴────┘
 		 * 
 		 * Cell Array Mapping (index → notation):
-		 * Ambient (0-7):       0-4=1A-5A, 5-7=1B-3B
-		 * Refrigerated (8-12): 8-9=4B-5B, 10-12=1C-3C
-		 * Bulk (13-14):        13-14=4C-5C
-		 * Charging (15-17):    15-17=1D-3D
-		 * Loading (18-19):     18-19=4D-5D
+		 * Ambient (0-5):        0-1=1A-2A, 2-3=1B-2B, 4-5=1C-2C
+		 * Refrigerated (6-9):   6-7=4A-5A, 8-9=4B-5B
+		 * Bulk (10-11):         10-11=7A-7B
+		 * Charging (12-14):     12-13=1D-2D, 14=4D
+		 * Loading (15-16):      15-16=6D-7D
+		 * Corridors (17-34):    17=3A, 18=6A, 19=3B, 20=6B, 21-25=3C-7C,
+		 *                       26=3D, 27=5D, 28-34=1E-7E
 		 * 
 		 * Purpose:
-		 * - Ambient cells for water, cola, sprite, energy drinks
-		 * - Refrigerated cells for milk, juice, yogurt drinks
-		 * - Bulk cells for kegs and large containers
+		 * - Central and perimeter corridors for AGV movement
+		 * - Ambient zone (left side): water, cola, sprite, energy drinks
+		 * - Refrigerated zone (center): milk, juice, yogurt drinks
+		 * - Bulk zone (right side): kegs and large containers
+		 * - Loading docks at bottom-right for truck access
 		 * 
 		 * AGVs: 3 assigned
-		 * Total storage capacity: 15 beverage cells + 2 loading docks
+		 * Total: 17 storage cells + 18 corridor cells
 		 */
-		warehouse1 = createWarehouseWithSpecializedCells(5, 4, 8, 5, 2, 3, 2, 120);
+		warehouse1 = createWarehouseWithCorridors(7, 5, 6, 4, 2, 3, 2, 18, 50, 120);
 		CoreConfiguration.INSTANCE.initializeAGVChargingSystem(warehouse1);
-		LOGGER.info("Warehouse 1: 20 cells (8 ambient + 5 refrigerated + 2 bulk + 3 charging + 2 loading)");
+		LOGGER.info("Warehouse 1: 35 cells (6 ambient + 4 refrigerated + 2 bulk + 3 charging + 2 loading + 18 corridors)");
 		
 		/*
-		 * WAREHOUSE 2 LAYOUT (5x3 grid = 15 cells):
+		 * WAREHOUSE 2 LAYOUT (6x4 grid = 24 cells):
 		 * 
-		 *     0    1    2    3    4
-		 *   ┌────┬────┬────┬────┬────┐
-		 * 0 │ A  │ A  │ A  │ A  │ R  │  A = Ambient Storage (6 cells)
-		 *   │1A  │2A  │3A  │4A  │5A  │  R = Refrigerated Storage (3 cells)
-		 *   ├────┼────┼────┼────┼────┤  B = Bulk Storage (1 cell)
-		 * 1 │ A  │ A  │ R  │ R  │ B  │  C = Charging Station (2 cells)
-		 *   │1B  │2B  │3B  │4B  │5B  │  L = Loading Dock (3 cells)
-		 *   ├────┼────┼────┼────┼────┤
-		 * 2 │ C  │ C  │ L  │ L  │ L  │  Cell sizes:
-		 *   │1C  │2C  │3C  │4C  │5C  │  - Ambient: 100x100x130
-		 *   └────┴────┴────┴────┴────┘  - Refrigerated: 100x100x130
-		 *                                 - Bulk: 140x140x160
-		 * Cell Array Mapping (index → notation):  - Loading: 180x180x180
-		 * Ambient (0-5):       0-3=1A-4A, 4-5=1B-2B
-		 * Refrigerated (6-8):  6=5A, 7-8=3B-4B
-		 * Bulk (9):            9=5B
-		 * Charging (10-11):    10-11=1C-2C
-		 * Loading (12-14):     12-14=3C-5C
+		 *     0    1    2    3    4    5
+		 *   ┌────┬────┬────┬────┬────┬────┐
+		 * 0 │ A  │ A  │ ═  │ R  │ R  │ B  │  A = Ambient Storage (4 cells)
+		 *   │1A  │2A  │3A  │4A  │5A  │6A  │  R = Refrigerated Storage (3 cells)
+		 *   ├────┼────┼────┼────┼────┼────┤  B = Bulk Storage (1 cell)
+		 * 1 │ A  │ A  │ ═  │ R  │ ═  │ ═  │  C = Charging Station (2 cells)
+		 *   │1B  │2B  │3B  │4B  │5B  │6B  │  L = Loading Dock (3 cells)
+		 *   ├────┼────┼────┼────┼────┼────┤  ═ = Corridor (11 cells)
+		 * 2 │ C  │ C  │ ═  │ ═  │ ═  │ L  │
+		 *   │1C  │2C  │3C  │4C  │5C  │6C  │  Cell sizes:
+		 *   ├────┼────┼────┼────┼────┼────┤  - Ambient: 100x100x130
+		 * 3 │ ═  │ ═  │ ═  │ L  │ L  │ ═  │  - Refrigerated: 100x100x130
+		 *   │1D  │2D  │3D  │4D  │5D  │6D  │  - Bulk: 140x140x160
+		 *   └────┴────┴────┴────┴────┴────┘  - Loading: 180x180x180
+		 *                                      - Corridor: 50x50x50
+		 * Cell Array Mapping (index → notation):
+		 * Ambient (0-3):       0-1=1A-2A, 2-3=1B-2B
+		 * Refrigerated (4-6):  4-5=4A-5A, 6=4B
+		 * Bulk (7):            7=6A
+		 * Charging (8-9):      8-9=1C-2C
+		 * Loading (10-12):     10=6C, 11-12=4D-5D
+		 * Corridors (13-23):   13=3A, 14-15=3B,5B-6B, 16-18=3C-5C,
+		 *                      19-21=1D-3D, 22=6D
 		 * 
 		 * Purpose:
-		 * - Ambient cells for water, cola, sprite, energy drinks
-		 * - Refrigerated cells for milk, juice, yogurt drinks
-		 * - Bulk cell for kegs and large containers
+		 * - Central corridor for AGV movement throughout warehouse
+		 * - Ambient zone (left): water, cola, sprite, energy drinks
+		 * - Refrigerated zone (center-right): milk, juice, yogurt
+		 * - Bulk storage (top-right): kegs
+		 * - Loading docks at bottom for truck access
 		 * 
 		 * AGVs: 2 assigned
-		 * Total storage capacity: 10 beverage cells + 3 loading docks
+		 * Total: 13 storage cells + 11 corridor cells
 		 */
-		warehouse2 = createWarehouseWithSpecializedCells(5, 3, 6, 3, 1, 2, 3, 100);
-		LOGGER.info("Warehouse 2: 15 cells (6 ambient + 3 refrigerated + 1 bulk + 2 charging + 3 loading)");
+		warehouse2 = createWarehouseWithCorridors(6, 4, 4, 3, 1, 2, 3, 11, 50, 100);
+		LOGGER.info("Warehouse 2: 24 cells (4 ambient + 3 refrigerated + 1 bulk + 2 charging + 3 loading + 11 corridors)");
 	}
 	
 	private void setupTrucks() {
