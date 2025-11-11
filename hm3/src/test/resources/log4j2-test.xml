@@ -6,12 +6,12 @@
 			<PatternLayout pattern="%d{HH:mm:ss} [%t] %5p %c{1} - %m%n"/>
 		</Console>
 		<!-- File appender for test runs under ./logs (or ${sys:log.path}) -->
-		<File name="FILE" fileName="${sys:log.path:-logs}/hm1-test.log" append="true">
+		<File name="FILE" fileName="${sys:log.path:-logs}/hm3-test.log" append="true">
 			<PatternLayout pattern="%d{HH:mm:ss} [%t] %5p %c{1} - %m%n"/>
 		</File>
 	</Appenders>
 	<Loggers>
-		<Logger name="de.fachhochschule.dortmund.bads.hm1" level="INFO"/>
+		<Logger name="de.fachhochschule.dortmund.bads" level="INFO"/>
 		<Root level="WARN">
 			<AppenderRef ref="CONSOLE" />
 			<AppenderRef ref="FILE" />

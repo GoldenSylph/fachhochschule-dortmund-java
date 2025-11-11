@@ -6,12 +6,12 @@
 			<PatternLayout pattern="%d{HH:mm:ss} [%t] %5p %c{1} - %m%n"/>
 		</Console>
 		<!-- File appender to also write logs to a file under ./logs -->
-		<File name="FILE" fileName="${sys:log.path:-logs}/hm1.log" append="true">
+		<File name="FILE" fileName="${sys:log.path:-logs}/hm3.log" append="true">
 			<PatternLayout pattern="%d{HH:mm:ss} [%t] %5p %c{1} - %m%n"/>
 		</File>
 	</Appenders>
 	<Loggers>
-		<Logger name="de.fachhochschule.dortmund.bads.hm1" level="INFO"/>
+		<Logger name="de.fachhochschule.dortmund.bads" level="INFO"/>
 		<Root level="WARN">
 			<AppenderRef ref="CONSOLE" />
 			<AppenderRef ref="FILE" />

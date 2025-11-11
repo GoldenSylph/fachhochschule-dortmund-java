@@ -147,4 +147,68 @@
 - `ObservabilityConfiguration` - Logging and monitoring configuration
 - `GUIConfiguration` - GUI settings
 
+**Unit Tests:**
+HM3 includes comprehensive unit and integration tests covering all major components:
+
+**⭐ HOMEWORK 3 ASSIGNMENT TESTS:**
+- `Homework3UnitTests` - **Official Homework 3 test suite (381 lines)**
+  - **Test 1:** Simultaneous AGV Charging with Limited Resources
+    - Tests 8 AGVs competing for 3 charging stations
+    - Validates queue behavior and resource contention
+    - Ensures all AGVs eventually charge to 100%
+  - **Test 2:** Parallel Charging with Random Arrivals & Wait Time
+    - Tests 12 AGVs arriving at random intervals (0-30 seconds)
+    - Implements 15-minute maximum wait time (900 ticks)
+    - AGVs leave queue if wait exceeds threshold
+    - Validates realistic charging station management
+  - **Test 3:** M Simultaneous Tasks with K Available AGVs
+    - Tests 15 concurrent tasks with only 5 AGVs
+    - Tasks compete for limited AGV resources
+    - Validates task assignment and completion
+    - Tests resource allocation under contention
+
+*Unit Tests (de.fachhochschule.dortmund.bads):*
+- `AppTest` - Application entry point tests
+- `AreaTest` - Area functionality tests
+- `StorageTest` - Storage operations tests
+- `StorageCellTest` - Storage cell tests
+- `TaskTest` - Task management tests
+- `AGVTest` - AGV resource tests
+- `TruckTest` - Truck resource tests
+- `BeveragesBoxTest` - Beverages box tests
+- `ResourceTest` - Generic resource tests
+- `ProcessTest` - Process execution tests
+- `OperationTest` - Operation tests
+- `SystemsTest` - Systems functionality tests
+- `ClockingSimulationTest` - Time simulation tests
+
+*System Management Tests:*
+- `TaskManagementTest` - Task management system tests
+- `StorageManagementTest` - Storage management tests
+- `ObservationTest` - Observation system tests
+- `ArchiveManagerTest` - Archive management tests
+
+*Configuration Tests:*
+- `CoreConfigurationTest` - Core configuration tests
+- `ObservabilityConfigurationTest` - Observability config tests
+- `GUIConfigurationTest` - GUI configuration tests
+- `TaskManagementConfigurationTest` - Task management config tests
+- `StorageManagementConfigurationTest` - Storage management config tests
+- `AGVManagementConfigurationTest` - AGV management config tests
+
+*Integration Tests:*
+- `FullSystemIntegrationTest` - Complete system integration testing (340 lines)
+- `ParallelSystemsIntegrationTest` - Parallel systems and concurrency testing (660 lines)
+
+*Utility Tests:*
+- `SearchResultTest` - Search result functionality tests
+- `ArchiveCommandTest` - Archive command tests
+
+**To run specific test suites:**
+- All tests: `mvn test`
+- **Homework 3 official tests:** `mvn test -Dtest=Homework3UnitTests`
+- Specific test class: `mvn test -Dtest=FullSystemIntegrationTest`
+- Integration tests only: `mvn test -Dtest=*IntegrationTest`
+- Single test method: `mvn test -Dtest=Homework3UnitTests#testSimultaneousAGVCharging`
+
 
