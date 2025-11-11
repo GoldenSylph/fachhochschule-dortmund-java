@@ -72,28 +72,48 @@ public class App implements Runnable {
 		return graph;
 	}
 	
-	// Helper: Create warehouse storage
-	private Storage createWarehouse(int width, int height, int storageCells, int chargingStations, 
-									int loadingDocks, int cellSize) {
+	// Helper: Create warehouse storage with specialized cells
+	private Storage createWarehouseWithSpecializedCells(int width, int height, 
+			int ambientCells, int refrigeratedCells, int bulkCells,
+			int chargingStations, int loadingDocks, int cellSize) {
 		Area area = CoreConfiguration.INSTANCE.newArea();
 		area.setGraph(createGrid(width, height));
 		area.setStart(0, 0);
 		
-		int totalCells = storageCells + chargingStations + loadingDocks;
+		int totalCells = ambientCells + refrigeratedCells + bulkCells + chargingStations + loadingDocks;
 		StorageCell[] cells = new StorageCell[totalCells];
 		
-		// Storage cells
-		for (int i = 0; i < storageCells; i++) {
-			cells[i] = CoreConfiguration.INSTANCE.newStorageCell(
-				StorageCell.Type.ANY, cellSize, cellSize, cellSize + 30);
+		int index = 0;
+		
+		// Ambient storage cells (room temperature beverages)
+		// Water, soft drinks, energy drinks, etc.
+		for (int i = 0; i < ambientCells; i++) {
+			cells[index++] = CoreConfiguration.INSTANCE.newStorageCell(
+				StorageCell.Type.AMBIENT, cellSize, cellSize, cellSize + 30);
 		}
+		
+		// Refrigerated storage cells (temperature-controlled)
+		// Milk, juice, yogurt drinks, etc.
+		for (int i = 0; i < refrigeratedCells; i++) {
+			cells[index++] = CoreConfiguration.INSTANCE.newStorageCell(
+				StorageCell.Type.REFRIGERATED, cellSize, cellSize, cellSize + 30);
+		}
+		
+		// Bulk storage cells (large items)
+		// Kegs, large containers, etc.
+		for (int i = 0; i < bulkCells; i++) {
+			cells[index++] = CoreConfiguration.INSTANCE.newStorageCell(
+				StorageCell.Type.BULK, cellSize + 40, cellSize + 40, cellSize + 60);
+		}
+		
 		// Charging stations
-		for (int i = storageCells; i < storageCells + chargingStations; i++) {
-			cells[i] = CoreConfiguration.INSTANCE.newChargingStation();
+		for (int i = 0; i < chargingStations; i++) {
+			cells[index++] = CoreConfiguration.INSTANCE.newChargingStation();
 		}
-		// Loading docks (larger cells)
-		for (int i = storageCells + chargingStations; i < totalCells; i++) {
-			cells[i] = CoreConfiguration.INSTANCE.newStorageCell(
+		
+		// Loading docks (any type allowed, larger cells)
+		for (int i = 0; i < loadingDocks; i++) {
+			cells[index++] = CoreConfiguration.INSTANCE.newStorageCell(
 				StorageCell.Type.ANY, cellSize + 80, cellSize + 80, cellSize + 80);
 		}
 		
@@ -114,41 +134,72 @@ public class App implements Runnable {
 		/*
 		 * WAREHOUSE 1 LAYOUT (5x4 grid = 20 cells):
 		 * 
-		 *     0   1   2   3   4
-		 *   ┌───┬───┬───┬───┬───┐
-		 * 0 │ S │ S │ S │ S │ S │  S = Storage Cell (15 total)
-		 *   ├───┼───┼───┼───┼───┤  C = Charging Station (3 total)
-		 * 1 │ S │ S │ S │ S │ S │  L = Loading Dock (2 total)
-		 *   ├───┼───┼───┼───┼───┤
-		 * 2 │ S │ S │ S │ S │ S │  Cell size: 120x120x150 (storage)
-		 *   ├───┼───┼───┼───┼───┤               200x200x200 (loading)
-		 * 3 │ C │ C │ C │ L │ L │
-		 *   └───┴───┴───┴───┴───┘
+		 *     0    1    2    3    4
+		 *   ┌────┬────┬────┬────┬────┐
+		 * 0 │ A  │ A  │ A  │ A  │ A  │  A = Ambient Storage (8 cells)
+		 *   │1A  │2A  │3A  │4A  │5A  │  R = Refrigerated Storage (5 cells)
+		 *   ├────┼────┼────┼────┼────┤  B = Bulk Storage (2 cells)
+		 * 1 │ A  │ A  │ A  │ R  │ R  │  C = Charging Station (3 cells)
+		 *   │1B  │2B  │3B  │4B  │5B  │  L = Loading Dock (2 cells)
+		 *   ├────┼────┼────┼────┼────┤
+		 * 2 │ R  │ R  │ R  │ B  │ B  │  Cell sizes:
+		 *   │1C  │2C  │3C  │4C  │5C  │  - Ambient: 120x120x150
+		 *   ├────┼────┼────┼────┼────┤  - Refrigerated: 120x120x150
+		 * 3 │ C  │ C  │ C  │ L  │ L  │  - Bulk: 160x160x180
+		 *   │1D  │2D  │3D  │4D  │5D  │  - Loading: 200x200x200
+		 *   └────┴────┴────┴────┴────┘
+		 * 
+		 * Cell Array Mapping (index → notation):
+		 * Ambient (0-7):       0-4=1A-5A, 5-7=1B-3B
+		 * Refrigerated (8-12): 8-9=4B-5B, 10-12=1C-3C
+		 * Bulk (13-14):        13-14=4C-5C
+		 * Charging (15-17):    15-17=1D-3D
+		 * Loading (18-19):     18-19=4D-5D
+		 * 
+		 * Purpose:
+		 * - Ambient cells for water, cola, sprite, energy drinks
+		 * - Refrigerated cells for milk, juice, yogurt drinks
+		 * - Bulk cells for kegs and large containers
 		 * 
 		 * AGVs: 3 assigned
-		 * Capacity: 15 storage + 2 loading = 17 beverage storage locations
+		 * Total storage capacity: 15 beverage cells + 2 loading docks
 		 */
-		warehouse1 = createWarehouse(5, 4, 15, 3, 2, 120);
+		warehouse1 = createWarehouseWithSpecializedCells(5, 4, 8, 5, 2, 3, 2, 120);
 		CoreConfiguration.INSTANCE.initializeAGVChargingSystem(warehouse1);
-		LOGGER.info("Warehouse 1: 20 cells (15 storage + 3 charging + 2 loading)");
+		LOGGER.info("Warehouse 1: 20 cells (8 ambient + 5 refrigerated + 2 bulk + 3 charging + 2 loading)");
 		
 		/*
 		 * WAREHOUSE 2 LAYOUT (5x3 grid = 15 cells):
 		 * 
-		 *     0   1   2   3   4
-		 *   ┌───┬───┬───┬───┬───┐
-		 * 0 │ S │ S │ S │ S │ S │  S = Storage Cell (10 total)
-		 *   ├───┼───┼───┼───┼───┤  C = Charging Station (2 total)
-		 * 1 │ S │ S │ S │ S │ S │  L = Loading Dock (3 total)
-		 *   ├───┼───┼───┼───┼───┤
-		 * 2 │ C │ C │ L │ L │ L │  Cell size: 100x100x130 (storage)
-		 *   └───┴───┴───┴───┴───┘               180x180x180 (loading)
+		 *     0    1    2    3    4
+		 *   ┌────┬────┬────┬────┬────┐
+		 * 0 │ A  │ A  │ A  │ A  │ R  │  A = Ambient Storage (6 cells)
+		 *   │1A  │2A  │3A  │4A  │5A  │  R = Refrigerated Storage (3 cells)
+		 *   ├────┼────┼────┼────┼────┤  B = Bulk Storage (1 cell)
+		 * 1 │ A  │ A  │ R  │ R  │ B  │  C = Charging Station (2 cells)
+		 *   │1B  │2B  │3B  │4B  │5B  │  L = Loading Dock (3 cells)
+		 *   ├────┼────┼────┼────┼────┤
+		 * 2 │ C  │ C  │ L  │ L  │ L  │  Cell sizes:
+		 *   │1C  │2C  │3C  │4C  │5C  │  - Ambient: 100x100x130
+		 *   └────┴────┴────┴────┴────┘  - Refrigerated: 100x100x130
+		 *                                 - Bulk: 140x140x160
+		 * Cell Array Mapping (index → notation):  - Loading: 180x180x180
+		 * Ambient (0-5):       0-3=1A-4A, 4-5=1B-2B
+		 * Refrigerated (6-8):  6=5A, 7-8=3B-4B
+		 * Bulk (9):            9=5B
+		 * Charging (10-11):    10-11=1C-2C
+		 * Loading (12-14):     12-14=3C-5C
+		 * 
+		 * Purpose:
+		 * - Ambient cells for water, cola, sprite, energy drinks
+		 * - Refrigerated cells for milk, juice, yogurt drinks
+		 * - Bulk cell for kegs and large containers
 		 * 
 		 * AGVs: 2 assigned
-		 * Capacity: 10 storage + 3 loading = 13 beverage storage locations
+		 * Total storage capacity: 10 beverage cells + 3 loading docks
 		 */
-		warehouse2 = createWarehouse(5, 3, 10, 2, 3, 100);
-		LOGGER.info("Warehouse 2: 15 cells (10 storage + 2 charging + 3 loading)");
+		warehouse2 = createWarehouseWithSpecializedCells(5, 3, 6, 3, 1, 2, 3, 100);
+		LOGGER.info("Warehouse 2: 15 cells (6 ambient + 3 refrigerated + 1 bulk + 2 charging + 3 loading)");
 	}
 	
 	private void setupTrucks() {
