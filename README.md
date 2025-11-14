@@ -60,7 +60,7 @@
 * Package with the sources `de.fachhochschule.dortmund.bads.hm1.bilyaminu;`
 1) Clone the repository.
 2) Open a folder inside the root directory named as `hm1` in Eclipse IDE.
-3) Run the ArchiveManager.java and ArchiveManagerTest.java inside `de.fachhochschule.dortmund.bads.hm1.bilyaminu`.
+3) Run the `ArchiveManager.java` and `ArchiveManagerTest.java` inside `de.fachhochschule.dortmund.bads.hm1.bilyaminu`.
 
 ### GROUP HOMEWORKS
 
