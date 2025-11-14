@@ -1,0 +1,434 @@
+package de.fachhochschule.dortmund.bads.model;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import de.fachhochschule.dortmund.bads.exceptions.InvalidCoordinatesException;
+import de.fachhochschule.dortmund.bads.exceptions.InvalidNotationException;
+import de.fachhochschule.dortmund.bads.exceptions.StorageCellMismatchException;
+import de.fachhochschule.dortmund.bads.model.Area.Point;
+import de.fachhochschule.dortmund.bads.resources.AGV;
+
+public class Storage {
+	private static final Logger LOGGER = LogManager.getLogger();
+
+	public final Area AREA;
+	private final Map<Point, StorageCell> CELLS;
+	private Point cityPosition; // Position of warehouse in the city grid
+
+	public Storage(Area area, StorageCell[] cells) {
+		this.AREA = area;
+		this.CELLS = new HashMap<>();
+		this.cityPosition = null; // Default: no city position set
+		Set<Point> places = this.AREA.getAdjacencyMap().keySet();
+		if (places.size() != cells.length) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Mismatch between storage cells ({}) and area places ({})", cells.length, places.size());
+			}
+			throw new StorageCellMismatchException(places.size(), cells.length);
+		}
+		int i = 0;
+		for (Point place : places) {
+			this.CELLS.put(place, cells[i++]);
+		}
+		
+		// Log charging station locations
+		List<Point> chargingStations = getChargingStationLocations();
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Storage initialized with {} cells, {} charging stations at: {}", 
+					this.CELLS.size(), chargingStations.size(), 
+					chargingStations.stream().map(Storage::pointToNotation).collect(Collectors.joining(", ")));
+		}
+	}
+	
+	/**
+	 * Get all storage cells in the storage.
+	 */
+	public Map<Point, StorageCell> getAllStorages() {
+		return new HashMap<>(CELLS);
+	}
+	
+	/**
+	 * Get all charging station locations in the storage.
+	 */
+	public List<Point> getChargingStationLocations() {
+		return CELLS.entrySet().stream()
+				.filter(entry -> entry.getValue().TYPE == StorageCell.Type.CHARGING_STATION)
+				.map(Map.Entry::getKey)
+				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Get all charging stations (cells).
+	 */
+	public List<StorageCell> getChargingStations() {
+		return CELLS.values().stream()
+				.filter(cell -> cell.TYPE == StorageCell.Type.CHARGING_STATION)
+				.collect(Collectors.toList());
+	}
+	
+	/**
+	 * Find an available (unoccupied) charging station.
+	 * @return Point location of available charging station, or null if none available
+	 */
+	public Point findAvailableChargingStation() {
+		for (Map.Entry<Point, StorageCell> entry : CELLS.entrySet()) {
+			StorageCell cell = entry.getValue();
+			if (cell.TYPE == StorageCell.Type.CHARGING_STATION && !cell.isOccupiedByAGV()) {
+				Point location = entry.getKey();
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Found available charging station at {}", pointToNotation(location));
+				}
+				return location;
+			}
+		}
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("No available charging stations found");
+		}
+		return null;
+	}
+	
+	/**
+	 * Occupy a charging station with an AGV.
+	 */
+	public boolean occupyChargingStation(Point location, AGV agv) {
+		StorageCell cell = CELLS.get(location);
+		if (cell == null) {
+			LOGGER.warn("No cell found at location {}", pointToNotation(location));
+			return false;
+		}
+		if (cell.TYPE != StorageCell.Type.CHARGING_STATION) {
+			LOGGER.warn("Cell at {} is not a charging station", pointToNotation(location));
+			return false;
+		}
+		return cell.occupyWithAGV(agv);
+	}
+	
+	/**
+	 * Release a charging station from an AGV.
+	 */
+	public boolean releaseChargingStation(Point location) {
+		StorageCell cell = CELLS.get(location);
+		if (cell == null) {
+			LOGGER.warn("No cell found at location {}", pointToNotation(location));
+			return false;
+		}
+		if (cell.TYPE != StorageCell.Type.CHARGING_STATION) {
+			LOGGER.warn("Cell at {} is not a charging station", pointToNotation(location));
+			return false;
+		}
+		return cell.releaseAGV();
+	}
+	
+	/**
+	 * Get the total number of charging stations.
+	 */
+	public int getChargingStationCount() {
+		return (int) CELLS.values().stream()
+				.filter(cell -> cell.TYPE == StorageCell.Type.CHARGING_STATION)
+				.count();
+	}
+	
+	/**
+	 * Get the number of available (unoccupied) charging stations.
+	 */
+	public int getAvailableChargingStationCount() {
+		return (int) CELLS.values().stream()
+				.filter(cell -> cell.TYPE == StorageCell.Type.CHARGING_STATION && !cell.isOccupiedByAGV())
+				.count();
+	}
+
+	public StorageCell getCellByNotation(String notation) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Getting cell by notation: {}", notation);
+		}
+		Point point = notationToPoint(notation);
+		StorageCell cell = CELLS.get(point);
+		if (cell == null && LOGGER.isWarnEnabled()) {
+			LOGGER.warn("No cell found for notation: {} (point: {})", notation, point);
+		}
+		return cell;
+	}
+
+	public StorageCell getCellByPoint(Point point) {
+		return CELLS.get(point);
+	}
+
+	/**
+	 * Converts a Point with (x, y) coordinates to chess-like notation.
+	 * x-coordinate becomes the number (1-based), y-coordinate becomes the letter(s).
+	 * Examples: (1, 0) -> "1A", (10, 25) -> "10Z", (5, 26) -> "5AA"
+	 * 
+	 * @param point the Point to convert
+	 * @return the chess-like notation string
+	 * @throws IllegalArgumentException if point is null or coordinates are negative
+	 */
+	public static String pointToNotation(Point point) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Converting point to notation: {}", point);
+		}
+		
+		if (point == null) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Point cannot be null");
+			}
+			throw new InvalidNotationException("null", "Point cannot be null");
+		}
+		if (point.x() < 0 || point.y() < 0) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Coordinates must be non-negative: x={}, y={}", point.x(), point.y());
+			}
+			throw new InvalidCoordinatesException(point.x(), point.y(), "Coordinates must be non-negative");
+		}
+		
+		int number = point.x() + 1; // Convert to 1-based
+		String letters = convertToLetters(point.y());
+		String notation = number + letters;
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Point {} converted to notation: {}", point, notation);
+		}
+		return notation;
+	}
+
+	/**
+	 * Converts chess-like notation to a Point with (x, y) coordinates.
+	 * Number part becomes x-coordinate (0-based), letter part becomes y-coordinate.
+	 * Examples: "1A" -> (0, 0), "10Z" -> (9, 25), "5AA" -> (4, 26)
+	 * 
+	 * @param notation the chess-like notation string
+	 * @return the Point with corresponding coordinates
+	 * @throws IllegalArgumentException if notation is null, empty, or invalid format
+	 */
+	public static Point notationToPoint(String notation) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Converting notation to point: {}", notation);
+		}
+		
+		if (notation == null || notation.isEmpty()) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Notation cannot be null or empty");
+			}
+			throw new InvalidNotationException(notation, "Notation cannot be null or empty");
+		}
+		
+		// Find where letters start
+		int letterStart = 0;
+		while (letterStart < notation.length() && Character.isDigit(notation.charAt(letterStart))) {
+			letterStart++;
+		}
+		
+		if (letterStart == 0 || letterStart == notation.length()) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Invalid notation format: must contain both numbers and letters: {}", notation);
+			}
+			throw new InvalidNotationException(notation, "Must contain both numbers and letters");
+		}
+		
+		String numberPart = notation.substring(0, letterStart);
+		String letterPart = notation.substring(letterStart);
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Parsed notation '{}' into number part '{}' and letter part '{}'", notation, numberPart, letterPart);
+		}
+		
+		try {
+			int number = Integer.parseInt(numberPart);
+			if (number <= 0) {
+				if (LOGGER.isErrorEnabled()) {
+					LOGGER.error("Number part must be positive: {}", number);
+				}
+				throw new InvalidNotationException(notation, "Number part must be positive");
+			}
+			
+			int x = number - 1; // Convert to 0-based
+			int y = convertFromLetters(letterPart);
+			Point point = new Point(x, y);
+			
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Notation '{}' converted to point: {}", notation, point);
+			}
+			return point;
+		} catch (NumberFormatException e) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Invalid number format in notation '{}': {}", notation, e.getMessage());
+			}
+			throw new InvalidNotationException(notation, "Invalid number format: " + e.getMessage());
+		}
+	}
+
+	private static String convertToLetters(int number) {
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Converting number to letters: {}", number);
+		}
+		
+		if (number < 0) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Number must be non-negative: {}", number);
+			}
+			throw new IllegalArgumentException("Number must be non-negative");
+		}
+		
+		StringBuilder result = new StringBuilder();
+		int originalNumber = number;
+		do {
+			result.insert(0, (char) ('A' + (number % 26)));
+			number = number / 26;
+		} while (number > 0);
+		
+		String letters = result.toString();
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Number {} converted to letters: {}", originalNumber, letters);
+		}
+		return letters;
+	}
+
+	private static int convertFromLetters(String letters) {
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Converting letters to number: {}", letters);
+		}
+		
+		if (letters == null || letters.isEmpty()) {
+			if (LOGGER.isErrorEnabled()) {
+				LOGGER.error("Letters cannot be null or empty");
+			}
+			throw new IllegalArgumentException("Letters cannot be null or empty");
+		}
+		
+		int result = 0;
+		for (char c : letters.toCharArray()) {
+			if (c < 'A' || c > 'Z') {
+				if (LOGGER.isErrorEnabled()) {
+					LOGGER.error("Invalid character in letter part: {}", c);
+				}
+				throw new IllegalArgumentException("Invalid character in letter part: " + c);
+			}
+			result = result * 26 + (c - 'A');
+		}
+		
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Letters '{}' converted to number: {}", letters, result);
+		}
+		return result;
+	}
+	
+	/**
+	 * Get the position of this warehouse in the city grid.
+	 * @return the city position, or null if not set
+	 */
+	public Point getCityPosition() {
+		return cityPosition;
+	}
+	
+	/**
+	 * Set the position of this warehouse in the city grid.
+	 * @param cityPosition the position in the city where this warehouse is located
+	 */
+	public void setCityPosition(Point cityPosition) {
+		Point previousPosition = this.cityPosition;
+		this.cityPosition = cityPosition;
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Warehouse city position updated from {} to {}", previousPosition, cityPosition);
+		}
+	}
+	
+	/**
+	 * Set the position of this warehouse in the city grid using coordinates.
+	 * @param x the x-coordinate in the city
+	 * @param y the y-coordinate in the city
+	 */
+	public void setCityPosition(int x, int y) {
+		setCityPosition(new Point(x, y));
+	}
+
+	/**
+	 * Add a beverage box to an appropriate storage cell in the warehouse.
+	 * Finds cells matching the box type and attempts to store the box.
+	 *
+	 * @param box the beverage box to store
+	 * @return true if successfully stored, false if no space available
+	 */
+	public boolean addBeverageToStorage(de.fachhochschule.dortmund.bads.resources.BeveragesBox box) {
+		if (box == null) {
+			LOGGER.warn("Cannot add null beverage box to storage");
+			return false;
+		}
+
+		// Determine which cell type to use based on box type
+		StorageCell.Type targetCellType = switch (box.getType()) {
+			case AMBIENT -> StorageCell.Type.AMBIENT;
+			case REFRIGERATED -> StorageCell.Type.REFRIGERATED;
+			case BULK -> StorageCell.Type.BULK;
+		};
+
+		// Try to add to matching cells
+		for (Map.Entry<Point, StorageCell> entry : CELLS.entrySet()) {
+			StorageCell cell = entry.getValue();
+
+			if (cell.TYPE == targetCellType) {
+				if (cell.add(box)) {
+					if (LOGGER.isInfoEnabled()) {
+						LOGGER.info("Added {} ({}) to storage cell at {}",
+							box.getBeverageName(), box.getType(), pointToNotation(entry.getKey()));
+					}
+					return true;
+				}
+			}
+		}
+
+		if (LOGGER.isWarnEnabled()) {
+			LOGGER.warn("No space available in {} storage cells for {}",
+				targetCellType, box.getBeverageName());
+		}
+		return false;
+	}
+
+	/**
+	 * Get all available beverage types currently stored in the warehouse.
+	 * Scans all storage cells and returns a list of unique beverage names with their types.
+	 *
+	 * @return list of beverage descriptions in format "BeverageName - Type" (e.g., "Coca Cola - Ambient")
+	 */
+	public List<String> getAvailableBeverageTypes() {
+		Map<String, String> beverageMap = new java.util.TreeMap<>(); // TreeMap for sorted results
+
+		// Scan all storage cells
+		for (Map.Entry<Point, StorageCell> entry : CELLS.entrySet()) {
+			StorageCell cell = entry.getValue();
+
+			// Only check actual storage cells (not corridors or charging stations)
+			if (cell.TYPE == StorageCell.Type.AMBIENT ||
+				cell.TYPE == StorageCell.Type.REFRIGERATED ||
+				cell.TYPE == StorageCell.Type.BULK) {
+
+				// Get all beverage boxes in this cell
+				for (de.fachhochschule.dortmund.bads.resources.BeveragesBox box : cell.getStoredBoxes()) {
+					String beverageName = box.getBeverageName();
+					String typeStr = switch (box.getType()) {
+						case AMBIENT -> "Ambient";
+						case REFRIGERATED -> "Refrigerated";
+						case BULK -> "Bulk";
+					};
+
+					// Store as "BeverageName - Type"
+					String displayName = beverageName + " - " + typeStr;
+					beverageMap.put(displayName, displayName);
+				}
+			}
+		}
+
+		List<String> result = new java.util.ArrayList<>(beverageMap.values());
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Found {} unique beverage types in warehouse", result.size());
+		}
+
+		return result;
+	}
+}

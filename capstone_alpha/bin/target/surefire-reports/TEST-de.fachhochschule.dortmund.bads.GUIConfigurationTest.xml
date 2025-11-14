@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="de.fachhochschule.dortmund.bads.GUIConfigurationTest" time="0.121" tests="3" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/test-classes:/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/classes:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.0/junit-jupiter-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.0/junit-jupiter-api-6.0.0.jar:/Users/wena/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-commons/6.0.0/junit-platform-commons-6.0.0.jar:/Users/wena/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/wena/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.0/junit-jupiter-params-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.0/junit-jupiter-engine-6.0.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-engine/6.0.0/junit-platform-engine-6.0.0.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.2/log4j-api-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-core/2.25.2/log4j-core-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-slf4j2-impl/2.25.2/log4j-slf4j2-impl-2.25.2.jar:/Users/wena/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:"/>
+    <property name="sun.awt.enableExtraMouseButtons" value="true"/>
+    <property name="java.vm.vendor" value="Homebrew"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/25.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire/surefirebooter-20251114222440801_3.jar /Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire 2025-11-14T22-24-40_759-jvmRun1 surefire-20251114222440801_1tmp surefire_0-20251114222440801_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/test-classes:/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/classes:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.0/junit-jupiter-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.0/junit-jupiter-api-6.0.0.jar:/Users/wena/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-commons/6.0.0/junit-platform-commons-6.0.0.jar:/Users/wena/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/wena/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.0/junit-jupiter-params-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.0/junit-jupiter-engine-6.0.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-engine/6.0.0/junit-platform-engine-6.0.0.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.2/log4j-api-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-core/2.25.2/log4j-core-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-slf4j2-impl/2.25.2/log4j-slf4j2-impl-2.25.2.jar:/Users/wena/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/wena"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-10-21"/>
+    <property name="java.home" value="/opt/homebrew/Cellar/openjdk/25.0.1/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha"/>
+    <property name="style.color" value="always"/>
+    <property name="java.vm.compressedOopsMode" value="Non-zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire/surefirebooter-20251114222440801_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="25.0.1"/>
+    <property name="user.name" value="wena"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="26.0.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Homebrew"/>
+    <property name="localRepository" value="/Users/wena/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="java.io.tmpdir" value="/var/folders/y2/yc3yhxx57t9ff4159f1g32kw0000gp/T/"/>
+    <property name="java.version" value="25.0.1"/>
+    <property name="user.dir" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/wena/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Homebrew"/>
+    <property name="java.vm.version" value="25.0.1"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="testAutowire" classname="de.fachhochschule.dortmund.bads.GUIConfigurationTest" time="0.117">
+    <system-out><![CDATA[22:24:50 [main]  INFO CoreConfiguration - === Starting Core System Autowiring ===
+22:24:50 [main]  WARN AGVManagementConfiguration - AGVManagementConfiguration already autowired
+22:24:50 [main]  WARN TaskManagementConfiguration - TaskManagementConfiguration already autowired
+22:24:50 [main]  WARN StorageManagementConfiguration - StorageManagementConfiguration already autowired
+22:24:50 [main]  WARN TruckManagementConfiguration - TruckManagementConfiguration already autowired
+22:24:50 [main]  WARN ObservabilityConfiguration - ObservabilityConfiguration already autowired
+22:24:50 [main]  INFO CoreConfiguration - All configurations autowired. Initializing systems...
+22:24:50 [main]  INFO TaskManagement - TaskManagement initialized with priority-based queue
+22:24:50 [main]  INFO Systems - System CLOCKING started
+22:24:50 [Thread-140]  INFO ClockingSimulation - ClockingSimulation started with 3 registered tickables
+22:24:50 [main]  INFO Systems - System TASK_MANAGEMENT started
+22:24:50 [main]  INFO Systems - System STORAGE_MANAGEMENT started
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System started
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System started
+22:24:50 [main]  INFO Systems - System OBSERVATION started
+22:24:50 [main]  INFO CoreConfiguration - === Core System Autowiring Complete ===
+22:24:50 [main]  INFO CoreConfiguration - Systems running: CLOCKING, AGV_FLEET, TASK_MANAGEMENT, STORAGE_MANAGEMENT, OBSERVATION
+22:24:50 [Observation-Thread]  INFO Observation - Observation System started
+22:24:50 [main]  INFO GUIConfiguration - === Starting GUI Configuration Autowiring ===
+22:24:50 [main]  INFO GUIConfiguration - Retrieved system references from CoreConfiguration
+22:24:50 [main]  INFO GUIConfiguration - === GUI Configuration Autowiring Complete ===
+22:24:50 [AWT-EventQueue-0]  INFO GUIConfiguration - Creating MainFrame on EDT
+22:24:50 [main]  INFO CoreConfiguration - === Initiating System Shutdown ===
+22:24:50 [Observation-Thread]  INFO Observation - Observation System interrupted after 1 collection cycles
+22:24:50 [Observation-Thread]  INFO Observation - Observation System stopped after 1 collection cycles in 116ms. Total events collected: 1 (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System OBSERVATION stopped
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System interrupted after 1 maintenance cycles
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System stopped after 1 maintenance cycles in 117ms (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System STORAGE_MANAGEMENT stopped
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System interrupted after 1 cycles
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System stopped after 1 cycles in 117ms (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System TASK_MANAGEMENT stopped
+22:24:50 [Thread-140]  INFO ClockingSimulation - ClockingSimulation interrupted after 1 ticks
+22:24:50 [Thread-140]  INFO ClockingSimulation - ClockingSimulation stopped after 1 ticks in 117ms (avg: {:.2f}ms per tick)
+22:24:50 [main]  INFO Systems - System CLOCKING stopped
+22:24:50 [main]  INFO CoreConfiguration - === System Shutdown Complete ===
+]]></system-out>
+  </testcase>
+  <testcase name="testSingletonInstance" classname="de.fachhochschule.dortmund.bads.GUIConfigurationTest" time="0.002">
+    <system-out><![CDATA[22:24:50 [main]  INFO CoreConfiguration - === Starting Core System Autowiring ===
+22:24:50 [main]  WARN AGVManagementConfiguration - AGVManagementConfiguration already autowired
+22:24:50 [main]  WARN TaskManagementConfiguration - TaskManagementConfiguration already autowired
+22:24:50 [main]  WARN StorageManagementConfiguration - StorageManagementConfiguration already autowired
+22:24:50 [main]  WARN TruckManagementConfiguration - TruckManagementConfiguration already autowired
+22:24:50 [main]  WARN ObservabilityConfiguration - ObservabilityConfiguration already autowired
+22:24:50 [main]  INFO CoreConfiguration - All configurations autowired. Initializing systems...
+22:24:50 [main]  INFO TaskManagement - TaskManagement initialized with priority-based queue
+22:24:50 [main]  INFO Systems - System CLOCKING started
+22:24:50 [main]  INFO Systems - System TASK_MANAGEMENT started
+22:24:50 [Thread-141]  INFO ClockingSimulation - ClockingSimulation started with 3 registered tickables
+22:24:50 [main]  INFO Systems - System STORAGE_MANAGEMENT started
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System started
+22:24:50 [main]  INFO Systems - System OBSERVATION started
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System started
+22:24:50 [main]  INFO CoreConfiguration - === Core System Autowiring Complete ===
+22:24:50 [main]  INFO CoreConfiguration - Systems running: CLOCKING, AGV_FLEET, TASK_MANAGEMENT, STORAGE_MANAGEMENT, OBSERVATION
+22:24:50 [main]  INFO CoreConfiguration - === Initiating System Shutdown ===
+22:24:50 [Observation-Thread]  INFO Observation - Observation System started
+22:24:50 [Observation-Thread]  INFO Observation - Observation System stopped after 0 collection cycles in 0ms. Total events collected: 0 (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System OBSERVATION stopped
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System interrupted after 1 maintenance cycles
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System stopped after 1 maintenance cycles in 0ms (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System STORAGE_MANAGEMENT stopped
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System interrupted after 1 cycles
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System stopped after 1 cycles in 0ms (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System TASK_MANAGEMENT stopped
+22:24:50 [Thread-141]  INFO ClockingSimulation - ClockingSimulation interrupted after 1 ticks
+22:24:50 [Thread-141]  INFO ClockingSimulation - ClockingSimulation stopped after 1 ticks in 0ms (avg: {:.2f}ms per tick)
+22:24:50 [main]  INFO Systems - System CLOCKING stopped
+22:24:50 [main]  INFO CoreConfiguration - === System Shutdown Complete ===
+]]></system-out>
+  </testcase>
+  <testcase name="testImplementsIConfiguration" classname="de.fachhochschule.dortmund.bads.GUIConfigurationTest" time="0.002">
+    <system-out><![CDATA[22:24:50 [main]  INFO CoreConfiguration - === Starting Core System Autowiring ===
+22:24:50 [main]  WARN AGVManagementConfiguration - AGVManagementConfiguration already autowired
+22:24:50 [main]  WARN TaskManagementConfiguration - TaskManagementConfiguration already autowired
+22:24:50 [main]  WARN StorageManagementConfiguration - StorageManagementConfiguration already autowired
+22:24:50 [main]  WARN TruckManagementConfiguration - TruckManagementConfiguration already autowired
+22:24:50 [main]  WARN ObservabilityConfiguration - ObservabilityConfiguration already autowired
+22:24:50 [main]  INFO CoreConfiguration - All configurations autowired. Initializing systems...
+22:24:50 [main]  INFO TaskManagement - TaskManagement initialized with priority-based queue
+22:24:50 [main]  INFO Systems - System CLOCKING started
+22:24:50 [Thread-142]  INFO ClockingSimulation - ClockingSimulation started with 3 registered tickables
+22:24:50 [main]  INFO Systems - System TASK_MANAGEMENT started
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System started
+22:24:50 [main]  INFO Systems - System STORAGE_MANAGEMENT started
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System started
+22:24:50 [main]  INFO Systems - System OBSERVATION started
+22:24:50 [main]  INFO CoreConfiguration - === Core System Autowiring Complete ===
+22:24:50 [Observation-Thread]  INFO Observation - Observation System started
+22:24:50 [main]  INFO CoreConfiguration - Systems running: CLOCKING, AGV_FLEET, TASK_MANAGEMENT, STORAGE_MANAGEMENT, OBSERVATION
+22:24:50 [main]  INFO CoreConfiguration - === Initiating System Shutdown ===
+22:24:50 [Observation-Thread]  INFO Observation - Observation System interrupted after 1 collection cycles
+22:24:50 [Observation-Thread]  INFO Observation - Observation System stopped after 1 collection cycles in 1ms. Total events collected: 1 (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System OBSERVATION stopped
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System interrupted after 1 maintenance cycles
+22:24:50 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System stopped after 1 maintenance cycles in 1ms (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System STORAGE_MANAGEMENT stopped
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System interrupted after 1 cycles
+22:24:50 [TaskManagement-Thread]  INFO TaskManagement - Task Management System stopped after 1 cycles in 1ms (avg: {:.2f}ms per cycle)
+22:24:50 [main]  INFO Systems - System TASK_MANAGEMENT stopped
+22:24:50 [Thread-142]  INFO ClockingSimulation - ClockingSimulation interrupted after 1 ticks
+22:24:50 [Thread-142]  INFO ClockingSimulation - ClockingSimulation stopped after 1 ticks in 2ms (avg: {:.2f}ms per tick)
+22:24:50 [main]  INFO Systems - System CLOCKING stopped
+22:24:50 [main]  INFO CoreConfiguration - === System Shutdown Complete ===
+]]></system-out>
+  </testcase>
+</testsuite>

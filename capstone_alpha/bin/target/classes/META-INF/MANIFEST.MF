@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 25
+Class-Path: log4j-api-2.25.2.jar log4j-core-2.25.2.jar log4j-slf4j2-impl
+ -2.25.2.jar slf4j-api-2.0.17.jar
+Specification-Title: capstone_alpha
+Specification-Version: 0.0
+Implementation-Title: capstone_alpha
+Implementation-Version: 0.0.1-SNAPSHOT
+Main-Class: de.fachhochschule.dortmund.bads.App
+Build-Time: 2025-11-14T21:21:22Z
+Built-By: wena
+Created-By: Maven Integration for Eclipse
+

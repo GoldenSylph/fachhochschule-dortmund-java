@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="de.fachhochschule.dortmund.bads.WarehouseCityPositionTest" time="0.008" tests="5" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/test-classes:/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/classes:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.0/junit-jupiter-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.0/junit-jupiter-api-6.0.0.jar:/Users/wena/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-commons/6.0.0/junit-platform-commons-6.0.0.jar:/Users/wena/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/wena/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.0/junit-jupiter-params-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.0/junit-jupiter-engine-6.0.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-engine/6.0.0/junit-platform-engine-6.0.0.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.2/log4j-api-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-core/2.25.2/log4j-core-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-slf4j2-impl/2.25.2/log4j-slf4j2-impl-2.25.2.jar:/Users/wena/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:"/>
+    <property name="java.vm.vendor" value="Homebrew"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/25.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire/surefirebooter-20251114222440801_3.jar /Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire 2025-11-14T22-24-40_759-jvmRun1 surefire-20251114222440801_1tmp surefire_0-20251114222440801_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/test-classes:/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/classes:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.0/junit-jupiter-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.0/junit-jupiter-api-6.0.0.jar:/Users/wena/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-commons/6.0.0/junit-platform-commons-6.0.0.jar:/Users/wena/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/wena/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.0/junit-jupiter-params-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.0/junit-jupiter-engine-6.0.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-engine/6.0.0/junit-platform-engine-6.0.0.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.2/log4j-api-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-core/2.25.2/log4j-core-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-slf4j2-impl/2.25.2/log4j-slf4j2-impl-2.25.2.jar:/Users/wena/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/wena"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-10-21"/>
+    <property name="java.home" value="/opt/homebrew/Cellar/openjdk/25.0.1/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha"/>
+    <property name="style.color" value="always"/>
+    <property name="java.vm.compressedOopsMode" value="Non-zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire/surefirebooter-20251114222440801_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="25.0.1"/>
+    <property name="user.name" value="wena"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="26.0.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Homebrew"/>
+    <property name="localRepository" value="/Users/wena/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="java.io.tmpdir" value="/var/folders/y2/yc3yhxx57t9ff4159f1g32kw0000gp/T/"/>
+    <property name="java.version" value="25.0.1"/>
+    <property name="user.dir" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/wena/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Homebrew"/>
+    <property name="java.vm.version" value="25.0.1"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="testTruckRoutingToWarehouse" classname="de.fachhochschule.dortmund.bads.WarehouseCityPositionTest" time="0.001">
+    <system-out><![CDATA[22:24:46 [main]  WARN TruckManagementConfiguration - TruckManagementConfiguration already autowired
+22:24:46 [main]  INFO Area - Graph initialized with 100 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO Area - Graph initialized with 1 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO Storage - Storage initialized with 1 cells, 0 charging stations at: 
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=5, y=5]
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:46 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:46 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:46 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:46 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:46 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:46 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:46 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=5, y=5] with 11 steps, total distance: 10,00
+22:24:46 [main]  INFO Truck - Route calculated with 11 points from Point[x=0, y=0] to Point[x=5, y=5]
+]]></system-out>
+  </testcase>
+  <testcase name="testWarehouseCityPositionWithCoordinates" classname="de.fachhochschule.dortmund.bads.WarehouseCityPositionTest" time="0.001">
+    <system-out><![CDATA[22:24:46 [main]  INFO Area - Graph initialized with 1 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO Storage - Storage initialized with 1 cells, 0 charging stations at: 
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+]]></system-out>
+  </testcase>
+  <testcase name="testMultipleWarehousesInCity" classname="de.fachhochschule.dortmund.bads.WarehouseCityPositionTest" time="0.001">
+    <system-out><![CDATA[22:24:46 [main]  INFO Area - Graph initialized with 100 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO Area - Graph initialized with 1 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO Storage - Storage initialized with 1 cells, 0 charging stations at: 
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:46 [main]  INFO Area - Graph initialized with 1 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO Storage - Storage initialized with 1 cells, 0 charging stations at: 
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=7, y=7]
+22:24:46 [main]  INFO Area - Graph initialized with 1 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO Storage - Storage initialized with 1 cells, 0 charging stations at: 
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=7]
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:46 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:46 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:46 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:46 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:46 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:46 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+]]></system-out>
+  </testcase>
+  <testcase name="testTruckDefaultBeveragesIntegration" classname="de.fachhochschule.dortmund.bads.WarehouseCityPositionTest" time="0.001">
+    <system-out><![CDATA[22:24:46 [main]  WARN TruckManagementConfiguration - TruckManagementConfiguration already autowired
+22:24:46 [main]  INFO Area - Graph initialized with 1 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO Area - Graph initialized with 1 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO Storage - Storage initialized with 1 cells, 0 charging stations at: 
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=5, y=5]
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:46 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:46 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:46 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:46 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:46 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:46 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+]]></system-out>
+  </testcase>
+  <testcase name="testWarehouseHasCityPosition" classname="de.fachhochschule.dortmund.bads.WarehouseCityPositionTest" time="0.002">
+    <system-out><![CDATA[22:24:46 [main]  INFO Area - Graph initialized with 1 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO Storage - Storage initialized with 1 cells, 0 charging stations at: 
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=3, y=5]
+]]></system-out>
+  </testcase>
+</testsuite>

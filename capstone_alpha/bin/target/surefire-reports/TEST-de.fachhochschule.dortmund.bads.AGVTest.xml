@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="de.fachhochschule.dortmund.bads.AGVTest" time="0.021" tests="24" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/test-classes:/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/classes:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.0/junit-jupiter-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.0/junit-jupiter-api-6.0.0.jar:/Users/wena/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-commons/6.0.0/junit-platform-commons-6.0.0.jar:/Users/wena/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/wena/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.0/junit-jupiter-params-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.0/junit-jupiter-engine-6.0.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-engine/6.0.0/junit-platform-engine-6.0.0.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.2/log4j-api-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-core/2.25.2/log4j-core-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-slf4j2-impl/2.25.2/log4j-slf4j2-impl-2.25.2.jar:/Users/wena/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:"/>
+    <property name="java.vm.vendor" value="Homebrew"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/25.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire/surefirebooter-20251114222440801_3.jar /Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire 2025-11-14T22-24-40_759-jvmRun1 surefire-20251114222440801_1tmp surefire_0-20251114222440801_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/test-classes:/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/classes:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.0/junit-jupiter-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.0/junit-jupiter-api-6.0.0.jar:/Users/wena/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-commons/6.0.0/junit-platform-commons-6.0.0.jar:/Users/wena/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/wena/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.0/junit-jupiter-params-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.0/junit-jupiter-engine-6.0.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-engine/6.0.0/junit-platform-engine-6.0.0.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.2/log4j-api-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-core/2.25.2/log4j-core-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-slf4j2-impl/2.25.2/log4j-slf4j2-impl-2.25.2.jar:/Users/wena/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/wena"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-10-21"/>
+    <property name="java.home" value="/opt/homebrew/Cellar/openjdk/25.0.1/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha"/>
+    <property name="style.color" value="always"/>
+    <property name="java.vm.compressedOopsMode" value="Non-zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire/surefirebooter-20251114222440801_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="25.0.1"/>
+    <property name="user.name" value="wena"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="26.0.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Homebrew"/>
+    <property name="localRepository" value="/Users/wena/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="java.io.tmpdir" value="/var/folders/y2/yc3yhxx57t9ff4159f1g32kw0000gp/T/"/>
+    <property name="java.version" value="25.0.1"/>
+    <property name="user.dir" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/wena/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Homebrew"/>
+    <property name="java.vm.version" value="25.0.1"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="testSetupOperation" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-22
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+]]></system-out>
+  </testcase>
+  <testcase name="testCacheProgram" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-23
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+]]></system-out>
+  </testcase>
+  <testcase name="testOnTickMovementWithDifferentSpeeds" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-24
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 1 ticks per movement
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=1, y=0] with 2 steps, total distance: 1,00
+22:24:48 [main]  INFO AGV - AGV-24 calculated path to destination: Point[x=1, y=0], path length: 1
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 3 ticks per movement
+]]></system-out>
+  </testcase>
+  <testcase name="testOperationExecutionErrors" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-25
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='TestBeverage', dimensions=5x5x5, bottles=10}
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:48 [main]  INFO AGV - AGV taking resource from cell: 2A
+]]></system-out>
+  </testcase>
+  <testcase name="testEdgeCaseEmptyProgram" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-26
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+]]></system-out>
+  </testcase>
+  <testcase name="testEdgeCaseNullProgram" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-27
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+]]></system-out>
+  </testcase>
+  <testcase name="testOnTickBatteryManagement" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-28
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 1 ticks per movement
+]]></system-out>
+  </testcase>
+  <testcase name="testInitialState" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-29
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+]]></system-out>
+  </testcase>
+  <testcase name="testMoveOperation" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-30
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+]]></system-out>
+  </testcase>
+  <testcase name="testResourceCallMethod" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-31
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+]]></system-out>
+  </testcase>
+  <testcase name="testMovementSpeedVariations" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-32
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-33
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 1 ticks per movement
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:48 [main]  INFO AGV - AGV-33 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:48 [main]  INFO AGV - AGV-33 completed all movements, returning to IDLE state
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-34
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 2 ticks per movement
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:48 [main]  INFO AGV - AGV-34 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:48 [main]  INFO AGV - AGV-34 completed all movements, returning to IDLE state
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-35
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 3 ticks per movement
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:48 [main]  INFO AGV - AGV-35 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:48 [main]  INFO AGV - AGV-35 completed all movements, returning to IDLE state
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-36
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 5 ticks per movement
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:48 [main]  INFO AGV - AGV-36 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:48 [main]  INFO AGV - AGV-36 completed all movements, returning to IDLE state
+]]></system-out>
+  </testcase>
+  <testcase name="testTicksPerMovementBehavior" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-37
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 3 ticks per movement
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=1, y=0] with 2 steps, total distance: 1,00
+22:24:48 [main]  INFO AGV - AGV-37 calculated path to destination: Point[x=1, y=0], path length: 1
+22:24:48 [main]  INFO AGV - AGV-37 completed all movements, returning to IDLE state
+]]></system-out>
+  </testcase>
+  <testcase name="testOnTickPathfinding" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-38
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:48 [main]  INFO AGV - AGV-38 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:48 [main]  INFO AGV - AGV-38 completed all movements, returning to IDLE state
+]]></system-out>
+  </testcase>
+  <testcase name="testOnTickWithNoPath" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-39
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+]]></system-out>
+  </testcase>
+  <testcase name="testPushOperation" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-40
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: test_value
+22:24:48 [main]  INFO AGV - AGV pushed to memory: Point[x=1, y=1]
+]]></system-out>
+  </testcase>
+  <testcase name="testTakeAndReleaseOperations" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-41
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='TestBeverage', dimensions=5x5x5, bottles=10}
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 1A
+22:24:48 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:48 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='TestBeverage', dimensions=5x5x5, bottles=10}
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 1A
+22:24:48 [main]  INFO AGV - AGV releasing resource to cell: 1A
+]]></system-out>
+  </testcase>
+  <testcase name="testOnTickChargingBehavior" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-42
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV will be charged at: 3A
+]]></system-out>
+  </testcase>
+  <testcase name="testSetTicksPerMovementInvalidValue" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-43
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+]]></system-out>
+  </testcase>
+  <testcase name="testStopOperation" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-44
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: test_value
+22:24:48 [main]  INFO AGV - AGV stopping execution and clearing memory.
+]]></system-out>
+  </testcase>
+  <testcase name="testComplexMovementSequence" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-45
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 1B
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=0, y=1]
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=1, y=0] with 2 steps, total distance: 1,00
+22:24:48 [main]  INFO AGV - AGV-45 calculated path to destination: Point[x=1, y=0], path length: 1
+22:24:48 [main]  INFO Area - Path found from Point[x=1, y=0] to Point[x=2, y=0] with 2 steps, total distance: 1,00
+22:24:48 [main]  INFO AGV - AGV-45 calculated path to destination: Point[x=2, y=0], path length: 1
+22:24:48 [main]  INFO Area - Path found from Point[x=2, y=0] to Point[x=0, y=1] with 4 steps, total distance: 3,00
+22:24:48 [main]  INFO AGV - AGV-45 calculated path to destination: Point[x=0, y=1], path length: 3
+22:24:48 [main]  INFO AGV - AGV-45 completed all movements, returning to IDLE state
+]]></system-out>
+  </testcase>
+  <testcase name="testSetTicksPerMovement" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-46
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 3 ticks per movement
+22:24:48 [main]  INFO AGV - AGV movement speed changed: 1 ticks per movement
+]]></system-out>
+  </testcase>
+  <testcase name="testChargeOperation" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.0">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-47
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV will be charged at: 3A
+]]></system-out>
+  </testcase>
+  <testcase name="testBatteryDepletionHandling" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.001">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-48
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:48 [main]  INFO AGV - AGV-48 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:48 [main]  INFO AGV - AGV-48 completed all movements, returning to IDLE state
+]]></system-out>
+  </testcase>
+  <testcase name="testMultipleOperationsSequence" classname="de.fachhochschule.dortmund.bads.AGVTest" time="0.002">
+    <system-out><![CDATA[22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:48 [main]  INFO AGV - Created new AGV with ID: AGV-49
+22:24:48 [main]  INFO Area - Graph initialized with 5 nodes
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:48 [main]  INFO Storage - Storage initialized with 5 cells, 1 charging stations at: 1B
+22:24:48 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Beverage1', dimensions=5x5x5, bottles=10}
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 1A
+22:24:48 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:48 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Beverage2', dimensions=3x3x3, bottles=5}
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:48 [main]  INFO AGV - AGV taking resource from cell: 2A
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:48 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:48 [main]  INFO AGV - AGV will be charged at: 3A
+22:24:48 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=1, y=0] with 2 steps, total distance: 1,00
+22:24:48 [main]  INFO AGV - AGV-49 calculated path to destination: Point[x=1, y=0], path length: 1
+22:24:48 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:48 [main]  WARN StorageCell - Failed to remove box Beverage1 - box not found in storage cell
+22:24:48 [main] ERROR AGV - AGV-49 failed to execute operation: Failed to take resource: resource not found in storage cell.
+java.lang.IllegalStateException: Failed to take resource: resource not found in storage cell.
+	at de.fachhochschule.dortmund.bads.resources.AGV$4.execute(AGV.java:462)
+	at de.fachhochschule.dortmund.bads.resources.AGV.onTick(AGV.java:587)
+	at de.fachhochschule.dortmund.bads.AGVTest.lambda$testMultipleOperationsSequence$0(AGVTest.java:436)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:52)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:39)
+	at org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3295)
+	at de.fachhochschule.dortmund.bads.AGVTest.testMultipleOperationsSequence(AGVTest.java:436)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:93)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$0(InterceptingLauncher.java:41)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:40)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+22:24:48 [main]  INFO Area - Path found from Point[x=1, y=0] to Point[x=2, y=0] with 2 steps, total distance: 1,00
+22:24:48 [main]  INFO AGV - AGV-49 calculated path to destination: Point[x=2, y=0], path length: 1
+22:24:48 [main]  INFO AGV - AGV taking resource from cell: 2A
+22:24:48 [main] ERROR AGV - AGV-49 failed to execute operation: AGV not at the specified cell to take resource.
+java.lang.IllegalStateException: AGV not at the specified cell to take resource.
+	at de.fachhochschule.dortmund.bads.resources.AGV$4.execute(AGV.java:468)
+	at de.fachhochschule.dortmund.bads.resources.AGV.onTick(AGV.java:587)
+	at de.fachhochschule.dortmund.bads.AGVTest.lambda$testMultipleOperationsSequence$0(AGVTest.java:436)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:52)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:39)
+	at org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3295)
+	at de.fachhochschule.dortmund.bads.AGVTest.testMultipleOperationsSequence(AGVTest.java:436)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:93)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$0(InterceptingLauncher.java:41)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:40)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+22:24:48 [main]  INFO AGV - AGV-49 completed all movements, returning to IDLE state
+]]></system-out>
+  </testcase>
+</testsuite>

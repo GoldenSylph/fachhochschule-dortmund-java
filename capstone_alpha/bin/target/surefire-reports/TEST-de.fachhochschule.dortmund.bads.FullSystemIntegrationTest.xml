@@ -1,0 +1,1234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="de.fachhochschule.dortmund.bads.FullSystemIntegrationTest" time="5.055" tests="4" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/test-classes:/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/classes:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.0/junit-jupiter-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.0/junit-jupiter-api-6.0.0.jar:/Users/wena/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-commons/6.0.0/junit-platform-commons-6.0.0.jar:/Users/wena/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/wena/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.0/junit-jupiter-params-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.0/junit-jupiter-engine-6.0.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-engine/6.0.0/junit-platform-engine-6.0.0.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.2/log4j-api-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-core/2.25.2/log4j-core-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-slf4j2-impl/2.25.2/log4j-slf4j2-impl-2.25.2.jar:/Users/wena/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:"/>
+    <property name="java.vm.vendor" value="Homebrew"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="DE"/>
+    <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/25.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire/surefirebooter-20251114222440801_3.jar /Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire 2025-11-14T22-24-40_759-jvmRun1 surefire-20251114222440801_1tmp surefire_0-20251114222440801_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/test-classes:/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/classes:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter/6.0.0/junit-jupiter-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-api/6.0.0/junit-jupiter-api-6.0.0.jar:/Users/wena/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-commons/6.0.0/junit-platform-commons-6.0.0.jar:/Users/wena/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/wena/.m2/repository/org/jspecify/jspecify/1.0.0/jspecify-1.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-params/6.0.0/junit-jupiter-params-6.0.0.jar:/Users/wena/.m2/repository/org/junit/jupiter/junit-jupiter-engine/6.0.0/junit-jupiter-engine-6.0.0.jar:/Users/wena/.m2/repository/org/junit/platform/junit-platform-engine/6.0.0/junit-platform-engine-6.0.0.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-api/2.25.2/log4j-api-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-core/2.25.2/log4j-core-2.25.2.jar:/Users/wena/.m2/repository/org/apache/logging/log4j/log4j-slf4j2-impl/2.25.2/log4j-slf4j2-impl-2.25.2.jar:/Users/wena/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/wena"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-10-21"/>
+    <property name="java.home" value="/opt/homebrew/Cellar/openjdk/25.0.1/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha"/>
+    <property name="style.color" value="always"/>
+    <property name="java.vm.compressedOopsMode" value="Non-zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha/target/surefire/surefirebooter-20251114222440801_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="25.0.1"/>
+    <property name="user.name" value="wena"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="26.0.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Homebrew"/>
+    <property name="localRepository" value="/Users/wena/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="java.io.tmpdir" value="/var/folders/y2/yc3yhxx57t9ff4159f1g32kw0000gp/T/"/>
+    <property name="java.version" value="25.0.1"/>
+    <property name="user.dir" value="/Users/wena/Library/CloudStorage/OneDrive-Personal/FH Course/Compact Programming/new version/fachhochschule-dortmund-java/capstone_alpha"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/wena/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Homebrew"/>
+    <property name="java.vm.version" value="25.0.1"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="testConfiguration" classname="de.fachhochschule.dortmund.bads.FullSystemIntegrationTest" time="0.009">
+    <system-out><![CDATA[22:24:41 [main]  INFO Area - Graph initialized with 24 nodes
+22:24:41 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO Storage - Storage initialized with 24 cells, 2 charging stations at: 2C, 5A
+22:24:41 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:41 [main]  INFO AGV - AGV Charging System initialized with 2 charging stations
+22:24:41 [main]  INFO CoreConfiguration - AGV Charging System initialized with 2 charging stations from Storage
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-1
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-2
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-3
+22:24:41 [main]  INFO Area - Graph initialized with 12 nodes
+22:24:41 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO Storage - Storage initialized with 12 cells, 1 charging stations at: 1B
+22:24:41 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:41 [main]  INFO AGV - AGV Charging System initialized with 1 charging stations
+22:24:41 [main]  INFO CoreConfiguration - AGV Charging System initialized with 1 charging stations from Storage
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-4
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-5
+22:24:41 [main]  INFO Area - Graph initialized with 25 nodes
+22:24:41 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:41 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (2, 2)
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:41 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:41 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:41 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:41 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:41 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:41 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:41 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:41 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:41 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:41 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:41 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:41 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:41 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:41 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:41 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:41 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:41 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:41 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+]]></system-out>
+  </testcase>
+  <testcase name="testChargingQueueManagement" classname="de.fachhochschule.dortmund.bads.FullSystemIntegrationTest" time="1.613">
+    <system-out><![CDATA[22:24:41 [main]  INFO Area - Graph initialized with 24 nodes
+22:24:41 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO Storage - Storage initialized with 24 cells, 2 charging stations at: 2C, 5A
+22:24:41 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:41 [main]  INFO AGV - AGV Charging System initialized with 2 charging stations
+22:24:41 [main]  INFO CoreConfiguration - AGV Charging System initialized with 2 charging stations from Storage
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-6
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-7
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-8
+22:24:41 [main]  INFO Area - Graph initialized with 12 nodes
+22:24:41 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:41 [main]  INFO Storage - Storage initialized with 12 cells, 1 charging stations at: 1B
+22:24:41 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:41 [main]  INFO AGV - AGV Charging System initialized with 1 charging stations
+22:24:41 [main]  INFO CoreConfiguration - AGV Charging System initialized with 1 charging stations from Storage
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-9
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:41 [main]  INFO AGV - Created new AGV with ID: AGV-10
+22:24:41 [main]  INFO Area - Graph initialized with 25 nodes
+22:24:41 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:41 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (2, 2)
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:41 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:41 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:41 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:41 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:41 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:41 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:41 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:41 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:41 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:41 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:41 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:41 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:41 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:41 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:41 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:41 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:41 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:41 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:41 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:41 [main]  INFO AGV - AGV Charging System initialized with 2 charging stations
+22:24:41 [main]  INFO CoreConfiguration - AGV Charging System initialized with 2 charging stations from Storage
+22:24:43 [main]  INFO FullSystemIntegrationTest - Charging test: 3/3 AGVs charged
+]]></system-out>
+  </testcase>
+  <testcase name="testFullSystemIntegration" classname="de.fachhochschule.dortmund.bads.FullSystemIntegrationTest" time="3.427">
+    <system-out><![CDATA[22:24:43 [main]  INFO Area - Graph initialized with 24 nodes
+22:24:43 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:43 [main]  INFO Storage - Storage initialized with 24 cells, 2 charging stations at: 2C, 5A
+22:24:43 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:43 [main]  INFO AGV - AGV Charging System initialized with 2 charging stations
+22:24:43 [main]  INFO CoreConfiguration - AGV Charging System initialized with 2 charging stations from Storage
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:43 [main]  INFO AGV - Created new AGV with ID: AGV-11
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:43 [main]  INFO AGV - Created new AGV with ID: AGV-12
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:43 [main]  INFO AGV - Created new AGV with ID: AGV-13
+22:24:43 [main]  INFO Area - Graph initialized with 12 nodes
+22:24:43 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:43 [main]  INFO Storage - Storage initialized with 12 cells, 1 charging stations at: 1B
+22:24:43 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:43 [main]  INFO AGV - AGV Charging System initialized with 1 charging stations
+22:24:43 [main]  INFO CoreConfiguration - AGV Charging System initialized with 1 charging stations from Storage
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:43 [main]  INFO AGV - Created new AGV with ID: AGV-14
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:43 [main]  INFO AGV - Created new AGV with ID: AGV-15
+22:24:43 [main]  INFO Area - Graph initialized with 25 nodes
+22:24:43 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:43 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (2, 2)
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:43 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:43 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:43 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:43 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:43 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:43 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:43 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:43 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:43 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:43 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:43 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:43 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:43 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:43 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:43 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:43 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:43 [main]  INFO CoreConfiguration - === Starting Core System Autowiring ===
+22:24:43 [main]  WARN AGVManagementConfiguration - AGVManagementConfiguration already autowired
+22:24:43 [main]  WARN TaskManagementConfiguration - TaskManagementConfiguration already autowired
+22:24:43 [main]  WARN StorageManagementConfiguration - StorageManagementConfiguration already autowired
+22:24:43 [main]  WARN TruckManagementConfiguration - TruckManagementConfiguration already autowired
+22:24:43 [main]  WARN ObservabilityConfiguration - ObservabilityConfiguration already autowired
+22:24:43 [main]  INFO CoreConfiguration - All configurations autowired. Initializing systems...
+22:24:43 [main]  INFO TaskManagement - TaskManagement initialized with priority-based queue
+22:24:43 [main]  INFO Systems - System CLOCKING started
+22:24:43 [main]  INFO Systems - System TASK_MANAGEMENT started
+22:24:43 [main]  INFO Systems - System STORAGE_MANAGEMENT started
+22:24:43 [main]  INFO Systems - System OBSERVATION started
+22:24:43 [Observation-Thread]  INFO Observation - Observation System started
+22:24:43 [TaskManagement-Thread]  INFO TaskManagement - Task Management System started
+22:24:43 [main]  INFO CoreConfiguration - === Core System Autowiring Complete ===
+22:24:43 [Thread-9]  INFO ClockingSimulation - ClockingSimulation started with 3 registered tickables
+22:24:43 [main]  INFO CoreConfiguration - Systems running: CLOCKING, AGV_FLEET, TASK_MANAGEMENT, STORAGE_MANAGEMENT, OBSERVATION
+22:24:43 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System started
+22:24:43 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 28x40x130, Space efficiency: 102,9%, Boxes: 6
+22:24:43 [main]  INFO StorageCell - Successfully added box Juice - Current dimensions: 28x40x140, Space efficiency: 96,2%, Boxes: 7
+22:24:43 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x150, Space efficiency: 90,4%, Boxes: 8
+22:24:43 [main]  INFO StorageCell - Successfully added box Soda - Current dimensions: 28x40x130, Space efficiency: 102,9%, Boxes: 6
+22:24:43 [main]  INFO StorageCell - Successfully added box Yogurt - Current dimensions: 28x40x140, Space efficiency: 96,2%, Boxes: 7
+22:24:43 [main]  INFO StorageCell - Successfully added box Beer - Current dimensions: 28x40x140, Space efficiency: 100,0%, Boxes: 6
+22:24:43 [main]  INFO StorageCell - Successfully added box Water Cooler - Current dimensions: 28x40x160, Space efficiency: 92,0%, Boxes: 7
+22:24:43 [main]  INFO TaskManagement - Added task: Task[id=1, priority=10, processes=1] - Total tasks: 1
+22:24:43 [main]  INFO TaskManagement - Added task: Task[id=2, priority=10, processes=1] - Total tasks: 2
+22:24:43 [main]  INFO TaskManagement - Added task: Task[id=3, priority=9, processes=1] - Total tasks: 3
+22:24:43 [Task-2]  INFO Task - Task 2 started with 1 processes
+22:24:43 [Task-1]  INFO Task - Task 1 started with 1 processes
+22:24:43 [Task-3]  INFO Task - Task 3 started with 1 processes
+22:24:43 [Task-3]  INFO Process - Starting process operations with 3 operations
+22:24:43 [Task-2]  INFO Process - Starting process operations with 3 operations
+22:24:43 [Task-1]  INFO Process - Starting process operations with 3 operations
+22:24:43 [Task-3]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:43 [Task-1]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:43 [Task-2]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:43 [pool-5-thread-1]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:43 [pool-4-thread-4]  INFO Area - Path found from Point[x=2, y=2] to Point[x=4, y=4] with 5 steps, total distance: 4,00
+22:24:43 [pool-4-thread-5]  INFO Area - Path found from Point[x=2, y=2] to Point[x=4, y=4] with 5 steps, total distance: 4,00
+22:24:43 [pool-4-thread-5]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=4, y=4]
+22:24:43 [pool-5-thread-1]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:43 [pool-3-thread-5]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:43 [pool-3-thread-5]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:43 [pool-3-thread-4]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:43 [pool-4-thread-1]  INFO Area - Path found from Point[x=2, y=2] to Point[x=4, y=4] with 5 steps, total distance: 4,00
+22:24:43 [pool-3-thread-4]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:43 [pool-4-thread-1]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=4, y=4]
+22:24:43 [pool-3-thread-1]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:43 [pool-5-thread-5]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:43 [pool-3-thread-1]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:43 [pool-5-thread-6]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:43 [pool-5-thread-6]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:43 [pool-4-thread-4]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=4, y=4]
+22:24:43 [pool-5-thread-5]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:43 [Task-2]  INFO Process - Successfully submitted all operations to executor service
+22:24:43 [Task-3]  INFO Process - Successfully submitted all operations to executor service
+22:24:43 [Task-1]  INFO Process - Successfully submitted all operations to executor service
+22:24:43 [Task-1]  INFO Process - Process operations completed successfully in 8ms
+22:24:43 [Task-2]  INFO Process - Process operations completed successfully in 8ms
+22:24:43 [Task-3]  INFO Process - Process operations completed successfully in 8ms
+22:24:43 [Task-3]  INFO Task - Task 3 completed. Executed 1 processes in 9ms
+22:24:43 [Task-2]  INFO Task - Task 2 completed. Executed 1 processes in 9ms
+22:24:43 [Task-1]  INFO Task - Task 1 completed. Executed 1 processes in 9ms
+22:24:43 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 10x10x10, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [main]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [main]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:43 [main]  INFO StorageCell - Successfully added box Juice - Current dimensions: 10x10x20, Space efficiency: 100,0%, Boxes: 2
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [main]  INFO AGV - AGV releasing resource to cell: 3A
+22:24:43 [main]  INFO StorageCell - Successfully added box Beer - Current dimensions: 20x20x20, Space efficiency: 125,0%, Boxes: 3
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=BULK, beverageName='Beer', dimensions=20x20x20, bottles=6}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 1C
+22:24:43 [main]  INFO AGV - AGV set to moving to point: Point[x=0, y=2]
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=BULK, beverageName='Beer', dimensions=20x20x20, bottles=6}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 1C
+22:24:43 [main]  INFO AGV - AGV releasing resource to cell: 1C
+22:24:43 [main]  INFO StorageCell - Successfully added box Soda - Current dimensions: 10x10x10, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [main]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [main]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:43 [main]  INFO StorageCell - Successfully added box Yogurt - Current dimensions: 10x10x20, Space efficiency: 100,0%, Boxes: 2
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [main]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:43 [main]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:43 [main]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [main]  INFO AGV - AGV releasing resource to cell: 3A
+22:24:43 [main]  INFO TaskManagement - Added 5 tasks in batch - Total tasks: 8
+22:24:43 [Task-5]  INFO Task - Task 5 started with 1 processes
+22:24:43 [Task-4]  INFO Task - Task 4 started with 1 processes
+22:24:43 [Task-6]  INFO Task - Task 6 started with 1 processes
+22:24:43 [Task-5]  INFO Process - Starting process operations with 2 operations
+22:24:43 [Task-4]  INFO Process - Starting process operations with 2 operations
+22:24:43 [Task-5]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:43 [Task-6]  INFO Process - Starting process operations with 2 operations
+22:24:43 [Task-4]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:43 [Task-6]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:43 [Task-7]  INFO Task - Task 7 started with 1 processes
+22:24:43 [Task-7]  INFO Process - Starting process operations with 2 operations
+22:24:43 [Task-7]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:43 [pool-8-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=BULK, beverageName='Beer', dimensions=20x20x20, bottles=6}
+22:24:43 [pool-7-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-8-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [pool-7-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [pool-8-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [pool-7-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [pool-8-thread-1]  INFO AGV - AGV pushed to memory: 1C
+22:24:43 [pool-7-thread-1]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [pool-8-thread-1]  INFO AGV - AGV set to moving to point: Point[x=0, y=2]
+22:24:43 [pool-7-thread-1]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:43 [pool-8-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=BULK, beverageName='Beer', dimensions=20x20x20, bottles=6}
+22:24:43 [pool-7-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-8-thread-1]  INFO AGV - AGV pushed to memory: 1C
+22:24:43 [pool-7-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-7-thread-1]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [pool-8-thread-1]  INFO AGV - AGV releasing resource to cell: 1C
+22:24:43 [pool-7-thread-1]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:43 [pool-7-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [pool-7-thread-3]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [pool-7-thread-3]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [pool-7-thread-3]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:43 [pool-8-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=BULK, beverageName='Beer', dimensions=20x20x20, bottles=6}
+22:24:43 [pool-7-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-8-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [pool-7-thread-3]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [pool-8-thread-3]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [pool-7-thread-3]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:43 [pool-8-thread-3]  INFO AGV - AGV pushed to memory: 1C
+22:24:43 [pool-9-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-8-thread-3]  INFO AGV - AGV set to moving to point: Point[x=0, y=2]
+22:24:43 [pool-8-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=BULK, beverageName='Beer', dimensions=20x20x20, bottles=6}
+22:24:43 [pool-9-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [Task-4]  INFO Process - Successfully submitted all operations to executor service
+22:24:43 [pool-8-thread-3]  INFO AGV - AGV pushed to memory: 1C
+22:24:43 [pool-9-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [pool-8-thread-3]  INFO AGV - AGV releasing resource to cell: 1C
+22:24:43 [pool-9-thread-1]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [pool-9-thread-1]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:43 [Task-6]  INFO Process - Successfully submitted all operations to executor service
+22:24:43 [pool-9-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-9-thread-1]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [pool-9-thread-1]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:43 [Task-8]  INFO Task - Task 8 started with 1 processes
+22:24:43 [Task-8]  INFO Process - Starting process operations with 2 operations
+22:24:43 [Task-8]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:43 [Task-6]  INFO Process - Process operations completed successfully in 1ms
+22:24:43 [pool-6-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:43 [Task-6]  INFO Task - Task 6 completed. Executed 1 processes in 1ms
+22:24:43 [Task-4]  INFO Process - Process operations completed successfully in 1ms
+22:24:43 [pool-6-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [Task-4]  INFO Task - Task 4 completed. Executed 1 processes in 1ms
+22:24:43 [pool-6-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [pool-6-thread-1]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [pool-6-thread-1]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:43 [pool-6-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-6-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-6-thread-1]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [pool-6-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [pool-9-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:43 [Task-5]  INFO Process - Successfully submitted all operations to executor service
+22:24:43 [pool-9-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [pool-9-thread-3]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [pool-9-thread-3]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [pool-9-thread-3]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:43 [pool-9-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:43 [pool-9-thread-3]  INFO AGV - AGV pushed to memory: 2A
+22:24:43 [pool-9-thread-3]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:43 [Task-7]  INFO Process - Successfully submitted all operations to executor service
+22:24:43 [Task-5]  INFO Process - Process operations completed successfully in 1ms
+22:24:43 [Task-5]  INFO Task - Task 5 completed. Executed 1 processes in 2ms
+22:24:43 [pool-10-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:43 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=1, y=0] with 2 steps, total distance: 1,00
+22:24:43 [pool-10-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [Task-7]  INFO Process - Process operations completed successfully in 2ms
+22:24:43 [pool-10-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [Task-7]  INFO Task - Task 7 completed. Executed 1 processes in 2ms
+22:24:43 [pool-10-thread-1]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [main]  INFO AGV - AGV-11 calculated path to destination: Point[x=1, y=0], path length: 1
+22:24:43 [pool-10-thread-1]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:43 [pool-10-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:43 [pool-10-thread-1]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [pool-10-thread-1]  INFO AGV - AGV releasing resource to cell: 3A
+22:24:43 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:43 [pool-10-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:43 [main]  INFO AGV - AGV-12 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:43 [pool-10-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:43 [pool-10-thread-3]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=0, y=2] with 3 steps, total distance: 2,00
+22:24:43 [pool-10-thread-3]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [main]  INFO AGV - AGV-13 calculated path to destination: Point[x=0, y=2], path length: 2
+22:24:43 [pool-10-thread-3]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:43 [pool-10-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:43 [pool-10-thread-3]  INFO AGV - AGV pushed to memory: 3A
+22:24:43 [pool-10-thread-3]  INFO AGV - AGV releasing resource to cell: 3A
+22:24:43 [Task-8]  INFO Process - Successfully submitted all operations to executor service
+22:24:43 [Task-8]  INFO Process - Process operations completed successfully in 1ms
+22:24:43 [Task-8]  INFO Task - Task 8 completed. Executed 1 processes in 1ms
+22:24:43 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=1, y=0] with 2 steps, total distance: 1,00
+22:24:43 [main]  INFO AGV - AGV-14 calculated path to destination: Point[x=1, y=0], path length: 1
+22:24:43 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:43 [main]  INFO AGV - AGV-15 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO StorageCell - Successfully removed box Water - Current dimensions: 20x20x30, Remaining boxes: 2
+22:24:43 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 10x10x10, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO AGV - AGV-11 executed operation at position: Point[x=1, y=0], battery: 90%
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO StorageCell - Successfully removed box Soda - Current dimensions: 10x10x10, Remaining boxes: 1
+22:24:43 [main]  INFO StorageCell - Successfully added box Soda - Current dimensions: 10x10x10, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO AGV - AGV-14 executed operation at position: Point[x=1, y=0], battery: 90%
+22:24:43 [main]  INFO Area - Path found from Point[x=1, y=0] to Point[x=1, y=0] with 1 steps, total distance: 0,00
+22:24:43 [main]  INFO AGV - AGV-11 calculated path to destination: Point[x=1, y=0], path length: 0
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO StorageCell - Successfully removed box Juice - Current dimensions: 20x20x20, Remaining boxes: 1
+22:24:43 [main]  INFO StorageCell - Successfully added box Juice - Current dimensions: 10x10x10, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO AGV - AGV-12 executed operation at position: Point[x=2, y=0], battery: 85%
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO StorageCell - Successfully removed box Beer - Current dimensions: 0x0x0, Remaining boxes: 0
+22:24:43 [main]  INFO StorageCell - Successfully added box Beer - Current dimensions: 20x20x20, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO AGV - AGV-13 executed operation at position: Point[x=0, y=2], battery: 85%
+22:24:43 [main]  INFO Area - Path found from Point[x=1, y=0] to Point[x=1, y=0] with 1 steps, total distance: 0,00
+22:24:43 [main]  INFO AGV - AGV-14 calculated path to destination: Point[x=1, y=0], path length: 0
+22:24:43 [main]  INFO AGV - AGV taking resource from cell: 1A
+22:24:43 [main]  INFO StorageCell - Successfully removed box Yogurt - Current dimensions: 0x0x0, Remaining boxes: 0
+22:24:43 [main]  INFO StorageCell - Successfully added box Yogurt - Current dimensions: 10x10x10, Space efficiency: 100,0%, Boxes: 1
+22:24:43 [main]  INFO AGV - AGV-15 executed operation at position: Point[x=2, y=0], battery: 85%
+22:24:43 [main]  INFO Area - Path found from Point[x=1, y=0] to Point[x=1, y=0] with 1 steps, total distance: 0,00
+22:24:43 [main]  INFO AGV - AGV-11 calculated path to destination: Point[x=1, y=0], path length: 0
+22:24:43 [main]  INFO Area - Path found from Point[x=2, y=0] to Point[x=2, y=0] with 1 steps, total distance: 0,00
+22:24:43 [main]  INFO AGV - AGV-12 calculated path to destination: Point[x=2, y=0], path length: 0
+22:24:43 [main]  INFO Area - Path found from Point[x=0, y=2] to Point[x=0, y=2] with 1 steps, total distance: 0,00
+22:24:43 [main]  INFO AGV - AGV-13 calculated path to destination: Point[x=0, y=2], path length: 0
+22:24:43 [main]  INFO Area - Path found from Point[x=1, y=0] to Point[x=1, y=0] with 1 steps, total distance: 0,00
+22:24:43 [main]  INFO AGV - AGV-14 calculated path to destination: Point[x=1, y=0], path length: 0
+22:24:43 [main]  INFO Area - Path found from Point[x=2, y=0] to Point[x=2, y=0] with 1 steps, total distance: 0,00
+22:24:43 [main]  INFO AGV - AGV-15 calculated path to destination: Point[x=2, y=0], path length: 0
+22:24:44 [main]  INFO AGV - AGV-11 completed all movements, returning to IDLE state
+22:24:44 [main]  INFO AGV - AGV-12 completed all movements, returning to IDLE state
+22:24:44 [main]  INFO Area - Path found from Point[x=0, y=2] to Point[x=0, y=2] with 1 steps, total distance: 0,00
+22:24:44 [main]  INFO AGV - AGV-13 calculated path to destination: Point[x=0, y=2], path length: 0
+22:24:44 [main]  INFO AGV - AGV-14 completed all movements, returning to IDLE state
+22:24:44 [main]  INFO Area - Path found from Point[x=2, y=0] to Point[x=2, y=0] with 1 steps, total distance: 0,00
+22:24:44 [main]  INFO AGV - AGV-15 calculated path to destination: Point[x=2, y=0], path length: 0
+22:24:44 [main]  INFO AGV - AGV-13 completed all movements, returning to IDLE state
+22:24:44 [main]  INFO AGV - AGV-15 completed all movements, returning to IDLE state
+22:24:44 [Thread-9]  INFO TaskManagement - Started task: 1 with priority 10
+22:24:44 [Thread-10]  INFO Task - Task 1 started with 1 processes
+22:24:44 [Thread-10]  INFO Process - Starting process operations with 3 operations
+22:24:44 [Thread-9]  INFO TaskManagement - Started task: 2 with priority 10
+22:24:44 [Thread-10]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:44 [Thread-9]  INFO TaskManagement - Started task: 3 with priority 9
+22:24:44 [Thread-11]  INFO Task - Task 2 started with 1 processes
+22:24:44 [Thread-11]  INFO Process - Starting process operations with 3 operations
+22:24:44 [Thread-9]  INFO TaskManagement - Started task: 8 with priority 8
+22:24:44 [Thread-11]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:44 [Thread-12]  INFO Task - Task 3 started with 1 processes
+22:24:44 [Thread-12]  INFO Process - Starting process operations with 3 operations
+22:24:44 [Thread-12]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:44 [Thread-17]  INFO Task - Task 8 started with 1 processes
+22:24:44 [Thread-17]  INFO Process - Starting process operations with 2 operations
+22:24:44 [Thread-9]  INFO TaskManagement - Started task: 4 with priority 7
+22:24:44 [Thread-17]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:44 [Thread-13]  INFO Task - Task 4 started with 1 processes
+22:24:44 [Thread-13]  INFO Process - Starting process operations with 2 operations
+22:24:44 [Thread-13]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:44 [pool-14-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:44 [pool-14-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-14-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:44 [pool-14-thread-1]  INFO AGV - AGV pushed to memory: 3A
+22:24:44 [pool-14-thread-1]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:44 [pool-14-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:44 [pool-14-thread-1]  INFO AGV - AGV pushed to memory: 3A
+22:24:44 [pool-14-thread-1]  INFO AGV - AGV releasing resource to cell: 3A
+22:24:44 [pool-13-thread-1]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:44 [pool-13-thread-1]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:44 [pool-14-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:44 [pool-14-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-14-thread-3]  INFO AGV - AGV taking resource from cell: 1A
+22:24:44 [pool-14-thread-3]  INFO AGV - AGV pushed to memory: 3A
+22:24:44 [pool-14-thread-3]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:44 [pool-14-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=REFRIGERATED, beverageName='Yogurt', dimensions=10x10x10, bottles=12}
+22:24:44 [pool-14-thread-3]  INFO AGV - AGV pushed to memory: 3A
+22:24:44 [pool-14-thread-3]  INFO AGV - AGV releasing resource to cell: 3A
+22:24:44 [pool-13-thread-4]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:44 [pool-13-thread-4]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:44 [pool-13-thread-5]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:44 [pool-13-thread-5]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:44 [Thread-12]  INFO Process - Successfully submitted all operations to executor service
+22:24:44 [pool-12-thread-1]  INFO Area - Path found from Point[x=2, y=2] to Point[x=4, y=4] with 5 steps, total distance: 4,00
+22:24:44 [pool-12-thread-1]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=4, y=4]
+22:24:44 [Thread-12]  INFO Process - Process operations completed successfully in 1ms
+22:24:44 [Thread-12]  INFO Task - Task 3 completed. Executed 1 processes in 2ms
+22:24:44 [Thread-17]  INFO Process - Successfully submitted all operations to executor service
+22:24:44 [Thread-9]  INFO TaskManagement - Started task: 5 with priority 7
+22:24:44 [Thread-14]  INFO Task - Task 5 started with 1 processes
+22:24:44 [Thread-14]  INFO Process - Starting process operations with 2 operations
+22:24:44 [Thread-14]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:44 [Thread-17]  INFO Process - Process operations completed successfully in 2ms
+22:24:44 [Thread-17]  INFO Task - Task 8 completed. Executed 1 processes in 2ms
+22:24:44 [Thread-9]  INFO TaskManagement - Started task: 7 with priority 7
+22:24:44 [Thread-16]  INFO Task - Task 7 started with 1 processes
+22:24:44 [Thread-16]  INFO Process - Starting process operations with 2 operations
+22:24:44 [Thread-16]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:44 [pool-16-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-16-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-16-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:44 [pool-16-thread-1]  INFO AGV - AGV pushed to memory: 3A
+22:24:44 [pool-16-thread-1]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:44 [pool-16-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-16-thread-1]  INFO AGV - AGV pushed to memory: 3A
+22:24:44 [pool-16-thread-1]  INFO AGV - AGV releasing resource to cell: 3A
+22:24:44 [pool-16-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-16-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-16-thread-3]  INFO AGV - AGV taking resource from cell: 1A
+22:24:44 [pool-16-thread-3]  INFO AGV - AGV pushed to memory: 3A
+22:24:44 [pool-16-thread-3]  INFO AGV - AGV set to moving to point: Point[x=2, y=0]
+22:24:44 [pool-16-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Juice', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-16-thread-3]  INFO AGV - AGV pushed to memory: 3A
+22:24:44 [pool-16-thread-3]  INFO AGV - AGV releasing resource to cell: 3A
+22:24:44 [Thread-14]  INFO Process - Successfully submitted all operations to executor service
+22:24:44 [pool-11-thread-1]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:44 [Thread-14]  INFO Process - Process operations completed successfully in 1ms
+22:24:44 [pool-11-thread-1]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:44 [Thread-14]  INFO Task - Task 5 completed. Executed 1 processes in 1ms
+22:24:44 [pool-11-thread-5]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:44 [pool-11-thread-6]  INFO Area - Path found from Point[x=2, y=2] to Point[x=0, y=0] with 5 steps, total distance: 4,00
+22:24:44 [pool-11-thread-5]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:44 [pool-11-thread-6]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=0, y=0]
+22:24:44 [Thread-10]  INFO Process - Successfully submitted all operations to executor service
+22:24:44 [pool-17-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-17-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-17-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:44 [pool-17-thread-1]  INFO AGV - AGV pushed to memory: 2A
+22:24:44 [pool-17-thread-1]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:44 [pool-17-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-17-thread-1]  INFO AGV - AGV pushed to memory: 2A
+22:24:44 [pool-17-thread-1]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:44 [Thread-10]  INFO Process - Process operations completed successfully in 5ms
+22:24:44 [Thread-10]  INFO Task - Task 1 completed. Executed 1 processes in 5ms
+22:24:44 [Thread-9]  INFO TaskManagement - Started task: 6 with priority 6
+22:24:44 [Thread-15]  INFO Task - Task 6 started with 1 processes
+22:24:44 [pool-12-thread-4]  INFO Area - Path found from Point[x=2, y=2] to Point[x=4, y=4] with 5 steps, total distance: 4,00
+22:24:44 [Thread-15]  INFO Process - Starting process operations with 2 operations
+22:24:44 [pool-12-thread-4]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=4, y=4]
+22:24:44 [Thread-15]  WARN Process - AGV Task Dispatcher not initialized - AGVs will not move for this task
+22:24:44 [pool-15-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-15-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-15-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-15-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:44 [pool-15-thread-1]  INFO AGV - AGV pushed to memory: 2A
+22:24:44 [pool-15-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-15-thread-1]  INFO AGV - AGV set to moving to point: Point[x=0, y=0]
+22:24:44 [pool-15-thread-3]  INFO AGV - AGV taking resource from cell: 2A
+22:24:44 [pool-15-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-15-thread-3]  INFO AGV - AGV pushed to memory: 2A
+22:24:44 [pool-15-thread-1]  INFO AGV - AGV pushed to memory: 2A
+22:24:44 [pool-15-thread-3]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:44 [pool-15-thread-1]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:44 [pool-15-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Water', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-15-thread-3]  INFO AGV - AGV pushed to memory: 2A
+22:24:44 [pool-15-thread-3]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:44 [pool-17-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-17-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-17-thread-3]  INFO AGV - AGV taking resource from cell: 1A
+22:24:44 [pool-17-thread-3]  INFO AGV - AGV pushed to memory: 2A
+22:24:44 [pool-17-thread-3]  INFO AGV - AGV set to moving to point: Point[x=1, y=0]
+22:24:44 [pool-17-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=AMBIENT, beverageName='Soda', dimensions=10x10x10, bottles=24}
+22:24:44 [pool-17-thread-3]  INFO AGV - AGV pushed to memory: 2A
+22:24:44 [pool-17-thread-3]  INFO AGV - AGV releasing resource to cell: 2A
+22:24:44 [Thread-16]  INFO Process - Successfully submitted all operations to executor service
+22:24:44 [pool-12-thread-5]  INFO Area - Path found from Point[x=2, y=2] to Point[x=4, y=4] with 5 steps, total distance: 4,00
+22:24:44 [pool-12-thread-5]  INFO Truck - Route calculated with 5 points from Point[x=2, y=2] to Point[x=4, y=4]
+22:24:44 [Thread-11]  INFO Process - Successfully submitted all operations to executor service
+22:24:44 [Thread-16]  INFO Process - Process operations completed successfully in 3ms
+22:24:44 [Thread-16]  INFO Task - Task 7 completed. Executed 1 processes in 3ms
+22:24:44 [Thread-11]  INFO Process - Process operations completed successfully in 6ms
+22:24:44 [Thread-13]  INFO Process - Successfully submitted all operations to executor service
+22:24:44 [Thread-11]  INFO Task - Task 2 completed. Executed 1 processes in 7ms
+22:24:44 [Thread-13]  INFO Process - Process operations completed successfully in 6ms
+22:24:44 [pool-18-thread-1]  INFO AGV - AGV pushed to memory: BeveragesBox{type=BULK, beverageName='Beer', dimensions=20x20x20, bottles=6}
+22:24:44 [Thread-13]  INFO Task - Task 4 completed. Executed 1 processes in 6ms
+22:24:44 [pool-18-thread-1]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [pool-18-thread-1]  INFO AGV - AGV taking resource from cell: 1A
+22:24:44 [pool-18-thread-1]  INFO AGV - AGV pushed to memory: 1C
+22:24:44 [pool-18-thread-3]  INFO AGV - AGV pushed to memory: BeveragesBox{type=BULK, beverageName='Beer', dimensions=20x20x20, bottles=6}
+22:24:44 [pool-18-thread-3]  INFO AGV - AGV pushed to memory: 1A
+22:24:44 [Thread-15]  INFO Process - Successfully submitted all operations to executor service
+22:24:44 [Thread-15]  INFO Process - Process operations completed successfully in 2ms
+22:24:44 [Thread-15]  INFO Task - Task 6 completed. Executed 1 processes in 2ms
+22:24:44 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=0, y=0] with 1 steps, total distance: 0,00
+22:24:44 [main]  INFO AGV - AGV-11 calculated path to destination: Point[x=0, y=0], path length: 0
+22:24:44 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:44 [main]  INFO AGV - AGV-12 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:44 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=1, y=0] with 2 steps, total distance: 1,00
+22:24:44 [main]  INFO AGV - AGV-14 calculated path to destination: Point[x=1, y=0], path length: 1
+22:24:44 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=2, y=0] with 3 steps, total distance: 2,00
+22:24:44 [main]  INFO AGV - AGV-15 calculated path to destination: Point[x=2, y=0], path length: 2
+22:24:44 [main]  INFO Area - Path found from Point[x=0, y=0] to Point[x=1, y=0] with 2 steps, total distance: 1,00
+22:24:44 [main]  INFO AGV - AGV-11 calculated path to destination: Point[x=1, y=0], path length: 1
+22:24:44 [main]  INFO AGV - AGV taking resource from cell: 2A
+22:24:44 [main] ERROR AGV - AGV-14 failed to execute operation: AGV not at the specified cell to take resource.
+java.lang.IllegalStateException: AGV not at the specified cell to take resource.
+	at de.fachhochschule.dortmund.bads.resources.AGV$3.execute(AGV.java:443)
+	at de.fachhochschule.dortmund.bads.resources.AGV.onTick(AGV.java:587)
+	at de.fachhochschule.dortmund.bads.FullSystemIntegrationTest.lambda$testFullSystemIntegration$1(FullSystemIntegrationTest.java:200)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at de.fachhochschule.dortmund.bads.FullSystemIntegrationTest.testFullSystemIntegration(FullSystemIntegrationTest.java:200)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.SameThreadTimeoutInvocation.proceed(SameThreadTimeoutInvocation.java:51)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:93)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$0(InterceptingLauncher.java:41)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:40)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+22:24:44 [main]  INFO AGV - AGV taking resource from cell: 2A
+22:24:44 [main] ERROR AGV - AGV-11 failed to execute operation: AGV not at the specified cell to take resource.
+java.lang.IllegalStateException: AGV not at the specified cell to take resource.
+	at de.fachhochschule.dortmund.bads.resources.AGV$3.execute(AGV.java:443)
+	at de.fachhochschule.dortmund.bads.resources.AGV.onTick(AGV.java:587)
+	at de.fachhochschule.dortmund.bads.FullSystemIntegrationTest.lambda$testFullSystemIntegration$0(FullSystemIntegrationTest.java:199)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at de.fachhochschule.dortmund.bads.FullSystemIntegrationTest.testFullSystemIntegration(FullSystemIntegrationTest.java:199)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.SameThreadTimeoutInvocation.proceed(SameThreadTimeoutInvocation.java:51)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:93)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$0(InterceptingLauncher.java:41)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:40)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+22:24:44 [main]  INFO AGV - AGV taking resource from cell: 3A
+22:24:44 [main] ERROR AGV - AGV-12 failed to execute operation: AGV not at the specified cell to take resource.
+java.lang.IllegalStateException: AGV not at the specified cell to take resource.
+	at de.fachhochschule.dortmund.bads.resources.AGV$3.execute(AGV.java:443)
+	at de.fachhochschule.dortmund.bads.resources.AGV.onTick(AGV.java:587)
+	at de.fachhochschule.dortmund.bads.FullSystemIntegrationTest.lambda$testFullSystemIntegration$0(FullSystemIntegrationTest.java:199)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at de.fachhochschule.dortmund.bads.FullSystemIntegrationTest.testFullSystemIntegration(FullSystemIntegrationTest.java:199)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.SameThreadTimeoutInvocation.proceed(SameThreadTimeoutInvocation.java:51)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:93)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$0(InterceptingLauncher.java:41)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:40)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+22:24:44 [main]  INFO Area - Path found from Point[x=1, y=0] to Point[x=1, y=0] with 1 steps, total distance: 0,00
+22:24:44 [main]  INFO AGV - AGV-14 calculated path to destination: Point[x=1, y=0], path length: 0
+22:24:44 [main]  INFO AGV - AGV taking resource from cell: 3A
+22:24:44 [main] ERROR AGV - AGV-15 failed to execute operation: AGV not at the specified cell to take resource.
+java.lang.IllegalStateException: AGV not at the specified cell to take resource.
+	at de.fachhochschule.dortmund.bads.resources.AGV$3.execute(AGV.java:443)
+	at de.fachhochschule.dortmund.bads.resources.AGV.onTick(AGV.java:587)
+	at de.fachhochschule.dortmund.bads.FullSystemIntegrationTest.lambda$testFullSystemIntegration$1(FullSystemIntegrationTest.java:200)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at de.fachhochschule.dortmund.bads.FullSystemIntegrationTest.testFullSystemIntegration(FullSystemIntegrationTest.java:200)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:701)
+	at org.junit.platform.commons.support.ReflectionSupport.invokeMethod(ReflectionSupport.java:502)
+	at org.junit.jupiter.engine.support.MethodReflectionUtils.invoke(MethodReflectionUtils.java:45)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:61)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:124)
+	at org.junit.jupiter.engine.extension.SameThreadTimeoutInvocation.proceed(SameThreadTimeoutInvocation.java:51)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:163)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:148)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:123)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:99)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:66)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:47)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:39)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invokeVoid(InterceptingExecutableInvoker.java:71)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$0(TestMethodTestDescriptor.java:219)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:215)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:157)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:70)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:176)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:42)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$2(NodeTestTask.java:180)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$1(NodeTestTask.java:166)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$0(NodeTestTask.java:164)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:74)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:163)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:116)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:36)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:52)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.executeEngine(EngineExecutionOrchestrator.java:246)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.failOrExecuteEngine(EngineExecutionOrchestrator.java:218)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:179)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:66)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:157)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:65)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:125)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:93)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.junit.platform.launcher.core.InterceptingLauncher.lambda$execute$0(InterceptingLauncher.java:41)
+	at org.junit.platform.launcher.core.ClasspathAlignmentCheckingLauncherInterceptor.intercept(ClasspathAlignmentCheckingLauncherInterceptor.java:25)
+	at org.junit.platform.launcher.core.InterceptingLauncher.execute(InterceptingLauncher.java:40)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:48)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+22:24:44 [main]  INFO AGV - AGV-11 completed all movements, returning to IDLE state
+22:24:44 [main]  INFO Area - Path found from Point[x=2, y=0] to Point[x=2, y=0] with 1 steps, total distance: 0,00
+22:24:44 [main]  INFO AGV - AGV-12 calculated path to destination: Point[x=2, y=0], path length: 0
+22:24:44 [main]  INFO AGV - AGV-14 completed all movements, returning to IDLE state
+22:24:44 [main]  INFO Area - Path found from Point[x=2, y=0] to Point[x=2, y=0] with 1 steps, total distance: 0,00
+22:24:44 [main]  INFO AGV - AGV-15 calculated path to destination: Point[x=2, y=0], path length: 0
+22:24:44 [main]  INFO AGV - AGV-12 completed all movements, returning to IDLE state
+22:24:44 [main]  INFO AGV - AGV-15 completed all movements, returning to IDLE state
+22:24:46 [main]  INFO CoreConfiguration - === Initiating System Shutdown ===
+22:24:46 [Observation-Thread]  INFO Observation - Observation System interrupted after 1 collection cycles
+22:24:46 [Observation-Thread]  INFO Observation - Observation System stopped after 1 collection cycles in 3217ms. Total events collected: 1 (avg: {:.2f}ms per cycle)
+22:24:46 [main]  INFO Systems - System OBSERVATION stopped
+22:24:46 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System interrupted after 1 maintenance cycles
+22:24:46 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System stopped after 1 maintenance cycles in 3217ms (avg: {:.2f}ms per cycle)
+22:24:46 [main]  INFO Systems - System STORAGE_MANAGEMENT stopped
+22:24:46 [TaskManagement-Thread]  INFO TaskManagement - Task Management System interrupted after 4 cycles
+22:24:46 [TaskManagement-Thread]  INFO TaskManagement - Task Management System stopped after 4 cycles in 3217ms (avg: {:.2f}ms per cycle)
+22:24:46 [main]  INFO Systems - System TASK_MANAGEMENT stopped
+22:24:46 [Thread-9]  INFO ClockingSimulation - ClockingSimulation interrupted after 4 ticks
+22:24:46 [Thread-9]  INFO ClockingSimulation - ClockingSimulation stopped after 4 ticks in 3217ms (avg: {:.2f}ms per tick)
+22:24:46 [main]  INFO Systems - System CLOCKING stopped
+22:24:46 [main]  INFO CoreConfiguration - === System Shutdown Complete ===
+]]></system-out>
+  </testcase>
+  <testcase name="testTaskManagement" classname="de.fachhochschule.dortmund.bads.FullSystemIntegrationTest" time="0.004">
+    <system-out><![CDATA[22:24:46 [main]  INFO Area - Graph initialized with 24 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:46 [main]  INFO Storage - Storage initialized with 24 cells, 2 charging stations at: 2C, 5A
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:46 [main]  INFO AGV - AGV Charging System initialized with 2 charging stations
+22:24:46 [main]  INFO CoreConfiguration - AGV Charging System initialized with 2 charging stations from Storage
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:46 [main]  INFO AGV - Created new AGV with ID: AGV-16
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:46 [main]  INFO AGV - Created new AGV with ID: AGV-17
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:46 [main]  INFO AGV - Created new AGV with ID: AGV-18
+22:24:46 [main]  INFO Area - Graph initialized with 12 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 100x100x100, Max volume: 1000000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: CHARGING_STATION, Max dimensions: 0x0x0, Max volume: 0
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: REFRIGERATED, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: BULK, Max dimensions: 80x80x80, Max volume: 512000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 10x10x10, Max volume: 1000
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: AMBIENT, Max dimensions: 50x50x50, Max volume: 125000
+22:24:46 [main]  INFO Storage - Storage initialized with 12 cells, 1 charging stations at: 1B
+22:24:46 [main]  INFO Storage - Warehouse city position updated from null to Point[x=2, y=2]
+22:24:46 [main]  INFO AGV - AGV Charging System initialized with 1 charging stations
+22:24:46 [main]  INFO CoreConfiguration - AGV Charging System initialized with 1 charging stations from Storage
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:46 [main]  INFO AGV - Created new AGV with ID: AGV-19
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 2147483647x2147483647x2147483647, Max volume: 2147483647
+22:24:46 [main]  INFO AGV - Created new AGV with ID: AGV-20
+22:24:46 [main]  INFO Area - Graph initialized with 25 nodes
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (0, 0)
+22:24:46 [main]  INFO Area - Start position changed from Point[x=0, y=0] to (2, 2)
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:46 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:46 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:46 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:46 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:46 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:46 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:46 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:46 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:46 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:46 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:46 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:46 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:46 [main]  INFO StorageCell - Created StorageCell - Type: ANY, Max dimensions: 200x200x200, Max volume: 8000000
+22:24:46 [main]  INFO StorageCell - Successfully added box Water - Current dimensions: 25x40x30, Space efficiency: 100,0%, Boxes: 1
+22:24:46 [main]  INFO StorageCell - Successfully added box Coca Cola - Current dimensions: 25x40x60, Space efficiency: 100,0%, Boxes: 2
+22:24:46 [main]  INFO StorageCell - Successfully added box Sprite - Current dimensions: 25x40x90, Space efficiency: 100,0%, Boxes: 3
+22:24:46 [main]  INFO StorageCell - Successfully added box Milk - Current dimensions: 28x40x90, Space efficiency: 118,5%, Boxes: 4
+22:24:46 [main]  INFO StorageCell - Successfully added box Orange Juice - Current dimensions: 28x40x120, Space efficiency: 110,7%, Boxes: 5
+22:24:46 [main]  INFO CoreConfiguration - Created new Truck with inventory cell (200x200x200) and 5 default beverages loaded
+22:24:46 [main]  INFO CoreConfiguration - === Starting Core System Autowiring ===
+22:24:46 [main]  WARN AGVManagementConfiguration - AGVManagementConfiguration already autowired
+22:24:46 [main]  WARN TaskManagementConfiguration - TaskManagementConfiguration already autowired
+22:24:46 [main]  WARN StorageManagementConfiguration - StorageManagementConfiguration already autowired
+22:24:46 [main]  WARN TruckManagementConfiguration - TruckManagementConfiguration already autowired
+22:24:46 [main]  WARN ObservabilityConfiguration - ObservabilityConfiguration already autowired
+22:24:46 [main]  INFO CoreConfiguration - All configurations autowired. Initializing systems...
+22:24:46 [main]  INFO TaskManagement - TaskManagement initialized with priority-based queue
+22:24:46 [main]  INFO Systems - System CLOCKING started
+22:24:46 [Thread-18]  INFO ClockingSimulation - ClockingSimulation started with 3 registered tickables
+22:24:46 [main]  INFO Systems - System TASK_MANAGEMENT started
+22:24:46 [TaskManagement-Thread]  INFO TaskManagement - Task Management System started
+22:24:46 [main]  INFO Systems - System STORAGE_MANAGEMENT started
+22:24:46 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System started
+22:24:46 [main]  INFO Systems - System OBSERVATION started
+22:24:46 [main]  INFO CoreConfiguration - === Core System Autowiring Complete ===
+22:24:46 [main]  INFO CoreConfiguration - Systems running: CLOCKING, AGV_FLEET, TASK_MANAGEMENT, STORAGE_MANAGEMENT, OBSERVATION
+22:24:46 [Observation-Thread]  INFO Observation - Observation System started
+22:24:46 [main]  INFO TaskManagement - Added task: Task[id=9, priority=10, processes=0] - Total tasks: 1
+22:24:46 [main]  INFO TaskManagement - Added task: Task[id=10, priority=5, processes=0] - Total tasks: 2
+22:24:46 [main]  INFO TaskManagement - Added task: Task[id=11, priority=1, processes=0] - Total tasks: 3
+22:24:46 [main]  INFO CoreConfiguration - === Initiating System Shutdown ===
+22:24:46 [Observation-Thread]  INFO Observation - Observation System interrupted after 1 collection cycles
+22:24:46 [Observation-Thread]  INFO Observation - Observation System stopped after 1 collection cycles in 0ms. Total events collected: 1 (avg: {:.2f}ms per cycle)
+22:24:46 [main]  INFO Systems - System OBSERVATION stopped
+22:24:46 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System interrupted after 1 maintenance cycles
+22:24:46 [StorageManagement-Thread]  INFO StorageManagement - Storage Management System stopped after 1 maintenance cycles in 0ms (avg: {:.2f}ms per cycle)
+22:24:46 [main]  INFO Systems - System STORAGE_MANAGEMENT stopped
+22:24:46 [TaskManagement-Thread]  INFO TaskManagement - Task Management System interrupted after 1 cycles
+22:24:46 [TaskManagement-Thread]  INFO TaskManagement - Task Management System stopped after 1 cycles in 0ms (avg: {:.2f}ms per cycle)
+22:24:46 [main]  INFO Systems - System TASK_MANAGEMENT stopped
+22:24:46 [Thread-18]  INFO ClockingSimulation - ClockingSimulation interrupted after 1 ticks
+22:24:46 [Thread-18]  INFO ClockingSimulation - ClockingSimulation stopped after 1 ticks in 1ms (avg: {:.2f}ms per tick)
+22:24:46 [main]  INFO Systems - System CLOCKING stopped
+22:24:46 [main]  INFO CoreConfiguration - === System Shutdown Complete ===
+]]></system-out>
+  </testcase>
+</testsuite>
