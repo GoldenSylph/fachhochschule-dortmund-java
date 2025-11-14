@@ -4,38 +4,42 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
 
+import de.fachhochschule.dortmund.bads.model.StorageCell;
+import de.fachhochschule.dortmund.bads.resources.Truck;
+import de.fachhochschule.dortmund.bads.systems.logic.utils.ITickable;
+
 /**
  * Custom component for visualizing a delivery truck with cargo
- *
- * INTEGRATION POINTS:
- * - Receive Truck instance to read inventory and loading status
- * - Update cargo visualization based on truck capacity
- * - Show real-time loading progress
+ * INTEGRATION COMPLETE - All methods implemented
  */
-public class TruckComponent extends JPanel {
+public class TruckComponent extends JPanel implements ITickable {
+	private static final long serialVersionUID = 573005075942321826L;
 
-    private String truckId;
+	private String truckId;
     private int maxCapacity;       // Maximum number of cargo items
     private int currentLoad;       // Current number of cargo items
     private double loadProgress;   // 0.0 to 1.0
 
-    // TODO [CONCURRENCY]: Uncomment to receive Truck reference
-    // private Truck truck;
+    private Truck truck; // Backend reference
 
+    /**
+     * Constructor with real Truck instance (preferred)
+     */
+    public TruckComponent(Truck truck) {
+        this.truck = truck;
+        this.truckId = "T-" + System.identityHashCode(truck);
+        updateFromTruck();
+        initializeComponent();
+    }
+
+    /**
+     * Constructor with placeholder data (for testing/demo)
+     */
     public TruckComponent(String truckId, int maxCapacity, int currentLoad) {
-        // TODO [CONCURRENCY]: Uncomment to use real Truck instance
-        /* public TruckComponent(Truck truck) {
-             this.truck = truck;
-             this.truckId = /* get from truck */;
-        //     updateFromTruck();
-        //     initializeComponent();
-        // } 
-
         this.truckId = truckId;
         this.maxCapacity = maxCapacity;
         this.currentLoad = currentLoad;
         this.loadProgress = maxCapacity > 0 ? (double) currentLoad / maxCapacity : 0.0;
-
         initializeComponent();
     }
 
@@ -181,6 +185,33 @@ public class TruckComponent extends JPanel {
         g2d.drawString(truckId, x + 35, 10);
     }
 
+    /**
+     * Update component state from real Truck instance
+     */
+    public void updateFromTruck() {
+        if (truck != null) {
+            SwingUtilities.invokeLater(() -> {
+                StorageCell inventory = truck.getInventoryCell();
+                if (inventory != null) {
+                    this.currentLoad = inventory.getBoxCount();
+                    // Calculate max capacity from cell dimensions
+                    int maxVolume = inventory.MAX_LENGTH * inventory.MAX_WIDTH * inventory.MAX_HEIGHT;
+                    this.maxCapacity = maxVolume / 1000; // Convert to item count
+                    this.loadProgress = maxCapacity > 0 ? (double) currentLoad / maxCapacity : 0.0;
+                }
+                repaint();
+            });
+        }
+    }
+
+    @Override
+    public void onTick(int currentTick) {
+        // Update from backend Truck every tick
+        if (currentTick % 5 == 0) { // Update every 5 ticks to reduce overhead
+            updateFromTruck();
+        }
+    }
+
     // Public setters for updating truck state
     public void setCurrentLoad(int load) {
         this.currentLoad = Math.max(0, Math.min(maxCapacity, load));
@@ -204,29 +235,6 @@ public class TruckComponent extends JPanel {
         this.loadProgress = maxCapacity > 0 ? (double) currentLoad / maxCapacity : 0.0;
         repaint();
     }
-
-    // TODO [STATE-ACCESS]: Uncomment to update from real Truck instance
-    /* public void updateFromTruck() {
-         if (truck != null) {
-             SwingUtilities.invokeLater(() -> {
-                 StorageCell inventory = truck.getInventoryCell();
-                 if (inventory != null) {
-                     this.currentLoad = inventory.getBoxCount();
-                     // Calculate max capacity from cell dimensions
-                     int maxVolume = inventory.MAX_LENGTH * inventory.MAX_WIDTH * inventory.MAX_HEIGHT;
-                     this.maxCapacity = maxVolume / 100; // Approximate item count
-                     this.loadProgress = maxCapacity > 0 ? (double) currentLoad / maxCapacity : 0.0;
-                 }
-                 repaint();
-             });
-         }
-     } */
-
-    // TODO [TICK-LISTENER]: Uncomment if TruckComponent implements ITickable
-    // @Override
-    // public void onTick(int currentTick) {
-    //     updateFromTruck();
-    // }
 
     // Getters
     public String getTruckId() {

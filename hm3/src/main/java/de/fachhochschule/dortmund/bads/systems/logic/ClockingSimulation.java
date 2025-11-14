@@ -10,6 +10,7 @@ import de.fachhochschule.dortmund.bads.systems.logic.utils.ITickable;
 
 public class ClockingSimulation extends Thread {
 	private static final Logger LOGGER = LogManager.getLogger(ClockingSimulation.class.getName());
+	private static final int LOG_INTERVAL_TICKS = 100;
 
 	private final CopyOnWriteArrayList<ITickable> tickables = new CopyOnWriteArrayList<>();
 	private volatile boolean running = true;
@@ -36,7 +37,9 @@ public class ClockingSimulation extends Thread {
 				int currentTick = currentTime.incrementAndGet();
 				tickCount++;
 				
-				if (LOGGER.isDebugEnabled()) {
+				boolean shouldLog = (currentTick % LOG_INTERVAL_TICKS == 0);
+				
+				if (shouldLog && LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Tick {}: Processing {} tickables", currentTick, tickables.size());
 				}
 				
@@ -63,14 +66,14 @@ public class ClockingSimulation extends Thread {
 				
 				long tickDuration = System.currentTimeMillis() - tickStartTime;
 				
-				// Log tick completion with performance metrics
-				if (LOGGER.isInfoEnabled()) {
+				// Log tick completion with performance metrics only every N ticks
+				if (shouldLog && LOGGER.isInfoEnabled()) {
 					LOGGER.info("Tick {} completed in {}ms - Successful: {}, Failed: {}", 
 							   currentTick, tickDuration, successfulTicks, failedTicks);
 				}
 				
-				// Log performance warnings for slow ticks
-				if (tickDuration > delay.get() / 2 && LOGGER.isWarnEnabled()) {
+				// Log performance warnings for slow ticks (only every N ticks to reduce log noise)
+				if (shouldLog && tickDuration > delay.get() / 2 && LOGGER.isWarnEnabled()) {
 					LOGGER.warn("Tick {} took {}ms ({}% of delay period) - performance degradation detected", 
 							   currentTick, tickDuration, (tickDuration * 100) / delay.get());
 				}
@@ -88,14 +91,24 @@ public class ClockingSimulation extends Thread {
 		
 		long totalSimulationTime = System.currentTimeMillis() - simulationStartTime;
 		if (LOGGER.isInfoEnabled()) {
+			double avgTime = tickCount > 0 ? (double)totalSimulationTime / tickCount : 0.0;
 			LOGGER.info("ClockingSimulation stopped after {} ticks in {}ms (avg: {:.2f}ms per tick)", 
-					   tickCount, totalSimulationTime, tickCount > 0 ? (double)totalSimulationTime / tickCount : 0.0);
+					   tickCount, totalSimulationTime, String.format("%.2f", avgTime));
 		}
 	}
 
 	public void toggleClocking() {
 		boolean previousState = this.running;
 		this.running = !this.running;
+		
+		// If thread hasn't been started yet, start it now
+		if (!previousState && this.running && !this.isAlive()) {
+			this.start();
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("ClockingSimulation thread started for the first time");
+			}
+		}
+		
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("ClockingSimulation toggled from {} to {}", 
 					   previousState ? "RUNNING" : "STOPPED", this.running ? "RUNNING" : "STOPPED");

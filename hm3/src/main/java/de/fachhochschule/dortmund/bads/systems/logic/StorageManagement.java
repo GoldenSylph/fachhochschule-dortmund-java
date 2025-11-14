@@ -8,182 +8,159 @@ import org.apache.logging.log4j.Logger;
 
 import de.fachhochschule.dortmund.bads.StorageManagementConfiguration;
 import de.fachhochschule.dortmund.bads.model.Storage;
+import de.fachhochschule.dortmund.bads.model.StorageCell;
 import de.fachhochschule.dortmund.bads.systems.logic.utils.ITickable;
 
 /**
  * Storage Management System - Manages storage operations and optimization.
- * Integrated with ClockingSimulation for timing.
  */
 public class StorageManagement extends Thread implements ITickable {
 	private static final Logger LOGGER = LogManager.getLogger(StorageManagement.class.getName());
 	
-	private final Map<String, Storage> storages;
+	private final Map<String, Storage> storages = new ConcurrentHashMap<>();
 	private volatile boolean running = true;
 	
 	public StorageManagement() {
 		super("StorageManagement-Thread");
-		this.storages = new ConcurrentHashMap<>();
-		
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("StorageManagement initialized with empty storage registry");
-		}
 	}
 	
 	@Override
 	public void run() {
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Storage Management System started");
-		}
+		LOGGER.info("Storage Management System started");
 		
 		StorageManagementConfiguration config = StorageManagementConfiguration.INSTANCE;
-		long systemStartTime = System.currentTimeMillis();
-		int maintenanceCycles = 0;
+		long startTime = System.currentTimeMillis();
+		int cycles = 0;
 		
 		try {
 			while (running && !Thread.currentThread().isInterrupted()) {
-				// Perform periodic maintenance if enabled
 				if (config.isAutoCompactionEnabled()) {
-					long cycleStartTime = System.currentTimeMillis();
-					performMaintenance();
-					long cycleDuration = System.currentTimeMillis() - cycleStartTime;
-					maintenanceCycles++;
-					
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Maintenance cycle {} completed in {}ms", maintenanceCycles, cycleDuration);
-					}
-					
-					if (cycleDuration > config.getCompactionIntervalMillis() / 2 && LOGGER.isWarnEnabled()) {
-						LOGGER.warn("Maintenance cycle {} took {}ms ({}% of interval) - performance degradation detected", 
-								maintenanceCycles, cycleDuration, 
-								(cycleDuration * 100) / config.getCompactionIntervalMillis());
-					}
+					performMaintenance(config);
+					cycles++;
 				}
-				
 				Thread.sleep(config.getCompactionIntervalMillis());
 			}
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("Storage Management System interrupted after {} maintenance cycles", maintenanceCycles);
-			}
+			LOGGER.info("Storage Management System interrupted after {} maintenance cycles", cycles);
 		}
 		
-		long totalRuntime = System.currentTimeMillis() - systemStartTime;
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Storage Management System stopped after {} maintenance cycles in {}ms (avg: {:.2f}ms per cycle)", 
-					maintenanceCycles, totalRuntime, 
-					maintenanceCycles > 0 ? (double)totalRuntime / maintenanceCycles : 0.0);
-		}
+		long runtime = System.currentTimeMillis() - startTime;
+		double avgTime = cycles > 0 ? (double)runtime / cycles : 0.0;
+		LOGGER.info("Storage Management System stopped after {} maintenance cycles in {}ms (avg: {:.2f}ms per cycle)", 
+				cycles, runtime, String.format("%.2f", avgTime));
 	}
 	
 	@Override
 	public void onTick(int currentTick) {
-		// Monitor and log storage status periodically
 		if (currentTick % 20 == 0) {
-			if (LOGGER.isInfoEnabled()) {
-				logStorageStatus(currentTick);
-			}
-		}
-		
-		if (LOGGER.isTraceEnabled()) {
-			LOGGER.trace("StorageManagement tick {} processed", currentTick);
+			LOGGER.info("Tick {} - Storage Status - Total Storages: {}", currentTick, storages.size());
 		}
 	}
 	
-	private void performMaintenance() {
-		StorageManagementConfiguration config = StorageManagementConfiguration.INSTANCE;
+	private void performMaintenance(StorageManagementConfiguration config) {
+		int overThreshold = 0;
 		
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Starting maintenance on {} storages", storages.size());
-		}
-		
-		int storagesOverThreshold = 0;
-		
-		storages.forEach((id, storage) -> {
-			double utilization = calculateUtilization(storage);
-			
-			if (LOGGER.isTraceEnabled()) {
-				LOGGER.trace("Storage {} utilization: {:.2%}", id, utilization);
-			}
+		for (Map.Entry<String, Storage> entry : storages.entrySet()) {
+			double utilization = calculateUtilization(entry.getValue());
 			
 			if (utilization > config.getStorageUtilizationThreshold()) {
-				if (LOGGER.isWarnEnabled()) {
-					LOGGER.warn("Storage {} utilization ({:.2%}) exceeds threshold ({:.2%}) - maintenance recommended", 
-							id, utilization, config.getStorageUtilizationThreshold());
-				}
+				overThreshold++;
+				LOGGER.warn("Storage {} utilization ({:.2%}) exceeds threshold ({:.2%})", 
+						entry.getKey(), utilization, config.getStorageUtilizationThreshold());
 			}
-		});
-		
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Maintenance completed - {} storage(s) over threshold", storagesOverThreshold);
 		}
+		
+		LOGGER.debug("Maintenance completed - {} storage(s) over threshold", overThreshold);
 	}
 	
 	private double calculateUtilization(Storage storage) {
-		// TODO: Implement actual utilization calculation based on Storage implementation
-		return 0.0;
-	}
-	
-	private void logStorageStatus(int currentTick) {
-		LOGGER.info("Tick {} - Storage Status - Total Storages: {}", currentTick, storages.size());
+		if (storage == null || storage.getAllStorages() == null) {
+			return 0.0;
+		}
+		
+		// Get all cells from the storage
+		Map<de.fachhochschule.dortmund.bads.model.Area.Point, StorageCell> cells = 
+			storage.getAllStorages();
+		
+		if (cells.isEmpty()) {
+			return 0.0;
+		}
+		
+		// Calculate utilization based on occupied volume vs total available volume
+		long totalMaxVolume = 0;
+		long totalUsedVolume = 0;
+		int storageCellCount = 0;
+		
+		// Iterate through all storage cells (excluding corridors and charging stations)
+		for (StorageCell cell : cells.values()) {
+			// Only count actual storage cells (not corridors or charging stations)
+			if (cell.TYPE == StorageCell.Type.AMBIENT ||
+				cell.TYPE == StorageCell.Type.REFRIGERATED ||
+				cell.TYPE == StorageCell.Type.BULK) {
+				
+				storageCellCount++;
+				
+				// Calculate max volume for this cell
+				long maxVolume = (long) cell.MAX_LENGTH * cell.MAX_WIDTH * cell.MAX_HEIGHT;
+				totalMaxVolume += maxVolume;
+				
+				// Calculate actual used volume (sum of all box volumes)
+				long usedVolume = cell.getActualUsedVolume();
+				totalUsedVolume += usedVolume;
+			}
+		}
+		
+		// Avoid division by zero
+		if (totalMaxVolume == 0) {
+			LOGGER.debug("No storage cells with capacity found in storage");
+			return 0.0;
+		}
+		
+		// Calculate utilization as a percentage (0.0 to 1.0)
+		double utilization = (double) totalUsedVolume / totalMaxVolume;
+		
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("Storage utilization: {:.2%} ({} / {} volume units across {} storage cells)", 
+					utilization, totalUsedVolume, totalMaxVolume, storageCellCount);
+		}
+		
+		return utilization;
 	}
 	
 	public void registerStorage(String id, Storage storage) {
 		if (id == null || storage == null) {
-			if (LOGGER.isWarnEnabled()) {
-				LOGGER.warn("Attempted to register storage with null id or storage - ignoring");
-			}
+			LOGGER.warn("Cannot register storage with null id or storage");
 			return;
 		}
 		
 		Storage previous = storages.put(id, storage);
-		
-		if (LOGGER.isInfoEnabled()) {
-			if (previous != null) {
-				LOGGER.info("Replaced existing storage: {}. Total storages: {}", id, storages.size());
-			} else {
-				LOGGER.info("Registered new storage: {}. Total storages: {}", id, storages.size());
-			}
-		}
+		LOGGER.info("{} storage: {}. Total storages: {}", 
+				previous != null ? "Replaced" : "Registered", id, storages.size());
 	}
 	
 	public Storage getStorage(String id) {
-		if (LOGGER.isTraceEnabled()) {
-			LOGGER.trace("Storage {} requested", id);
-		}
 		return storages.get(id);
 	}
 	
 	public void unregisterStorage(String id) {
 		if (id == null) {
-			if (LOGGER.isWarnEnabled()) {
-				LOGGER.warn("Attempted to unregister storage with null id - ignoring");
-			}
+			LOGGER.warn("Cannot unregister storage with null id");
 			return;
 		}
 		
 		Storage removed = storages.remove(id);
-		
-		if (LOGGER.isInfoEnabled()) {
-			if (removed != null) {
-				LOGGER.info("Unregistered storage: {}. Remaining storages: {}", id, storages.size());
-			} else if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Storage {} was not registered, nothing to remove", id);
-			}
+		if (removed != null) {
+			LOGGER.info("Unregistered storage: {}. Remaining storages: {}", id, storages.size());
 		}
 	}
 	
 	public Map<String, Storage> getAllStorages() {
-		if (LOGGER.isTraceEnabled()) {
-			LOGGER.trace("All storages requested - returning {} storages", storages.size());
-		}
 		return new ConcurrentHashMap<>(storages);
 	}
 	
 	public void stopSystem() {
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Stopping Storage Management System gracefully (total storages: {})", storages.size());
-		}
+		LOGGER.info("Stopping Storage Management System (total storages: {})", storages.size());
 		running = false;
 		interrupt();
 	}

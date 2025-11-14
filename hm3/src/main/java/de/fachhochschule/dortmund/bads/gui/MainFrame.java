@@ -2,38 +2,60 @@ package de.fachhochschule.dortmund.bads.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import de.fachhochschule.dortmund.bads.model.Storage;
+import de.fachhochschule.dortmund.bads.systems.logic.ClockingSimulation;
+import de.fachhochschule.dortmund.bads.systems.logic.Observation;
+import de.fachhochschule.dortmund.bads.systems.logic.StorageManagement;
+import de.fachhochschule.dortmund.bads.systems.logic.TaskManagement;
 
 /**
  * Main application window for BADS (Beverage Automated Distribution System)
- *
- * INTEGRATION POINTS:
- * - This frame will be instantiated by GUIConfiguration.autowire()
- * - Pass Systems references via constructor or setters when integrating
  */
 public class MainFrame extends JFrame {
+	private static final long serialVersionUID = 3376583837337391665L;
+	private static final Logger LOGGER = LogManager.getLogger(MainFrame.class);
 
-    private WarehousePanel warehousePanel;
+	private WarehousePanel warehousePanel;
     private LoadingBayPanel loadingBayPanel;
     private OrderManagementPanel orderManagementPanel;
     private ControlLogPanel controlLogPanel;
 
-    // TODO [CONCURRENCY]: Uncomment when integrating with backend systems
-    // private ClockingSimulation clockingSystem;
-    // private TaskManagement taskManagement;
-    // private StorageManagement storageManagement;
-    // private Observation observationSystem;
+    private ClockingSimulation clockingSystem;
+    private TaskManagement taskManagement;
+    private StorageManagement storageManagement;
+    private Observation observationSystem;
+    
+    // Domain objects for logistics control
+    private de.fachhochschule.dortmund.bads.model.Area cityArea;
+    private de.fachhochschule.dortmund.bads.model.Storage warehouse;
+    private java.util.List<de.fachhochschule.dortmund.bads.resources.Truck> trucks;
 
+    /**
+     * Constructor with system dependencies (used by GUIConfiguration)
+     */
+    public MainFrame(ClockingSimulation clocking, TaskManagement taskMgmt,
+                     StorageManagement storageMgmt, Observation observation) {
+        this.clockingSystem = clocking;
+        this.taskManagement = taskMgmt;
+        this.storageManagement = storageMgmt;
+        this.observationSystem = observation;
+        
+        LOGGER.info("MainFrame initializing with backend systems - Clocking: {}, TaskMgmt: {}, StorageMgmt: {}, Observation: {}",
+            clocking != null, taskMgmt != null, storageMgmt != null, observation != null);
+        
+        initializeComponents();
+    }
+
+    /**
+     * Default constructor for standalone testing
+     */
     public MainFrame() {
-        // TODO [CONCURRENCY]: Uncomment to receive system references
-        /* public MainFrame(ClockingSimulation clocking, TaskManagement taskMgmt,
-                          StorageManagement storageMgmt, Observation observation) {
-             this.clockingSystem = clocking;
-             this.taskManagement = taskMgmt;
-             this.storageManagement = storageMgmt;
-             this.observationSystem = observation;
-             initializeComponents();
-         } */
-
+        LOGGER.info("MainFrame initializing in standalone mode (no backend systems)");
         initializeComponents();
     }
 
@@ -47,7 +69,7 @@ public class MainFrame extends JFrame {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to set system look and feel", e);
         }
 
         // Create menu bar
@@ -56,22 +78,80 @@ public class MainFrame extends JFrame {
         // Main layout
         setLayout(new BorderLayout());
 
-        // Create panels
-        // TODO [CONCURRENCY]: Uncomment to pass system references to panels
-        // warehousePanel = new WarehousePanel(storageManagement);
-        // loadingBayPanel = new LoadingBayPanel(/* pass AGV and Truck instances */);
-        // orderManagementPanel = new OrderManagementPanel(taskManagement);
-        // controlLogPanel = new ControlLogPanel(clockingSystem, observationSystem);
-
+        // Create panels with system references
         warehousePanel = new WarehousePanel();
         loadingBayPanel = new LoadingBayPanel();
         orderManagementPanel = new OrderManagementPanel();
-        controlLogPanel = new ControlLogPanel();
+        controlLogPanel = new ControlLogPanel(clockingSystem, observationSystem);
 
+        // Wire backend dependencies to panels
+        wireBackendDependencies();
+        
+        // Register panels with clocking system for tick updates
+        registerTickableComponents();
+
+        // Build UI layout
+        buildLayout();
+        
+        LOGGER.info("MainFrame initialization complete");
+    }
+
+    /**
+     * Wire all backend system dependencies to GUI panels
+     */
+    private void wireBackendDependencies() {
+        // TaskManagement integration
+        if (taskManagement != null) {
+            orderManagementPanel.setTaskManagement(taskManagement);
+            loadingBayPanel.setTaskManagement(taskManagement);
+            LOGGER.debug("TaskManagement wired to OrderManagementPanel and LoadingBayPanel");
+        } else {
+            LOGGER.warn("TaskManagement not available - panels will use sample data");
+        }
+        
+        // StorageManagement integration
+        // Note: Storage and AGV fleet will be set by GUIConfiguration.setWarehouseData()
+        // This allows for more flexible configuration from App.java
+        if (storageManagement != null) {
+            LOGGER.debug("StorageManagement available - waiting for GUIConfiguration to set Storage");
+        } else {
+            LOGGER.warn("StorageManagement not available - WarehousePanel will use sample data");
+        }
+        
+        // Observation system integration
+        if (observationSystem != null) {
+            loadingBayPanel.setObservationSystem(observationSystem);
+            LOGGER.debug("Observation system wired to LoadingBayPanel");
+        } else {
+            LOGGER.warn("Observation system not available");
+        }
+    }
+    
+    /**
+     * Register all ITickable components with the clocking system
+     * Note: This should only be called once, either here or by GUIConfiguration
+     */
+    private void registerTickableComponents() {
+        if (clockingSystem != null) {
+            // Only register if not already registered by GUIConfiguration
+            // ClockingSimulation should handle duplicate registrations gracefully
+            clockingSystem.registerTickable(orderManagementPanel);
+            clockingSystem.registerTickable(loadingBayPanel);
+            clockingSystem.registerTickable(warehousePanel);
+            LOGGER.info("Registered {} tickable components with ClockingSimulation", 3);
+        } else {
+            LOGGER.warn("ClockingSimulation not available - components will not receive tick updates");
+        }
+    }
+
+    /**
+     * Build the main UI layout
+     */
+    private void buildLayout() {
         // Left panel - Warehouse
         add(warehousePanel, BorderLayout.WEST);
 
-     // Right side - split into top (loading bays) and bottom (orders)
+        // Right side - split into top (loading bays) and bottom (orders)
         JPanel rightPanel = new JPanel(new GridBagLayout());
 
         // Loading Bay Panel - top 65%
@@ -79,7 +159,7 @@ public class MainFrame extends JFrame {
         gbc_loadingBay.gridx = 0;
         gbc_loadingBay.gridy = 0;
         gbc_loadingBay.weightx = 1.0;
-        gbc_loadingBay.weighty = 0.65;  // Loading bays take 65% of vertical space
+        gbc_loadingBay.weighty = 0.65;
         gbc_loadingBay.fill = GridBagConstraints.BOTH;
         rightPanel.add(loadingBayPanel, gbc_loadingBay);
 
@@ -88,7 +168,7 @@ public class MainFrame extends JFrame {
         gbc_orderMgmt.gridx = 0;
         gbc_orderMgmt.gridy = 1;
         gbc_orderMgmt.weightx = 1.0;
-        gbc_orderMgmt.weighty = 0.35;  // Orders take 35% of vertical space
+        gbc_orderMgmt.weighty = 0.35;
         gbc_orderMgmt.fill = GridBagConstraints.BOTH;
         rightPanel.add(orderManagementPanel, gbc_orderMgmt);
 
@@ -96,13 +176,6 @@ public class MainFrame extends JFrame {
 
         // Bottom panel - Controls and Log
         add(controlLogPanel, BorderLayout.SOUTH);
-
-        // TODO [TICK-LISTENER]: Uncomment to register panels as tick listeners
-        /* if (clockingSystem != null) {
-             clockingSystem.registerTickable(warehousePanel);
-             clockingSystem.registerTickable(loadingBayPanel);
-             clockingSystem.registerTickable(orderManagementPanel);
-         } */
     }
 
     private void createMenuBar() {
@@ -111,30 +184,42 @@ public class MainFrame extends JFrame {
         // File Menu
         JMenu fileMenu = new JMenu("File");
         JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.addActionListener(e -> System.exit(0));
+        exitItem.addActionListener(_ -> exitApplication());
         fileMenu.add(exitItem);
 
         // Edit Menu
         JMenu editMenu = new JMenu("Edit");
         JMenuItem preferencesItem = new JMenuItem("Preferences");
+        preferencesItem.addActionListener(_ -> showPreferencesDialog());
         editMenu.add(preferencesItem);
 
         // View Menu
         JMenu viewMenu = new JMenu("View");
-        JMenuItem refreshItem = new JMenuItem("Refresh");
-        refreshItem.addActionListener(e -> refreshAllPanels());
+        JMenuItem refreshItem = new JMenuItem("Refresh All");
+        refreshItem.addActionListener(_ -> refreshAllPanels());
         viewMenu.add(refreshItem);
 
         // Tools Menu
         JMenu toolsMenu = new JMenu("Tools");
+        
+        JMenuItem logisticsItem = new JMenuItem("Logistics Control Panel");
+        logisticsItem.addActionListener(_ -> showLogisticsControlPanel());
+        toolsMenu.add(logisticsItem);
+        
+        toolsMenu.addSeparator();
+        
         JMenuItem inventoryItem = new JMenuItem("Inventory Management");
-        inventoryItem.addActionListener(e -> showInventoryDialog());
+        inventoryItem.addActionListener(_ -> showInventoryDialog());
         toolsMenu.add(inventoryItem);
+        
+        JMenuItem systemStatusItem = new JMenuItem("System Status");
+        systemStatusItem.addActionListener(_ -> showSystemStatus());
+        toolsMenu.add(systemStatusItem);
 
         // Help Menu
         JMenu helpMenu = new JMenu("Help");
         JMenuItem aboutItem = new JMenuItem("About");
-        aboutItem.addActionListener(e -> showAboutDialog());
+        aboutItem.addActionListener(_ -> showAboutDialog());
         helpMenu.add(aboutItem);
 
         menuBar.add(fileMenu);
@@ -147,24 +232,81 @@ public class MainFrame extends JFrame {
     }
 
     private void refreshAllPanels() {
-        // TODO [STATE-ACCESS]: Uncomment to trigger panel refreshes from backend state
-        // warehousePanel.refresh();
-        // loadingBayPanel.refresh();
-        // orderManagementPanel.refresh();
-        // controlLogPanel.refresh();
-
+        LOGGER.info("Refreshing all panels");
+        if (warehousePanel != null) warehousePanel.refresh();
+        if (loadingBayPanel != null) loadingBayPanel.refresh();
+        if (orderManagementPanel != null) orderManagementPanel.refresh();
+        if (controlLogPanel != null) controlLogPanel.refresh();
         repaint();
+        LOGGER.debug("All panels refreshed");
     }
 
     public void showInventoryDialog() {
-        // TODO [OBSERVABILITY]: Uncomment to pass storage data to inventory dialog
-        // InventoryDialog dialog = new InventoryDialog(this, storageManagement);
-
-        InventoryDialog dialog = new InventoryDialog(this);
+        LOGGER.info("Opening Inventory Management dialog");
+        InventoryDialog dialog = new InventoryDialog(this, storageManagement);
         dialog.setVisible(true);
+    }
+    
+    private void showSystemStatus() {
+        LOGGER.info("Displaying system status");
+        StringBuilder status = new StringBuilder();
+        status.append("BADS System Status\n\n");
+        status.append("Backend Systems:\n");
+        status.append("- Clocking System: ").append(clockingSystem != null ? "Connected" : "Not Available").append("\n");
+        status.append("- Task Management: ").append(taskManagement != null ? "Connected" : "Not Available").append("\n");
+        status.append("- Storage Management: ").append(storageManagement != null ? "Connected" : "Not Available").append("\n");
+        status.append("- Observation System: ").append(observationSystem != null ? "Connected" : "Not Available").append("\n\n");
+        
+        if (storageManagement != null) {
+            Map<String, Storage> storages = storageManagement.getAllStorages();
+            status.append("Storage Details:\n");
+            status.append("- Storage Instances: ").append(storages.size()).append("\n");
+            if (!storages.isEmpty()) {
+                Storage s = storages.values().iterator().next();
+                status.append("- Total Cells: ").append(s.getAllStorages().size()).append("\n");
+                status.append("- Charging Stations: ").append(s.getChargingStationCount()).append("\n");
+            }
+        }
+        
+        if (taskManagement != null) {
+            status.append("\nTask Management:\n");
+            status.append("- Active Tasks: ").append(taskManagement.getAllTasks().size()).append("\n");
+        }
+        
+        JOptionPane.showMessageDialog(this, status.toString(), "System Status", 
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void showPreferencesDialog() {
+        LOGGER.info("Opening Preferences dialog");
+        // TODO: Implement preferences dialog
+        JOptionPane.showMessageDialog(this, "Preferences dialog not implemented yet.", 
+            "Preferences", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void showLogisticsControlPanel() {
+        LOGGER.info("Opening Logistics Control Panel");
+        LogisticsControlPanel panel = new LogisticsControlPanel(
+            this, cityArea, warehouse, trucks
+        );
+        panel.setVisible(true);
+    }
+    
+    private void exitApplication() {
+        LOGGER.info("Application exit requested");
+        int result = JOptionPane.showConfirmDialog(this, 
+            "Are you sure you want to exit BADS?", 
+            "Exit Application", 
+            JOptionPane.YES_NO_OPTION);
+        
+        if (result == JOptionPane.YES_OPTION) {
+            LOGGER.info("Application shutting down");
+            System.exit(0);
+        }
     }
 
     private void showAboutDialog() {
+        LOGGER.info("Displaying about dialog");
         JOptionPane.showMessageDialog(this,
             "BADS - Beverage Automated Distribution System\n" +
             "Version 2.0\n" +
@@ -175,27 +317,30 @@ public class MainFrame extends JFrame {
     }
 
     // Getters for panels (used by GUIConfiguration for wiring)
-    public WarehousePanel getWarehousePanel() {
-        return warehousePanel;
+    public WarehousePanel getWarehousePanel() { return warehousePanel; }
+    public LoadingBayPanel getLoadingBayPanel() { return loadingBayPanel; }
+    public OrderManagementPanel getOrderManagementPanel() { return orderManagementPanel; }
+    public ControlLogPanel getControlLogPanel() { return controlLogPanel; }
+    
+    // Getters for backend systems
+    public ClockingSimulation getClockingSystem() { return clockingSystem; }
+    public TaskManagement getTaskManagement() { return taskManagement; }
+    public StorageManagement getStorageManagement() { return storageManagement; }
+    public Observation getObservationSystem() { return observationSystem; }
+    
+    // Setters for domain objects (used by GUIConfiguration)
+    public void setCityArea(de.fachhochschule.dortmund.bads.model.Area cityArea) {
+        this.cityArea = cityArea;
+        LOGGER.debug("City area set in MainFrame");
     }
-
-    public LoadingBayPanel getLoadingBayPanel() {
-        return loadingBayPanel;
+    
+    public void setWarehouse(de.fachhochschule.dortmund.bads.model.Storage warehouse) {
+        this.warehouse = warehouse;
+        LOGGER.debug("Warehouse set in MainFrame");
     }
-
-    public OrderManagementPanel getOrderManagementPanel() {
-        return orderManagementPanel;
-    }
-
-    public ControlLogPanel getControlLogPanel() {
-        return controlLogPanel;
-    }
-
-    // Main method for standalone testing
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            MainFrame frame = new MainFrame();
-            frame.setVisible(true);
-        });
+    
+    public void setTrucks(java.util.List<de.fachhochschule.dortmund.bads.resources.Truck> trucks) {
+        this.trucks = trucks;
+        LOGGER.debug("Trucks set in MainFrame - {} truck(s)", trucks != null ? trucks.size() : 0);
     }
 }

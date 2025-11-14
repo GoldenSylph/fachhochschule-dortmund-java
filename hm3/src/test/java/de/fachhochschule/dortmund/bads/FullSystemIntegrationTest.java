@@ -126,6 +126,8 @@ class FullSystemIntegrationTest {
 						i % 5 == 3 ? 80 : i % 5 == 0 ? 10 : 50);
 		}
 		Storage storage = coreConfig.newStorage(area, cellArray);
+		// Set warehouse position in the city for truck routing
+		storage.setCityPosition(2, 2);
 		coreConfig.initializeAGVChargingSystem(storage);
 		for (int i = 0; i < agvs; i++) {
 			AGV agv = coreConfig.newAGV();
@@ -142,8 +144,8 @@ class FullSystemIntegrationTest {
 		Area cityArea = createGridArea(5, 5);
 		cityArea.setStart(2, 2);
 		for (int i = 0; i < count; i++) {
-			Truck truck = coreConfig.newTruck(cityArea);
-			truck.setInventoryCell(coreConfig.newStorageCell(Type.ANY, 200, 200, 200));
+			// Use newTruckWithDefaults to automatically load default beverages
+			Truck truck = coreConfig.newTruckWithDefaults(cityArea);
 			trucks.add(truck);
 		}
 	}

@@ -106,8 +106,8 @@ public class Area {
 		}
 		
 		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Path found from {} to {} with {} steps, total distance: {:.2f}", 
-				startPoint, targetPoint, path.size(), dist.get(targetPoint));
+			LOGGER.info("Path found from {} to {} with {} steps, total distance: {}", 
+				startPoint, targetPoint, path.size(), String.format("%.2f", dist.get(targetPoint)));
 		}
 		
 		if (LOGGER.isDebugEnabled()) {

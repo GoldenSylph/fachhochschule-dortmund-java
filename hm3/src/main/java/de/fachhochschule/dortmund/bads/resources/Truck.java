@@ -24,6 +24,7 @@ public class Truck extends Resource implements ITickable {
 	private Point startPoint;
 	private Point destinationPoint;
 	private int ticksSinceLastMove = 0;
+	private boolean moving = false;
 	
 	public Truck(Area city) {
 		this.city = city;
@@ -65,7 +66,7 @@ public class Truck extends Resource implements ITickable {
 		
 		for (int i = 0; i < this.route.size(); i++) {
 			Point point = this.route.get(i);
-			this.routePointsDescriptions.add("City point № "+ (i + 1) + " at (" + point.x() + "," + point.y() + ")");
+			this.routePointsDescriptions.add("City point No. "+ (i + 1) + " at (" + point.x() + "," + point.y() + ")");
 		}
 		
 		if (LOGGER.isDebugEnabled()) {
@@ -82,6 +83,12 @@ public class Truck extends Resource implements ITickable {
 
 	@Override
 	public void onTick(int currentTick) {
+		if (!moving) {
+			if (LOGGER.isTraceEnabled()) {
+				LOGGER.trace("Truck is paused - not moving");
+			}
+			return;
+		}
 		if (this.route != null && !this.route.isEmpty()) {
 			if (this.currentLocationIdx <= this.route.size() && ticksSinceLastMove < ticksPerPointInRoute) {
 				ticksSinceLastMove++;
@@ -91,14 +98,11 @@ public class Truck extends Resource implements ITickable {
 			} else {
 				currentLocationIdx++;
 				ticksSinceLastMove = 0;
-				
 				if (currentLocationIdx <= this.route.size()) {
 					Point currentPoint = this.route.get(currentLocationIdx - 1);
 					if (LOGGER.isInfoEnabled()) {
 						LOGGER.info("Truck moved to point: {} (Route progress: {}/{})", currentPoint, currentLocationIdx, this.route.size());
 					}
-					
-					// Check if truck reached destination
 					if (currentLocationIdx >= this.route.size()) {
 						if (LOGGER.isInfoEnabled()) {
 							LOGGER.info("Truck reached destination: {}", this.destinationPoint);
@@ -214,5 +218,16 @@ public class Truck extends Resource implements ITickable {
 						reached, currentLocationIdx, route != null ? route.size() : 0);
 		}
 		return reached;
+	}
+
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Truck moving state set to {}", moving);
+		}
 	}
 }

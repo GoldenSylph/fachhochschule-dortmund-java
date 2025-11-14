@@ -1,7 +1,7 @@
 package de.fachhochschule.dortmund.bads.resources;
 
 public class BeveragesBox extends Resource {
-	public enum Type {
+	public static enum Type {
 		AMBIENT, REFRIGERATED, BULK
 	}
 

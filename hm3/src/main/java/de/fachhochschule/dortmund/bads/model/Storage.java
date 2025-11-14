@@ -20,10 +20,12 @@ public class Storage {
 
 	public final Area AREA;
 	private final Map<Point, StorageCell> CELLS;
+	private Point cityPosition; // Position of warehouse in the city grid
 
 	public Storage(Area area, StorageCell[] cells) {
 		this.AREA = area;
 		this.CELLS = new HashMap<>();
+		this.cityPosition = null; // Default: no city position set
 		Set<Point> places = this.AREA.getAdjacencyMap().keySet();
 		if (places.size() != cells.length) {
 			if (LOGGER.isErrorEnabled()) {
@@ -43,6 +45,13 @@ public class Storage {
 					this.CELLS.size(), chargingStations.size(), 
 					chargingStations.stream().map(Storage::pointToNotation).collect(Collectors.joining(", ")));
 		}
+	}
+	
+	/**
+	 * Get all storage cells in the storage.
+	 */
+	public Map<Point, StorageCell> getAllStorages() {
+		return new HashMap<>(CELLS);
 	}
 	
 	/**
@@ -307,5 +316,34 @@ public class Storage {
 			LOGGER.trace("Letters '{}' converted to number: {}", letters, result);
 		}
 		return result;
+	}
+	
+	/**
+	 * Get the position of this warehouse in the city grid.
+	 * @return the city position, or null if not set
+	 */
+	public Point getCityPosition() {
+		return cityPosition;
+	}
+	
+	/**
+	 * Set the position of this warehouse in the city grid.
+	 * @param cityPosition the position in the city where this warehouse is located
+	 */
+	public void setCityPosition(Point cityPosition) {
+		Point previousPosition = this.cityPosition;
+		this.cityPosition = cityPosition;
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("Warehouse city position updated from {} to {}", previousPosition, cityPosition);
+		}
+	}
+	
+	/**
+	 * Set the position of this warehouse in the city grid using coordinates.
+	 * @param x the x-coordinate in the city
+	 * @param y the y-coordinate in the city
+	 */
+	public void setCityPosition(int x, int y) {
+		setCityPosition(new Point(x, y));
 	}
 }

@@ -48,8 +48,8 @@ public enum CoreConfiguration implements IConfiguration {
 		AGVManagementConfiguration.INSTANCE.autowire();
 		TaskManagementConfiguration.INSTANCE.autowire();
 		StorageManagementConfiguration.INSTANCE.autowire();
+		TruckManagementConfiguration.INSTANCE.autowire();
 		ObservabilityConfiguration.INSTANCE.autowire();
-		GUIConfiguration.INSTANCE.autowire();
 		
 		LOGGER.info("All configurations autowired. Initializing systems...");
 		
@@ -215,6 +215,62 @@ public enum CoreConfiguration implements IConfiguration {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Created new Truck");
 		}
+		return truck;
+	}
+	
+	/**
+	 * Create a new Truck resource with default inventory cell and beverages.
+	 * The truck will be configured according to TruckManagementConfiguration settings.
+	 * 
+	 * @param city the Area representing the city for truck navigation
+	 * @return new Truck instance with inventory cell and default beverages loaded
+	 */
+	public Truck newTruckWithDefaults(de.fachhochschule.dortmund.bads.model.Area city) {
+		Truck truck = new Truck(city);
+		
+		// Create and set inventory cell based on configuration
+		TruckManagementConfiguration config = TruckManagementConfiguration.INSTANCE;
+		StorageCell inventoryCell = newStorageCell(
+			StorageCell.Type.ANY,
+			config.getDefaultInventoryCellLength(),
+			config.getDefaultInventoryCellWidth(),
+			config.getDefaultInventoryCellHeight()
+		);
+		truck.setInventoryCell(inventoryCell);
+		
+		// Load default beverages if enabled
+		if (config.isDefaultBeveragesEnabled()) {
+			int beveragesLoaded = 0;
+			for (TruckManagementConfiguration.BeverageConfig bevConfig : config.getDefaultBeverages()) {
+				BeveragesBox box = newBeveragesBox(
+					bevConfig.type,
+					bevConfig.name,
+					bevConfig.length,
+					bevConfig.width,
+					bevConfig.height,
+					bevConfig.quantity
+				);
+				
+				if (inventoryCell.add(box)) {
+					beveragesLoaded++;
+				} else {
+					LOGGER.warn("Could not load default beverage '{}' into truck - insufficient space", bevConfig.name);
+				}
+			}
+			
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("Created new Truck with inventory cell ({}x{}x{}) and {} default beverages loaded",
+					config.getDefaultInventoryCellLength(),
+					config.getDefaultInventoryCellWidth(),
+					config.getDefaultInventoryCellHeight(),
+					beveragesLoaded);
+			}
+		} else {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Created new Truck with inventory cell - default beverages disabled");
+			}
+		}
+		
 		return truck;
 	}
 	

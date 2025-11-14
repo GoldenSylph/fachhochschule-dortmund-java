@@ -58,9 +58,9 @@ public class StorageCell {
 		updateDimensionsAfterAdd(box);
 		
 		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Successfully added box {} - Current dimensions: {}x{}x{}, Space efficiency: {:.1f}%, Boxes: {}", 
+			LOGGER.info("Successfully added box {} - Current dimensions: {}x{}x{}, Space efficiency: {}%, Boxes: {}", 
 					   box.getBeverageName(), currentLength, currentWidth, currentHeight, 
-					   getSpaceEfficiency(), storedBoxes.size());
+					   String.format("%.1f", getSpaceEfficiency()), storedBoxes.size());
 		}
 		
 		return true;
@@ -380,6 +380,13 @@ public class StorageCell {
 	 */
 	public int getBoxCount() {
 		return storedBoxes.size();
+	}
+	
+	/**
+	 * Get a copy of all stored beverage boxes in this cell.
+	 */
+	public List<BeveragesBox> getStoredBoxes() {
+		return new ArrayList<>(storedBoxes);
 	}
 	
 	/**

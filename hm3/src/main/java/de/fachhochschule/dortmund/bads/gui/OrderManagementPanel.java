@@ -3,54 +3,77 @@ package de.fachhochschule.dortmund.bads.gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.List;
+
+import de.fachhochschule.dortmund.bads.model.Task;
+import de.fachhochschule.dortmund.bads.systems.logic.TaskManagement;
+import de.fachhochschule.dortmund.bads.systems.logic.utils.ITickable;
+import de.fachhochschule.dortmund.bads.systems.Process;
+import de.fachhochschule.dortmund.bads.systems.Operation;
+import de.fachhochschule.dortmund.bads.resources.BeveragesBox;
 
 /**
  * Panel for managing orders with form and table display
- *
- * INTEGRATION POINTS:
- * - Connect to TaskManagement to create and process tasks
- * - Table should display active tasks from TaskManagement.getTasks()
- * - Create Order button should create Task with proper Process/Operation structure
  */
-public class OrderManagementPanel extends JPanel /* implements ITickable */ {
+public class OrderManagementPanel extends JPanel implements ITickable {
+	private static final long serialVersionUID = 2248896897692353619L;
 
-    private JTextField customerField;
+	private JTextField customerField;
     private JComboBox<String> beverageCombo;
     private JTextField quantityField;
     private JComboBox<String> priorityCombo;
     private JTable orderTable;
     private DefaultTableModel tableModel;
+    private JLabel statsLabel;
 
-    // TODO [CONCURRENCY]: Uncomment to receive TaskManagement reference
-    // private TaskManagement taskManagement;
+    // Backend dependency
+    private TaskManagement taskManagement;
 
     public OrderManagementPanel() {
-        // TODO [CONCURRENCY]: Uncomment to receive TaskManagement reference
-        // public OrderManagementPanel(TaskManagement taskManagement) {
-        //     this.taskManagement = taskManagement;
-        //     initializeComponents();
-        // }
-
         initializeComponents();
+    }
+
+    /**
+     * Set the task management system (dependency injection)
+     */
+    public void setTaskManagement(TaskManagement taskManagement) {
+        this.taskManagement = taskManagement;
+        // Immediately refresh table when TaskManagement is connected
+        if (taskManagement != null) {
+            SwingUtilities.invokeLater(this::refresh);
+        }
+    }
+
+    @Override
+    public void onTick(int currentTick) {
+        // Update UI every 10 ticks to reduce overhead
+        if (currentTick % 10 == 0) {
+            SwingUtilities.invokeLater(this::refresh);
+        }
     }
 
     private void initializeComponents() {
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Title
+        // Header with title and stats
+        JPanel headerPanel = new JPanel(new BorderLayout());
         JLabel titleLabel = new JLabel("Order Management");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        add(titleLabel, BorderLayout.NORTH);
+        headerPanel.add(titleLabel, BorderLayout.WEST);
+        
+        statsLabel = new JLabel("Tasks: 0 | Pending: 0 | Running: 0 | Completed: 0");
+        statsLabel.setFont(new Font("Arial", Font.PLAIN, 11));
+        statsLabel.setForeground(new Color(100, 100, 100));
+        headerPanel.add(statsLabel, BorderLayout.EAST);
+        
+        add(headerPanel, BorderLayout.NORTH);
 
-        // Main panel with form and table
         JPanel mainPanel = new JPanel(new BorderLayout(5, 5));
 
-        // Order form
         JPanel formPanel = createOrderForm();
         mainPanel.add(formPanel, BorderLayout.NORTH);
 
-        // Order table
         JScrollPane tableScrollPane = createOrderTable();
         mainPanel.add(tableScrollPane, BorderLayout.CENTER);
 
@@ -59,7 +82,10 @@ public class OrderManagementPanel extends JPanel /* implements ITickable */ {
 
     private JPanel createOrderForm() {
         JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        formPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("New Order"),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(3, 3, 3, 3);
@@ -72,7 +98,8 @@ public class OrderManagementPanel extends JPanel /* implements ITickable */ {
 
         gbc.gridx = 1;
         gbc.weightx = 1.0;
-        customerField = new JTextField("SuperMart Central", 20);
+        customerField = new JTextField(20);
+        customerField.setText(""); // Start empty instead of placeholder
         formPanel.add(customerField, gbc);
 
         // Beverage combo
@@ -87,11 +114,13 @@ public class OrderManagementPanel extends JPanel /* implements ITickable */ {
             "Beer - Premium Lager",
             "Soda - Cola",
             "Water - Mineral",
-            "Juice - Orange"
+            "Juice - Orange",
+            "Wine - Red",
+            "Spirits - Vodka"
         });
         formPanel.add(beverageCombo, gbc);
 
-        // Quantity and Priority on same row
+        // Quantity and Priority
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0.0;
@@ -99,7 +128,7 @@ public class OrderManagementPanel extends JPanel /* implements ITickable */ {
 
         gbc.gridx = 1;
         gbc.weightx = 0.3;
-        quantityField = new JTextField("50", 5);
+        quantityField = new JTextField("100", 5);
         formPanel.add(quantityField, gbc);
 
         gbc.gridx = 2;
@@ -108,7 +137,8 @@ public class OrderManagementPanel extends JPanel /* implements ITickable */ {
 
         gbc.gridx = 3;
         gbc.weightx = 0.3;
-        priorityCombo = new JComboBox<>(new String[]{"Normal", "High", "Express"});
+        priorityCombo = new JComboBox<>(new String[]{"Low (5)", "Normal (7)", "High (9)", "Express (10)"});
+        priorityCombo.setSelectedIndex(1); // Default to Normal
         formPanel.add(priorityCombo, gbc);
 
         // Buttons
@@ -119,14 +149,12 @@ public class OrderManagementPanel extends JPanel /* implements ITickable */ {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 
         JButton createButton = new JButton("Create Order");
-        // TODO [CONTROL-BINDING]: Uncomment to create order/task
-        // createButton.addActionListener(e -> createOrder());
+        createButton.addActionListener(_ -> createOrder());
         buttonPanel.add(createButton);
 
-        JButton processButton = new JButton("Process Order");
-        // TODO [CONTROL-BINDING]: Uncomment to process selected order
-        // processButton.addActionListener(e -> processSelectedOrder());
-        buttonPanel.add(processButton);
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(_ -> refresh());
+        buttonPanel.add(refreshButton);
 
         formPanel.add(buttonPanel, gbc);
 
@@ -134,11 +162,11 @@ public class OrderManagementPanel extends JPanel /* implements ITickable */ {
     }
 
     private JScrollPane createOrderTable() {
-        String[] columnNames = {"Order ID", "Customer", "Beverage", "Qty", "Priority", "Status", "Actions"};
+        String[] columnNames = {"Task ID", "Priority", "Processes", "Status"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 6; // Only Actions column editable (for buttons)
+                return false;
             }
         };
 
@@ -146,155 +174,231 @@ public class OrderManagementPanel extends JPanel /* implements ITickable */ {
         orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         orderTable.setRowHeight(25);
 
-        // Set column widths
-        orderTable.getColumnModel().getColumn(0).setPreferredWidth(80);  // Order ID
-        orderTable.getColumnModel().getColumn(1).setPreferredWidth(120); // Customer
-        orderTable.getColumnModel().getColumn(2).setPreferredWidth(100); // Beverage
-        orderTable.getColumnModel().getColumn(3).setPreferredWidth(40);  // Qty
-        orderTable.getColumnModel().getColumn(4).setPreferredWidth(70);  // Priority
-        orderTable.getColumnModel().getColumn(5).setPreferredWidth(70);  // Status
-        orderTable.getColumnModel().getColumn(6).setPreferredWidth(150); // Actions
-
-        // Add sample data
-        addSampleOrders();
+        orderTable.getColumnModel().getColumn(0).setPreferredWidth(80);
+        orderTable.getColumnModel().getColumn(1).setPreferredWidth(80);
+        orderTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+        orderTable.getColumnModel().getColumn(3).setPreferredWidth(100);
 
         JScrollPane scrollPane = new JScrollPane(orderTable);
         scrollPane.setPreferredSize(new Dimension(0, 150));
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Active Tasks"));
 
         return scrollPane;
     }
 
-    private void addSampleOrders() {
-        // Sample orders
-        tableModel.addRow(new Object[]{"ORD-001", "SuperMart Central", "Beer", "50", "Express", "Loading", "Edit | Delete"});
-        tableModel.addRow(new Object[]{"ORD-002", "QuickStop West", "Water", "30", "Normal", "Pending", "Edit | Delete"});
-        tableModel.addRow(new Object[]{"ORD-003", "City Beverages", "Juice", "25", "Normal", "Pending", "Edit | Delete"});
-
-        // TODO [OBSERVABILITY]: Remove sample data and populate from TaskManagement
-        // populateTableFromTaskManagement();
+    /**
+     * Refresh the task table and stats from TaskManagement
+     */
+    public void refresh() {
+        refreshTaskTable();
+        updateStats();
     }
 
-    // TODO [STATE-ACCESS]: Uncomment to populate table from backend
-    /* private void populateTableFromTaskManagement() {
-         if (taskManagement == null) return;
-    
-         SwingUtilities.invokeLater(() -> {
-             tableModel.setRowCount(0); // Clear existing rows
-    
-             List<Task> tasks = taskManagement.getTasks();
-             for (int i = 0; i < tasks.size(); i++) {
-                 Task task = tasks.get(i);
-                 // Extract order information from task
-                 String orderId = "ORD-" + String.format("%03d", i + 1);
-                 String customer = extractCustomerFromTask(task);
-                 String beverage = extractBeverageFromTask(task);
-                 int quantity = extractQuantityFromTask(task);
-                 String priority = extractPriorityFromTask(task);
-                 String status = task.getState().toString();
-    
-                 tableModel.addRow(new Object[]{
-                     orderId, customer, beverage, quantity, priority, status, "Edit | Delete"
-                 });
-             }
-         });
-     } */
+    private void refreshTaskTable() {
+        if (taskManagement == null) {
+            tableModel.setRowCount(0);
+            return;
+        }
 
-    // TODO [CONTROL-BINDING]: Uncomment to create new order
-    /* private void createOrder() {
-         String customer = customerField.getText().trim();
-         String beverage = (String) beverageCombo.getSelectedItem();
-         String quantityStr = quantityField.getText().trim();
-         String priority = (String) priorityCombo.getSelectedItem();
-    
-         if (customer.isEmpty() || quantityStr.isEmpty()) {
-             JOptionPane.showMessageDialog(this,
-                 "Please fill in all required fields",
-                 "Validation Error",
-                 JOptionPane.ERROR_MESSAGE);
-             return;
-         }
-    
-         try {
-             int quantity = Integer.parseInt(quantityStr);
-             if (quantity <= 0) {
-                 throw new NumberFormatException();
-             }
-    
-             // Create Task through backend
-             Task task = createTaskFromOrder(customer, beverage, quantity, priority);
-             taskManagement.addTask(task);
-    
-             // Refresh table
-             populateTableFromTaskManagement();
-    
-             // Clear form
-             customerField.setText("");
-             quantityField.setText("");
-    
-             JOptionPane.showMessageDialog(this,
-                 "Order created successfully",
-                 "Success",
-                 JOptionPane.INFORMATION_MESSAGE);
-    
-         } catch (NumberFormatException e) {
-             JOptionPane.showMessageDialog(this,
-                 "Quantity must be a positive number",
-                 "Validation Error",
-                 JOptionPane.ERROR_MESSAGE);
-         }
-     } */
-
-    // TODO [CONTROL-BINDING]: Uncomment to create Task from order data
-    /* private Task createTaskFromOrder(String customer, String beverage, int quantity, String priority) {
-         Task task = CoreConfiguration.INSTANCE.newTask();
-    
-         // Create Process and Operations for this task
-         // This depends on your team's Task/Process/Operation structure
-         // Example:
-         // Process process = CoreConfiguration.INSTANCE.newProcess(...);
-         // Operation pickOp = CoreConfiguration.INSTANCE.newOperation(...);
-         // Operation loadOp = CoreConfiguration.INSTANCE.newOperation(...);
-         // process.addOperation(pickOp);
-         // process.addOperation(loadOp);
-         // task.addProcess(process);
-    
-         return task;
-     } */
-
-    // TODO [CONTROL-BINDING]: Uncomment to process selected order
-    /* private void processSelectedOrder() {
-         int selectedRow = orderTable.getSelectedRow();
-         if (selectedRow < 0) {
-             JOptionPane.showMessageDialog(this,
-                 "Please select an order to process",
-                 "No Selection",
-                 JOptionPane.WARNING_MESSAGE);
-             return;
-         }
-    
-         if (taskManagement != null && selectedRow < taskManagement.getTasksCount()) {
-             Task task = taskManagement.getTask(selectedRow);
-             // Start task execution
-             task.start();
-    
-             // Update table
-             populateTableFromTaskManagement();
-         }
-     } */
-
-    // TODO [TICK-LISTENER]: Uncomment to receive simulation tick updates
-    /* @Override
-     public void onTick(int currentTick) {
-         // Refresh table to show updated task statuses
-         populateTableFromTaskManagement();
-     } */
-
-    // Getters
-    public JTable getOrderTable() {
-        return orderTable;
+        tableModel.setRowCount(0);
+        
+        List<Task> tasks = taskManagement.getAllTasks();
+        for (Task task : tasks) {
+            Object[] row = {
+                "T-" + task.getTaskId(),
+                task.getTaskPriority(),
+                task.getProcessCount(),
+                getStatusString(task)
+            };
+            tableModel.addRow(row);
+        }
     }
 
-    public DefaultTableModel getTableModel() {
-        return tableModel;
+    private void updateStats() {
+        if (taskManagement == null) {
+            statsLabel.setText("Tasks: 0 | Pending: 0 | Running: 0 | Completed: 0");
+            return;
+        }
+
+        List<Task> tasks = taskManagement.getAllTasks();
+        int total = tasks.size();
+        int pending = 0;
+        int running = 0;
+        int completed = 0;
+
+        for (Task task : tasks) {
+            Thread.State state = task.getState();
+            switch (state) {
+                case NEW -> pending++;
+                case RUNNABLE, BLOCKED, WAITING, TIMED_WAITING -> running++;
+                case TERMINATED -> completed++;
+            }
+        }
+
+        statsLabel.setText(String.format(
+            "Tasks: %d | Pending: %d | Running: %d | Completed: %d",
+            total, pending, running, completed
+        ));
+    }
+
+    private String getStatusString(Task task) {
+        Thread.State state = task.getState();
+        return switch (state) {
+            case NEW -> "⏳ Pending";
+            case RUNNABLE -> "▶ Running";
+            case BLOCKED, WAITING, TIMED_WAITING -> "⏸ Waiting";
+            case TERMINATED -> "✓ Completed";
+        };
+    }
+
+    private void createOrder() {
+        try {
+            String customer = customerField.getText().trim();
+            String beverageSelection = (String) beverageCombo.getSelectedItem();
+            String quantityText = quantityField.getText().trim();
+            
+            // Validate inputs
+            if (customer.isEmpty()) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please enter a customer name", 
+                    "Validation Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int quantity = Integer.parseInt(quantityText);
+            if (quantity <= 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Quantity must be greater than 0", 
+                    "Validation Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Get priority from combo box
+            int priorityIndex = priorityCombo.getSelectedIndex();
+            int priority = switch (priorityIndex) {
+                case 0 -> 5;  // Low
+                case 1 -> 7;  // Normal
+                case 2 -> 9;  // High
+                case 3 -> 10; // Express
+                default -> 7;
+            };
+
+            if (taskManagement == null) {
+                JOptionPane.showMessageDialog(this,
+                    "Task management system not connected",
+                    "System Error",
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Create task with priority
+            Task task = new Task(priority);
+            
+            // Parse beverage details and create BeveragesBox
+            BeveragesBox.Type boxType = determineBeverageType(beverageSelection);
+            String beverageName = extractBeverageName(beverageSelection);
+            
+            // Create BeveragesBox resource
+            // Standard box dimensions: 30x30x40 cm
+            BeveragesBox beverageBox = new BeveragesBox(
+                boxType, 
+                beverageName, 
+                30,  // width
+                30,  // height
+                40,  // length
+                quantity
+            );
+            
+            // Create Operation and add the beverage box as a resource
+            Operation operation = new Operation();
+            operation.addResource(beverageBox);
+            
+            // Create Process and add the operation
+            Process process = new Process();
+            process.addOperation(operation);
+            
+            // Add process to task
+            task.addProcess(process);
+
+            // Submit to TaskManagement
+            boolean added = taskManagement.addTask(task);
+            
+            if (added) {
+                // Show confirmation
+                JOptionPane.showMessageDialog(this,
+                    String.format(
+                        "Order created successfully!\n\n" +
+                        "Task ID: T-%d\n" +
+                        "Customer: %s\n" +
+                        "Beverage: %s\n" +
+                        "Quantity: %d units\n" +
+                        "Priority: %d (%s)\n" +
+                        "Box Type: %s",
+                        task.getTaskId(), customer, beverageName, quantity, priority,
+                        priorityCombo.getSelectedItem(), boxType
+                    ),
+                    "Order Created",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+                // Clear form for next order
+                customerField.setText("");
+                quantityField.setText("100");
+                priorityCombo.setSelectedIndex(1);
+
+                // Refresh table
+                refresh();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "Failed to create task",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                "Quantity must be a valid number",
+                "Input Error",
+                JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                "Error creating order: " + ex.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    /**
+     * Determine the beverage box type based on the beverage selection
+     */
+    private BeveragesBox.Type determineBeverageType(String beverageSelection) {
+        if (beverageSelection == null) {
+            return BeveragesBox.Type.AMBIENT;
+        }
+        
+        String lower = beverageSelection.toLowerCase();
+        if (lower.contains("beer") || lower.contains("soda") || lower.contains("water")) {
+            return BeveragesBox.Type.REFRIGERATED;
+        } else if (lower.contains("juice") || lower.contains("wine")) {
+            return BeveragesBox.Type.REFRIGERATED;
+        } else if (lower.contains("spirits")) {
+            return BeveragesBox.Type.AMBIENT;
+        }
+        
+        return BeveragesBox.Type.AMBIENT;
+    }
+    
+    /**
+     * Extract the beverage name from the combo box selection
+     */
+    private String extractBeverageName(String beverageSelection) {
+        if (beverageSelection == null || !beverageSelection.contains(" - ")) {
+            return beverageSelection != null ? beverageSelection : "Unknown";
+        }
+        
+        // Extract the part after " - "
+        String[] parts = beverageSelection.split(" - ", 2);
+        return parts.length > 1 ? parts[1] : beverageSelection;
     }
 }
