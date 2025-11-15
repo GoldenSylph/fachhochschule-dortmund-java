@@ -74,9 +74,9 @@ public class Observation extends Thread implements ITickable {
 		long totalRuntime = System.currentTimeMillis() - systemStartTime;
 		if (LOGGER.isInfoEnabled()) {
 			double avgTime = collectionCycles > 0 ? (double)totalRuntime / collectionCycles : 0.0;
-			LOGGER.info("Observation System stopped after {} collection cycles in {}ms. Total events collected: {} (avg: {:.2f}ms per cycle)", 
+			LOGGER.info("Observation System stopped after {} collection cycles in {}ms. Total events collected: {} (avg: {}ms per cycle)", 
 					collectionCycles, totalRuntime, eventsCollected.get(),
-					String.format("%.2f", avgTime));
+					avgTime);
 		}
 	}
 	

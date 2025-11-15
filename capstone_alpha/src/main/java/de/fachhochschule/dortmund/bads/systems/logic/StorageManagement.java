@@ -47,8 +47,8 @@ public class StorageManagement extends Thread implements ITickable {
 		
 		long runtime = System.currentTimeMillis() - startTime;
 		double avgTime = cycles > 0 ? (double)runtime / cycles : 0.0;
-		LOGGER.info("Storage Management System stopped after {} maintenance cycles in {}ms (avg: {:.2f}ms per cycle)", 
-				cycles, runtime, String.format("%.2f", avgTime));
+		LOGGER.info("Storage Management System stopped after {} maintenance cycles in {}ms (avg: {}ms per cycle)", 
+				cycles, runtime, avgTime);
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class StorageManagement extends Thread implements ITickable {
 			
 			if (utilization > config.getStorageUtilizationThreshold()) {
 				overThreshold++;
-				LOGGER.warn("Storage {} utilization ({:.2%}) exceeds threshold ({:.2%})", 
+				LOGGER.warn("Storage {} utilization ({:.2%}) exceeds threshold ({})", 
 						entry.getKey(), utilization, config.getStorageUtilizationThreshold());
 			}
 		}

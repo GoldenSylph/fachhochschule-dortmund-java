@@ -83,8 +83,8 @@ public class TaskManagement extends Thread implements ITickable {
 		long totalRuntime = System.currentTimeMillis() - systemStartTime;
 		if (LOGGER.isInfoEnabled()) {
 			double avgTime = cyclesExecuted > 0 ? (double)totalRuntime / cyclesExecuted : 0.0;
-			LOGGER.info("Task Management System stopped after {} cycles in {}ms (avg: {:.2f}ms per cycle)", 
-					cyclesExecuted, totalRuntime, String.format("%.2f", avgTime));
+			LOGGER.info("Task Management System stopped after {} cycles in {}ms (avg: {}ms per cycle)", 
+					cyclesExecuted, totalRuntime, avgTime);
 		}
 	}
 	

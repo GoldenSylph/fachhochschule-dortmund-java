@@ -9,7 +9,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.fachhochschule.dortmund.bads.model.Area.Point;
 import de.fachhochschule.dortmund.bads.model.Storage;
 import de.fachhochschule.dortmund.bads.model.Task;
 import de.fachhochschule.dortmund.bads.resources.AGV;

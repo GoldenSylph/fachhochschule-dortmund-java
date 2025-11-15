@@ -25,7 +25,7 @@ import de.fachhochschule.dortmund.bads.resources.BeveragesBox;
 import de.fachhochschule.dortmund.bads.resources.Truck;
 
 /**
- * Logistics Control Panel - Shows truck management
+ * Logistics Control Panel - Shows truck inventory
  */
 public class LogisticsControlPanel extends JDialog {
     private static final long serialVersionUID = -4829107482938475829L;
@@ -84,28 +84,38 @@ public class LogisticsControlPanel extends JDialog {
             JList<String> invList = new JList<>(invModel);
             invList.setVisibleRowCount(3);
             truckPanel.add(new JScrollPane(invList), BorderLayout.CENTER);
-            // Start/Stop button
-            JButton moveButton = new JButton(truck.isMoving() ? "Stop" : "Start");
-            moveButton.addActionListener(_ -> {
-                truck.setMoving(!truck.isMoving());
-                moveButton.setText(truck.isMoving() ? "Stop" : "Start");
-            });
-            truckPanel.add(moveButton, BorderLayout.EAST);
             panel.add(truckPanel);
         }
         return panel;
     }
 
     private String getTruckPositionString(Truck truck) {
-        if (truck.getRoute() != null && !truck.getRoute().isEmpty() && truck.getCurrentLocationIdx() > 0 && truck.getCurrentLocationIdx() <= truck.getRoute().size()) {
+        // If truck has a route and has started moving (currentLocationIdx > 0)
+        if (truck.getRoute() != null && !truck.getRoute().isEmpty() && 
+            truck.getCurrentLocationIdx() > 0 && 
+            truck.getCurrentLocationIdx() <= truck.getRoute().size()) {
             Area.Point p = truck.getRoute().get(truck.getCurrentLocationIdx() - 1);
             return "(" + p.x() + ", " + p.y() + ")";
-        } else if (truck.getStartPoint() != null) {
-            Area.Point p = truck.getStartPoint();
-            return "(" + p.x() + ", " + p.y() + ")";
-        } else {
-            return "Unknown";
+        } 
+        // If truck has a route but hasn't started moving yet (currentLocationIdx == 0)
+        else if (truck.getRoute() != null && !truck.getRoute().isEmpty() && 
+                 truck.getCurrentLocationIdx() == 0) {
+            // Show start point or first route point
+            if (truck.getStartPoint() != null) {
+                Area.Point p = truck.getStartPoint();
+                return "(" + p.x() + ", " + p.y() + ") - At Start";
+            } else if (!truck.getRoute().isEmpty()) {
+                Area.Point p = truck.getRoute().get(0);
+                return "(" + p.x() + ", " + p.y() + ") - Route Start";
+            }
         }
+        // Fallback to start point if route not available
+        else if (truck.getStartPoint() != null) {
+            Area.Point p = truck.getStartPoint();
+            return "(" + p.x() + ", " + p.y() + ") - Parked";
+        }
+        
+        return "Not Deployed";
     }
 
     private void refreshTruckOverview() {

@@ -5,9 +5,11 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.fachhochschule.dortmund.bads.model.Area;
 import de.fachhochschule.dortmund.bads.model.Storage;
 import de.fachhochschule.dortmund.bads.model.StorageCell;
 import de.fachhochschule.dortmund.bads.model.Task;
+import de.fachhochschule.dortmund.bads.resources.AGV;
 import de.fachhochschule.dortmund.bads.resources.BeveragesBox;
 import de.fachhochschule.dortmund.bads.resources.Resource;
 import de.fachhochschule.dortmund.bads.resources.Truck;
@@ -132,7 +134,7 @@ public enum CoreConfiguration implements IConfiguration {
 		}
 
 		int chargingStationCount = storage.getChargingStationCount();
-		de.fachhochschule.dortmund.bads.resources.AGV.initializeChargingSystem(chargingStationCount);
+		AGV.initializeChargingSystem(chargingStationCount);
 
 		LOGGER.info("AGV Charging System initialized with {} charging stations from Storage", chargingStationCount);
 	}
@@ -142,7 +144,7 @@ public enum CoreConfiguration implements IConfiguration {
 	 * @param agvFleet list of AGVs available for task assignment
 	 * @param warehouse the warehouse storage system
 	 */
-	public void initializeAGVTaskDispatcher(List<de.fachhochschule.dortmund.bads.resources.AGV> agvFleet, Storage warehouse) {
+	public void initializeAGVTaskDispatcher(List<AGV> agvFleet, Storage warehouse) {
 		if (agvFleet == null || agvFleet.isEmpty()) {
 			throw new IllegalArgumentException("AGV fleet cannot be null or empty");
 		}
@@ -224,7 +226,7 @@ public enum CoreConfiguration implements IConfiguration {
 	 * @param cells array of StorageCells (must match area size)
 	 * @return new Storage instance
 	 */
-	public Storage newStorage(de.fachhochschule.dortmund.bads.model.Area area, StorageCell[] cells) {
+	public Storage newStorage(Area area, StorageCell[] cells) {
 		Storage storage = new Storage(area, cells);
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Created new Storage with {} cells", cells.length);
@@ -238,7 +240,7 @@ public enum CoreConfiguration implements IConfiguration {
 	 * @param city the Area representing the city for truck navigation
 	 * @return new Truck instance
 	 */
-	public Truck newTruck(de.fachhochschule.dortmund.bads.model.Area city) {
+	public Truck newTruck(Area city) {
 		Truck truck = new Truck(city);
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Created new Truck");
@@ -253,8 +255,9 @@ public enum CoreConfiguration implements IConfiguration {
 	 * @param city the Area representing the city for truck navigation
 	 * @return new Truck instance with inventory cell and default beverages loaded
 	 */
-	public Truck newTruckWithDefaults(de.fachhochschule.dortmund.bads.model.Area city) {
+	public Truck newTruckWithDefaults(Area city) {
 		Truck truck = new Truck(city);
+		truck.setStartPoint(new Area.Point(0, 0));
 		
 		// Create and set inventory cell based on configuration
 		TruckManagementConfiguration config = TruckManagementConfiguration.INSTANCE;
@@ -355,8 +358,8 @@ public enum CoreConfiguration implements IConfiguration {
 	 * 
 	 * @return new Area instance
 	 */
-	public de.fachhochschule.dortmund.bads.model.Area newArea() {
-		de.fachhochschule.dortmund.bads.model.Area area = new de.fachhochschule.dortmund.bads.model.Area();
+	public Area newArea() {
+		Area area = new Area();
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Created new Area");
 		}
@@ -370,8 +373,8 @@ public enum CoreConfiguration implements IConfiguration {
 	 * 
 	 * @return new AGV instance
 	 */
-	public de.fachhochschule.dortmund.bads.resources.AGV newAGV() {
-		de.fachhochschule.dortmund.bads.resources.AGV agv = new de.fachhochschule.dortmund.bads.resources.AGV();
+	public AGV newAGV() {
+		AGV agv = new AGV();
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Created new AGV");
 		}

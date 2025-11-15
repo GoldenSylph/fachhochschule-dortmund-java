@@ -29,7 +29,6 @@ public class ControlLogPanel extends JPanel implements ITickable {
 	
 	private JButton startButton;
 	private JButton pauseButton;
-	private JButton stopButton;
 	private JSlider speedSlider;
 	private JTextArea logArea;
 	private JScrollPane logScrollPane;
@@ -108,12 +107,6 @@ public class ControlLogPanel extends JPanel implements ITickable {
 		pauseButton.addActionListener(e -> pauseSimulation());
 		simControlGroup.add(pauseButton);
 
-		stopButton = new JButton("[] Stop");
-		stopButton.setPreferredSize(new Dimension(90, 25));
-		stopButton.setEnabled(false);
-		stopButton.addActionListener(e -> stopSimulation());
-		simControlGroup.add(stopButton);
-
 		controlPanel.add(simControlGroup);
 
 		// Speed control group
@@ -175,15 +168,8 @@ public class ControlLogPanel extends JPanel implements ITickable {
 		if (!clockingSystem.isRunning()) {
 			clockingSystem.toggleClocking();
 			
-			// Start observation system if available
-			if (observationSystem != null && !observationSystem.isAlive()) {
-				observationSystem.start();
-				appendLog("Observation system started");
-			}
-			
 			startButton.setEnabled(false);
 			pauseButton.setEnabled(true);
-			stopButton.setEnabled(true);
 			appendLog("> Simulation started");
 			
 			// Record event in observation system
@@ -205,10 +191,8 @@ public class ControlLogPanel extends JPanel implements ITickable {
 		clockingSystem.toggleClocking();
 		boolean running = clockingSystem.isRunning();
 		
-		startButton.setEnabled(!running);
-		pauseButton.setEnabled(running);
-		
 		if (running) {
+			// Simulation is now running (resumed)
 			pauseButton.setText("|| Pause");
 			appendLog("> Simulation resumed");
 			
@@ -217,6 +201,7 @@ public class ControlLogPanel extends JPanel implements ITickable {
 				observationSystem.recordEvent("SIMULATION", "Simulation resumed by user");
 			}
 		} else {
+			// Simulation is now paused
 			pauseButton.setText("> Resume");
 			appendLog("|| Simulation paused");
 			
@@ -224,36 +209,6 @@ public class ControlLogPanel extends JPanel implements ITickable {
 			if (observationSystem != null) {
 				observationSystem.recordEvent("SIMULATION", "Simulation paused by user");
 			}
-		}
-	}
-
-	/**
-	 * Stop the simulation
-	 */
-	private void stopSimulation() {
-		if (clockingSystem == null) {
-			appendLog("ERROR: Clocking system not connected");
-			return;
-		}
-
-		clockingSystem.stopSimulation();
-		
-		// Stop observation system if available
-		if (observationSystem != null) {
-			observationSystem.stopSystem();
-			appendLog("Observation system stopped");
-		}
-		
-		startButton.setEnabled(true);
-		pauseButton.setEnabled(false);
-		pauseButton.setText("|| Pause");
-		stopButton.setEnabled(false);
-		appendLog("[] Simulation stopped");
-		
-		// Record final event
-		if (observationSystem != null) {
-			observationSystem.recordEvent("SIMULATION", 
-				String.format("Simulation stopped - Total events: %d", observationSystem.getTotalEventsCollected()));
 		}
 	}
 
@@ -320,7 +275,6 @@ public class ControlLogPanel extends JPanel implements ITickable {
 			boolean running = clockingSystem.isRunning();
 			startButton.setEnabled(!running);
 			pauseButton.setEnabled(running);
-			stopButton.setEnabled(running || clockingSystem.getCurrentTime() > 0);
 		}
 	}
 }

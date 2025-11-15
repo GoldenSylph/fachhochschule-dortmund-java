@@ -14,6 +14,7 @@ public class ClockingSimulation extends Thread {
 
 	private final CopyOnWriteArrayList<ITickable> tickables = new CopyOnWriteArrayList<>();
 	private volatile boolean running = true;
+	private volatile boolean paused = false;
 	private AtomicInteger currentTime = new AtomicInteger(0);
 	private AtomicInteger delay = new AtomicInteger(1000);
 
@@ -34,6 +35,16 @@ public class ClockingSimulation extends Thread {
 		
 		while (running) {
 			try {
+				// Wait while paused
+				while (paused && running) {
+					Thread.sleep(100);
+				}
+				
+				// Check if we should exit after pause
+				if (!running) {
+					break;
+				}
+				
 				int currentTick = currentTime.incrementAndGet();
 				tickCount++;
 				
@@ -92,26 +103,18 @@ public class ClockingSimulation extends Thread {
 		long totalSimulationTime = System.currentTimeMillis() - simulationStartTime;
 		if (LOGGER.isInfoEnabled()) {
 			double avgTime = tickCount > 0 ? (double)totalSimulationTime / tickCount : 0.0;
-			LOGGER.info("ClockingSimulation stopped after {} ticks in {}ms (avg: {:.2f}ms per tick)", 
-					   tickCount, totalSimulationTime, String.format("%.2f", avgTime));
+			LOGGER.info("ClockingSimulation stopped after {} ticks in {}ms (avg: {}ms per tick)", 
+					   tickCount, totalSimulationTime, avgTime);
 		}
 	}
 
 	public void toggleClocking() {
-		boolean previousState = this.running;
-		this.running = !this.running;
-		
-		// If thread hasn't been started yet, start it now
-		if (!previousState && this.running && !this.isAlive()) {
-			this.start();
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("ClockingSimulation thread started for the first time");
-			}
-		}
+		boolean previousState = this.paused;
+		this.paused = !this.paused;
 		
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("ClockingSimulation toggled from {} to {}", 
-					   previousState ? "RUNNING" : "STOPPED", this.running ? "RUNNING" : "STOPPED");
+					   previousState ? "PAUSED" : "RUNNING", this.paused ? "PAUSED" : "RUNNING");
 		}
 	}
 
@@ -132,7 +135,7 @@ public class ClockingSimulation extends Thread {
 	}
 
 	public boolean isRunning() {
-		boolean runningState = this.running;
+		boolean runningState = !this.paused && this.running;
 		if (LOGGER.isTraceEnabled()) {
 			LOGGER.trace("Running state requested: {}", runningState);
 		}
