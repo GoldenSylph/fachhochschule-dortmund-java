@@ -246,9 +246,21 @@ public class LoadingBayView extends JPanel {
                 // Check AGV state to determine visibility
                 AGV.AGVState agvState = agv.getState();
 
-                // Show AGV in its assigned bay when IDLE or BUSY (not charging)
-                if (agvState == AGV.AGVState.IDLE || agvState == AGV.AGVState.BUSY) {
-                    // AGV should be visible in this bay
+                // Get AGV's current position in the warehouse
+                Point agvPosition = agv.getCurrentPosition();
+                String agvPositionNotation = agvPosition != null ?
+                    Storage.pointToNotation(agvPosition) : null;
+
+                // AGV should only be visible in loading bay when:
+                // 1. It's at the loading dock position (6D or 7D)
+                // 2. It's NOT in any charging state
+                boolean isAtLoadingDock = "6D".equals(agvPositionNotation) || "7D".equals(agvPositionNotation);
+                boolean isNotCharging = agvState != AGV.AGVState.CHARGING &&
+                                       agvState != AGV.AGVState.WAITING_FOR_CHARGE &&
+                                       agvState != AGV.AGVState.MOVING_TO_CHARGE;
+
+                if (isAtLoadingDock && isNotCharging && (agvState == AGV.AGVState.IDLE || agvState == AGV.AGVState.BUSY)) {
+                    // AGV is at loading dock and ready to be shown in loading bay
                     if (!status.equals("Charging") && !status.equals("Loaded")) {
                         if (statusLabel != null) {
                             String stateText = agvState == AGV.AGVState.IDLE ? "Idle" : (agvHasCargo ? "Loading..." : "Preparing");
@@ -258,20 +270,24 @@ public class LoadingBayView extends JPanel {
                         }
                     }
 
-                    // Show AGV and optionally animate if BUSY
-                    if (agvState == AGV.AGVState.BUSY) {
-                        LOGGER.debug("Bay {}: AGV {} is BUSY (cargo: {}) - animating",
-                            bayNumber, agv.getAgvId(), agvHasCargo);
+                    // Show AGV and optionally animate if BUSY with cargo
+                    if (agvState == AGV.AGVState.BUSY && agvHasCargo) {
+                        LOGGER.debug("Bay {}: AGV {} is at loading dock {} (cargo: {}) - animating",
+                            bayNumber, agv.getAgvId(), agvPositionNotation, agvHasCargo);
                         animateAGVToTruck();
                     } else {
-                        // IDLE - just show at starting position
+                        // IDLE or BUSY without cargo - just show at starting position
                         if (agvComponent != null && !agvComponent.isVisible()) {
                             agvComponent.setVisible(true);
                             agvComponent.setBounds(agvStartX, 20, AGV_WIDTH, AGV_HEIGHT);
+                            LOGGER.debug("Bay {}: AGV {} shown at loading dock (IDLE or no cargo)",
+                                bayNumber, agv.getAgvId());
                         }
                     }
                 } else {
-                    // AGV is charging or moving to charge - hide from this bay
+                    // AGV is not at loading dock or is charging - hide from this bay
+                    LOGGER.debug("Bay {}: AGV {} hidden (position: {}, state: {})",
+                        bayNumber, agv.getAgvId(), agvPositionNotation, agvState);
                     resetAGVPosition();
                 }
             }

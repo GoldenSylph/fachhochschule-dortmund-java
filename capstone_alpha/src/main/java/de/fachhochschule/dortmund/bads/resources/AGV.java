@@ -207,6 +207,7 @@ public class AGV extends Resource implements ITickable {
 	
 	/**
 	 * Complete charging and release the station.
+	 * After charging, AGV automatically returns to loading bay (6D) as its home position.
 	 */
 	private synchronized void completeCharging() {
 		if (assignedChargingStation != null && storage != null) {
@@ -220,10 +221,20 @@ public class AGV extends Resource implements ITickable {
 
 		charging = false;
 		needsCharging = false;
-		state = AGVState.IDLE;
 
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("{} charging complete, returning to IDLE state", agvId);
+		// Return to loading bay (6D) after charging - this is the AGV's home position
+		if (storage != null) {
+			Point loadingDock = Storage.notationToPoint("6D");
+			endPoints.add(loadingDock);
+			state = AGVState.BUSY;  // Set to BUSY for the return journey to loading bay
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("{} charging complete, returning to loading bay 6D", agvId);
+			}
+		} else {
+			state = AGVState.IDLE;
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info("{} charging complete, returning to IDLE state (no storage reference)", agvId);
+			}
 		}
 	}
 
