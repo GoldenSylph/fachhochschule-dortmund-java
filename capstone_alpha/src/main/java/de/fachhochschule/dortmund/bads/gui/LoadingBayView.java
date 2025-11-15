@@ -263,7 +263,10 @@ public class LoadingBayView extends JPanel {
                     // AGV is at loading dock and ready to be shown in loading bay
                     if (!status.equals("Charging") && !status.equals("Loaded")) {
                         if (statusLabel != null) {
-                            String stateText = agvState == AGV.AGVState.IDLE ? "Idle" : (agvHasCargo ? "Loading..." : "Preparing");
+                            // At loading bay: BUSY with task = Loading (into truck), IDLE = Idle, BUSY without task = Preparing
+                            boolean hasTask = agv.getCurrentTask() != null;
+                            String stateText = agvState == AGV.AGVState.IDLE ? "Idle" :
+                                              (hasTask ? "Loading..." : "Preparing");
                             statusLabel.setText(stateText);
                             statusLabel.setForeground(agvState == AGV.AGVState.IDLE ?
                                 new Color(100, 100, 100) : new Color(0, 150, 0));
