@@ -529,12 +529,27 @@ public class AGV extends Resource implements ITickable {
 
 	@Override
 	public void onTick(int currentTick) {
+		// Check if task was externally cleared while BUSY at loading dock (by LoadingBayView after animation)
+		if (state == AGVState.BUSY && endPoints.isEmpty() && currentTask == null) {
+			Point currentPos = getCurrentPosition();
+			String posNotation = currentPos != null ? Storage.pointToNotation(currentPos) : null;
+			boolean atLoadingDock = "6D".equals(posNotation) || "7D".equals(posNotation);
+
+			if (atLoadingDock) {
+				// Loading animation completed, task was cleared - transition to IDLE
+				state = AGVState.IDLE;
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("{} loading complete at {}, transitioning to IDLE", agvId, posNotation);
+				}
+			}
+		}
+
 		// Check battery level and request charging if needed
 		checkBatteryLevel();
-		
+
 		// Process charging queue
 		processChargingQueue();
-		
+
 		// Handle battery management
 		if (charging) {
 			batteryLevel = Math.min(100, batteryLevel + chargePerTick);
@@ -645,11 +660,31 @@ public class AGV extends Resource implements ITickable {
 				}
 			}
 		} else if (endPoints.isEmpty() && state == AGVState.BUSY) {
-			// All destinations reached, return to IDLE
-			state = AGVState.IDLE;
-			currentTask = null;  // Clear current task on completion
-			if (LOGGER.isInfoEnabled()) {
-				LOGGER.info("{} completed all movements, returning to IDLE state", agvId);
+			// All destinations reached
+			Point currentPos = getCurrentPosition();
+			String posNotation = currentPos != null ? Storage.pointToNotation(currentPos) : null;
+
+			// Determine if AGV should stay BUSY or transition to IDLE
+			// Stay BUSY if: at loading dock (6D/7D) with an assigned task (for loading animation)
+			// Become IDLE if: returning from charging (no task) OR at other locations
+			boolean atLoadingDock = "6D".equals(posNotation) || "7D".equals(posNotation);
+			boolean hasTask = currentTask != null;
+
+			if (atLoadingDock && hasTask) {
+				// At loading dock with task - stay BUSY for loading animation
+				// Task will be cleared by LoadingBayView when animation completes
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("{} arrived at loading dock {} with task T-{}, staying BUSY for loading",
+						agvId, posNotation, currentTask.getTaskId());
+				}
+			} else {
+				// Either no task (returning from charging) or not at loading dock - become IDLE
+				state = AGVState.IDLE;
+				currentTask = null;  // Clear current task on completion
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("{} completed all movements at {}, returning to IDLE state",
+						agvId, posNotation != null ? posNotation : "unknown");
+				}
 			}
 		}
 	}

@@ -270,18 +270,20 @@ public class LoadingBayView extends JPanel {
                         }
                     }
 
-                    // Show AGV and optionally animate if BUSY with cargo
-                    if (agvState == AGV.AGVState.BUSY && agvHasCargo) {
-                        LOGGER.debug("Bay {}: AGV {} is at loading dock {} (cargo: {}) - animating",
-                            bayNumber, agv.getAgvId(), agvPositionNotation, agvHasCargo);
+                    // Show AGV and optionally animate if BUSY with cargo or current task
+                    // Animation only starts when BUSY (not IDLE), and has either cargo or assigned task
+                    boolean hasTask = agv.getCurrentTask() != null;
+                    if (agvState == AGV.AGVState.BUSY && (agvHasCargo || hasTask)) {
+                        LOGGER.debug("Bay {}: AGV {} is at loading dock {} (cargo: {}, task: {}) - animating",
+                            bayNumber, agv.getAgvId(), agvPositionNotation, agvHasCargo, hasTask);
                         animateAGVToTruck();
                     } else {
-                        // IDLE or BUSY without cargo - just show at starting position
+                        // IDLE or BUSY without cargo/task - just show at starting position
                         if (agvComponent != null && !agvComponent.isVisible()) {
                             agvComponent.setVisible(true);
                             agvComponent.setBounds(agvStartX, 20, AGV_WIDTH, AGV_HEIGHT);
-                            LOGGER.debug("Bay {}: AGV {} shown at loading dock (IDLE or no cargo)",
-                                bayNumber, agv.getAgvId());
+                            LOGGER.debug("Bay {}: AGV {} shown at loading dock (state: {}, cargo: {}, task: {})",
+                                bayNumber, agv.getAgvId(), agvState, agvHasCargo, hasTask);
                         }
                     }
                 } else {
@@ -347,6 +349,16 @@ public class LoadingBayView extends JPanel {
             // Check if progress bar reached 100% - stop animation and reset position
             if (progressBar != null && progressBar.getValue() >= 100) {
                 agvAnimationTimer.stop();
+
+                // Clear the AGV's task and allow it to transition to IDLE
+                // This signals that the loading operation is complete
+                if (agv != null && agv.getCurrentTask() != null) {
+                    LOGGER.debug("Bay {}: Loading complete, clearing task T-{} from AGV {}",
+                        bayNumber, agv.getCurrentTask().getTaskId(), agv.getAgvId());
+                    agv.setCurrentTask(null);
+                    // Note: AGV state will be updated to IDLE on next tick when it detects task is null
+                }
+
                 // Reset AGV to start position (left side) but keep visible
                 agvCurrentX = agvStartX;
                 if (agvComponent != null) {
